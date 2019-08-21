@@ -1,6 +1,6 @@
-﻿namespace DataAccess.Models
+﻿namespace KLTN.DataAccess.Models
 {
-    class User : BaseModel
+    public class User : BaseModel
     {
         public string Email { get; set; }
         public string Password { get; set; }

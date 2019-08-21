@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DataAccess.Models
+namespace KLTN.DataAccess.Models
 {
-    class BaseModel
+    public class BaseModel
     {
         public int Id { get; set; }
         public DateTime CreateAt { get; set; }

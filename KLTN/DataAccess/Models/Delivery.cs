@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DataAccess.Models
+namespace KLTN.DataAccess.Models
 {
-    class Delivery
+    public class Delivery
     {
         public int OrderId { get; set; }
         public string ShipperName { get; set; }
@@ -15,6 +15,7 @@ namespace DataAccess.Models
         public DateTime StartDeliveryAt { get; set; }
         public DateTime FinishDeliveryAt { get; set; }
         public DateTime CancelDeliveryAt { get; set; }
-        public bool Status { get; set; }
+
+        public virtual Order Order { get; set; }
     }
 }

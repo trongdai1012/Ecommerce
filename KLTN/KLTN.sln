@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KLTN.Web", "KLTN.Web\KLTN.Web.csproj", "{2943B02C-EA7F-47F8-8FB2-5CCE0799BA88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{E2E64811-A888-499F-9210-BE640B1F8C0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KLTN.DataAccess", "DataAccess\KLTN.DataAccess.csproj", "{E2E64811-A888-499F-9210-BE640B1F8C0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KLTN.Common", "KLTN.Common\KLTN.Common.csproj", "{12F70E81-D434-4627-96C3-E2D462519756}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E2E64811-A888-499F-9210-BE640B1F8C0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2E64811-A888-499F-9210-BE640B1F8C0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2E64811-A888-499F-9210-BE640B1F8C0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F70E81-D434-4627-96C3-E2D462519756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F70E81-D434-4627-96C3-E2D462519756}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F70E81-D434-4627-96C3-E2D462519756}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F70E81-D434-4627-96C3-E2D462519756}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

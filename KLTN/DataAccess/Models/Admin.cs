@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DataAccess.Models
+namespace KLTN.DataAccess.Models
 {
-    class Manager : BaseModel
+    public class Admin : BaseModel
     {
         public int UserId { get; set; }
         public string FirstName { get; set; }
@@ -11,6 +13,7 @@ namespace DataAccess.Models
         public DateTime BirthDay { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
-        public int StoreId { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

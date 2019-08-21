@@ -2,7 +2,7 @@
 
 namespace KLTN.DataAccess.Models
 {
-    public class Customer : BaseModel
+    public class Employee : BaseModel
     {
         public int UserId { get; set; }
         public string FirstName { get; set; }
@@ -11,10 +11,7 @@ namespace KLTN.DataAccess.Models
         public DateTime BirthDay { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
-        public byte Rank { get; set; }
-        public string FbAddress { get; set; }
-        public string GmailAddress { get; set; }
-        public string ZaloAddress { get; set; }
+        public int StoreId { get; set; }
 
         public virtual User User { get; set; }
     }
