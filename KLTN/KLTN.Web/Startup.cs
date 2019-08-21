@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using KLTN.Common;
+using KLTN.DataAccess.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +31,9 @@ namespace KLTN.Web
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<EcommerceDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString(Constants.DefaultConnection),
+                    assembly => assembly.MigrationsAssembly(Settings.NameSpaceWeb)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,8 +57,13 @@ namespace KLTN.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    name: MapRouteNames.AreaRoute,
+                    template: MapRoutesConfig.AreasExistsHomeIndex
+                );
+
+                routes.MapRoute(
+                    name: MapRouteNames.Default,
+                    template: MapRoutesConfig.HomeIndexId);
             });
         }
     }

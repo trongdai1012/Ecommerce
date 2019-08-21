@@ -11,5 +11,6 @@ namespace KLTN.DataAccess.Models
         public string Phone { get; set; }
         
         public virtual List<ProductWareHoure> ProductWareHoures { get; set; }
+        public virtual Store Store { get; set; }
     }
 }

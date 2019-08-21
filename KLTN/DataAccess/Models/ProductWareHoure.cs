@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace KLTN.DataAccess.Models
+﻿namespace KLTN.DataAccess.Models
 {
     public class ProductWareHoure
     {

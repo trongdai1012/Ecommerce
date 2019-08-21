@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace KLTN.DataAccess.Models
 {
@@ -12,10 +13,8 @@ namespace KLTN.DataAccess.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public byte Rank { get; set; }
-        public string FbAddress { get; set; }
-        public string GmailAddress { get; set; }
-        public string ZaloAddress { get; set; }
 
-        public virtual User User { get; set; }
+        public User User { get; set; }
+        public virtual List<Feedback> Feedbacks { get; set; }
     }
 }

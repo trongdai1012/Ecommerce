@@ -6,9 +6,9 @@ namespace KLTN.DataAccess.Models
     {
         public int Id { get; set; }
         public DateTime CreateAt { get; set; }
-        public string CreateBy { get; set; }
+        public int CreateBy { get; set; }
         public DateTime UpdateAt { get; set; }
-        public string UpdateBy { get; set; }
+        public int UpdateBy { get; set; }
         public bool Status { get; set; }
     }
 }
