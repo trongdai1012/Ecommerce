@@ -1,5 +1,8 @@
-﻿using KLTN.Common;
+﻿using AutoMapper;
+using KLTN.Common;
 using KLTN.DataAccess.Models;
+using KLTN.Services;
+using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +32,10 @@ namespace KLTN.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAutoMapper();
+
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<EcommerceDbContext>(options =>

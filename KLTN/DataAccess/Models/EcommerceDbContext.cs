@@ -25,15 +25,22 @@ namespace KLTN.DataAccess.Models
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<WareHouse> WareHouses { get; set; }
+        public DbSet<UserConfirm> UserConfirms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(x => x.Id);
+                entity.HasIndex(x => new { x.Role, x.FirstName });
+                entity.HasIndex(x => x.Email).IsUnique();
                 entity.Property(x => x.Email).HasColumnType(TypeOfSql.VarChar + "(50)");
                 entity.Property(x => x.Password).HasColumnType(TypeOfSql.NVarChar + "(32)");
                 entity.Property(x => x.Role).HasColumnType(TypeOfSql.TinyInt);
+                entity.Property(x => x.FirstName).HasColumnType(TypeOfSql.NVarChar + "(15)");
+                entity.Property(x => x.LastName).HasColumnType(TypeOfSql.NVarChar + "(30)");
+                entity.Property(x => x.Phone).HasColumnType(TypeOfSql.VarChar + "(20)");
+                entity.Property(x => x.Address).HasColumnType(TypeOfSql.NVarChar + "(100)");
                 entity.HasData(
                     new User
                     {
@@ -41,6 +48,12 @@ namespace KLTN.DataAccess.Models
                         Email = "admin@gmail.com",
                         Password = "123456",
                         Role = (byte)EnumRole.Admin,
+                        FirstName = "Dai",
+                        LastName = "Than Trong",
+                        Gender = true,
+                        BirthDay = Convert.ToDateTime("12-10-1994"),
+                        Phone = "+84981965080",
+                        Address = "Bac Giang",
                         CreateAt = DateTime.UtcNow,
                         CreateBy = 1,
                         UpdateAt = DateTime.UtcNow,
@@ -56,10 +69,6 @@ namespace KLTN.DataAccess.Models
                 entity.HasIndex(x => x.UserId).IsUnique();
                 entity.Property(x => x.Gmail).HasColumnType(TypeOfSql.VarChar + "(50)");
                 entity.Property(x => x.PassGmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
-                entity.Property(x => x.FirstName).HasColumnType(TypeOfSql.NVarChar + "(15)");
-                entity.Property(x => x.LastName).HasColumnType(TypeOfSql.NVarChar + "(30)");
-                entity.Property(x => x.Phone).HasColumnType(TypeOfSql.VarChar + "(20)");
-                entity.Property(x => x.Address).HasColumnType(TypeOfSql.NVarChar + "(100)");
                 entity
                 .HasOne(x => x.User)
                 .WithOne(x => x.Admin)
@@ -71,12 +80,6 @@ namespace KLTN.DataAccess.Models
                         Id = 1,
                         Gmail = "longs3tong@gmail.com",
                         PassGmail = "123456",
-                        FirstName = "Dai",
-                        LastName = "Than Trong",
-                        Gender = true,
-                        BirthDay = Convert.ToDateTime("10-12-1994"),
-                        Phone = "+84981965080",
-                        Address = "Bac Giang",
                         CreateAt = DateTime.UtcNow,
                         CreateBy = 1,
                         UpdateAt = DateTime.UtcNow,
@@ -100,10 +103,6 @@ namespace KLTN.DataAccess.Models
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.UserId).IsUnique();
-                entity.Property(x => x.FirstName).HasColumnType(TypeOfSql.NVarChar + "(15)");
-                entity.Property(x => x.LastName).HasColumnType(TypeOfSql.NVarChar + "(30)");
-                entity.Property(x => x.Address).HasColumnType(TypeOfSql.NVarChar + "(100)");
-                entity.Property(x => x.Phone).HasColumnType(TypeOfSql.VarChar + "(20)");
                 entity.Property(x => x.Rank).HasColumnType(TypeOfSql.TinyInt).HasDefaultValue(0);
                 entity.Property(x => x.CreateAt).HasDefaultValue(DateTime.Now);
                 entity.Property(x => x.UpdateAt).HasDefaultValue(DateTime.Now);
@@ -131,10 +130,6 @@ namespace KLTN.DataAccess.Models
                 entity.HasIndex(x => x.UserId).IsUnique();
                 entity.Property(x => x.Gmail).HasColumnType(TypeOfSql.VarChar + "(50)");
                 entity.Property(x => x.PassGmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
-                entity.Property(x => x.FirstName).HasColumnType(TypeOfSql.NVarChar + "(15)");
-                entity.Property(x => x.LastName).HasColumnType(TypeOfSql.NVarChar + "(30)");
-                entity.Property(x => x.Phone).HasColumnType(TypeOfSql.VarChar + "(20)");
-                entity.Property(x => x.Address).HasColumnType(TypeOfSql.NVarChar + "(100)");
                 entity
                 .HasOne(x => x.User)
                 .WithOne(x => x.Employee)
@@ -240,6 +235,17 @@ namespace KLTN.DataAccess.Models
                 entity.Property(x => x.Name).HasColumnType(TypeOfSql.NVarChar + "(30)");
                 entity.Property(x => x.Address).HasColumnType(TypeOfSql.NVarChar + "(100)");
                 entity.Property(x => x.Phone).HasColumnType(TypeOfSql.VarChar + "(20)");
+            });
+
+            modelBuilder.Entity<UserConfirm>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasIndex(x => x.UserId).IsUnique();
+                entity.Property(x => x.ConfirmString).HasColumnType(TypeOfSql.VarChar + "(36)");
+                entity
+                .HasOne(x => x.User)
+                .WithOne(x => x.UserConfirm)
+                .HasForeignKey<UserConfirm>(x=>x.UserId);
             });
         }
     }

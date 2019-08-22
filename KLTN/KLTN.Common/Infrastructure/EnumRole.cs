@@ -10,6 +10,7 @@ namespace KLTN.Common.Infrastructure
         Mod,
         Clerk,
         WareHouseStaff,
-        Deliver
+        Deliver,
+        Customer
     }
 }

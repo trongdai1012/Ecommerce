@@ -7,6 +7,27 @@ namespace KLTN.Common
     public static class Constants
     {
         public const string DefaultConnection = "DefaultConnection";
+        public const string X2 = "x2";
+        public const string Admin = "Admin";
+        public const string Member = "Member";
+        public const string RequestPath = "RequestPath";
+        public const string Id = "Id";
+        public const string Email = "Email";
+        public const string IdHttp = "{id}";
+        public const string Name = "Name";
+        public const string Asc = "asc";
+        public const string OrderBy = "OrderBy";
+        public const string OrderByDescending = "OrderByDescending";
+        public const string CreateSuccess = "CreateSuccess";
+        public const string CreateViewFalse = "CreateFalse";
+        public const string UpdateSuccess = "UpdateSuccess";
+        public const string UpdateFalse = "UpdateFalse";
+        public const string DeleteSuccess = "DeleteSuccess";
+        public const string DeleteFalse = "DeleteFalse";
+        public const string Plain = "plain";
+        public const string Html = "html";
+        public const string SmtpClient = "smtp.gmail.com";
+        public const string Xoauth2 = "XOAUTH2";
     }
 
     public static class TypeOfSql
