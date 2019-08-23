@@ -14,4 +14,8 @@
     <ProjectReference Include="..\KLTN.Common\KLTN.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validations\" />
+  </ItemGroup>
+
 </Project>
