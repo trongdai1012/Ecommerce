@@ -1,4 +1,6 @@
-﻿using KLTN.DataModels.Models.Users;
+﻿using KLTN.Common.Datatables;
+using KLTN.DataModels.Models.Users;
+using System;
 using System.Collections.Generic;
 
 namespace KLTN.Services
@@ -6,6 +8,10 @@ namespace KLTN.Services
     public interface IUserService
     {
         int Register(RegisterUserViewModel register);
+
+        int CreateEmployeeAccount(CreateEmployeeViewModel register);
+
+        int CreateAdminAccount(CreateAdminViewModel register);
 
         AuthenticationViewModel Authentication(AuthenticationViewModel authenticationViewModel);
 
@@ -29,5 +35,26 @@ namespace KLTN.Services
         bool UpdateEmployee(UpdateEmployeeViewModel employeeModel);
 
         bool ConfirmUser(string confirmString);
+
+        /// <summary>
+        /// Method LoadData return tuple UserViewModel int int
+        /// </summary>
+        /// <param name="dtParameters"></param>
+        /// <returns></returns>
+        Tuple<IEnumerable<AdminViewModel>, int, int> LoadAdmin(DTParameters dtParameters);
+
+        /// <summary>
+        /// Method LoadData return tuple UserViewModel int int
+        /// </summary>
+        /// <param name="dtParameters"></param>
+        /// <returns></returns>
+        Tuple<IEnumerable<CustomerViewModel>, int, int> LoadCustomer(DTParameters dtParameters);
+
+        /// <summary>
+        /// Method LoadData return tuple UserViewModel int int
+        /// </summary>
+        /// <param name="dtParameters"></param>
+        /// <returns></returns>
+        Tuple<IEnumerable<EmployeeViewModel>, int, int> LoadEmployee(DTParameters dtParameters);
     }
 }

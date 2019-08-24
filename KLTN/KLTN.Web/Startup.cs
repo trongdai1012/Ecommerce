@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KLTN.Common;
 using KLTN.DataAccess.Models;
+using KLTN.DataModels.AutoMapper;
 using KLTN.Services;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +33,14 @@ namespace KLTN.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAutoMapper();
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<IUserService, UserService>();

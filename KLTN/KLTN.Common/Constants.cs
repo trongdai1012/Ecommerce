@@ -79,4 +79,12 @@ namespace KLTN.Common
     {
         public const string AreaAdmin = "Admin";
     }
+
+    public static class ParamConstants
+    {
+        public const string Id = "Id";
+        public const string Asc = "asc";
+        public const string OrderBy = "OrderBy";
+        public const string OrderByDescending = "OrderByDescending";
+    }
 }

@@ -9,6 +9,12 @@ namespace KLTN.DataAccess.Models
         public int UserId { get; set; }
         public string Gmail { get; set; }
         public string PassGmail { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool Gender { get; set; }
+        public DateTime BirthDay { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
 
         public virtual User User { get; set; }
     }

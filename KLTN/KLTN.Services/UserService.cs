@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
 using KLTN.Common;
+using KLTN.Common.Datatables;
 using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels;
 using KLTN.DataModels.Models.Users;
 using KLTN.Services.Repositories;
 using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Http;
 using MimeKit;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KLTN.Services
 {
@@ -54,7 +55,7 @@ namespace KLTN.Services
                     Status = false
                 };
 
-                _unitOfWork.CustomerRepository.Create(customer);
+                var customerRegister = _unitOfWork.CustomerRepository.Create(customer);
 
                 _unitOfWork.Save();
 
@@ -64,7 +65,7 @@ namespace KLTN.Services
                     ConfirmString = InitConfirmString()
                 };
 
-                _unitOfWork.UserConfirmRepository.Create(userConfirm);
+                var userConfirmRegister = _unitOfWork.UserConfirmRepository.Create(userConfirm);
 
                 var contentMail =
                     "Cảm ơn bạn đã đăng ký tài khoản trên website của chúng tôi!"
@@ -73,11 +74,13 @@ namespace KLTN.Services
                     + Environment.NewLine
                     + "Vui lòng click vào link bên dưới để kích hoạt tài khoản của bạn"
                     + Environment.NewLine
-                    + @"https://localhost:44338"+@"/Admin/User/ConfirmUser/"+userRegister.Id+"="+userConfirm.ConfirmString;
-                SendMailConfirm(register.Email,register.FirstName,contentMail);
+                    + @"https://localhost:44338" + @"/Admin/User/ConfirmUser/" + userRegister.Id + "=" + userConfirm.ConfirmString;
+                SendMailConfirm(register.Email, register.FirstName, contentMail);
 
                 _unitOfWork.Save();
-                return 1;
+
+                if (userRegister != null && customerRegister != null && userConfirmRegister != null) return 1;
+                return 0;
             }
             catch (Exception e)
             {
@@ -85,6 +88,94 @@ namespace KLTN.Services
                 return -1;
             }
 
+        }
+
+        public int CreateEmployeeAccount(CreateEmployeeViewModel register)
+        {
+            try
+            {
+                if (CheckEmailExisted(register.Email)) return 0;
+                var user = new User
+                {
+                    Email = register.Email,
+                    Password = register.PassEmail,
+                    Role = register.Role,
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
+                    Gender = register.Gender,
+                    BirthDay = register.BirthDay,
+                    Phone = register.Phone,
+                    Address = register.Address,
+                    CreateBy = 1,
+                    CreateAt = DateTime.UtcNow
+                };
+
+                var userRegister = _unitOfWork.UserRepository.Create(user);
+
+                var employee = new Employee
+                {
+                    Gmail = register.Gmail,
+                    PassGmail = register.PassGmail,
+                    Status = true,
+                    StoreId = register.StoreId
+                };
+
+                var employeeRegister = _unitOfWork.EmployeeRepository.Create(employee);
+
+                _unitOfWork.Save();
+
+                if (userRegister != null && employeeRegister != null) return 1;
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when create customer in UserService", e);
+                return -1;
+            }
+        }
+
+        public int CreateAdminAccount(CreateAdminViewModel register)
+        {
+            try
+            {
+                if (CheckEmailExisted(register.Email)) return 0;
+                var user = new User
+                {
+                    Email = register.Email,
+                    Password = register.PassEmail,
+                    Role = (byte)EnumRole.Admin,
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
+                    Gender = register.Gender,
+                    BirthDay = register.BirthDay,
+                    Phone = register.Phone,
+                    Address = register.Address,
+                    CreateBy = 1,
+                    CreateAt = DateTime.UtcNow
+                };
+
+                var userRegister = _unitOfWork.UserRepository.Create(user);
+
+                var employee = new Employee
+                {
+                    UserId = userRegister.Id,
+                    Gmail = register.Gmail,
+                    PassGmail = register.PassGmail,
+                    Status = true
+                };
+
+                var adminRegister = _unitOfWork.EmployeeRepository.Create(employee);
+
+                _unitOfWork.Save();
+
+                if (userRegister != null && adminRegister != null) return 1;
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when create customer in UserService", e);
+                return -1;
+            }
         }
 
         public AuthenticationViewModel Authentication(AuthenticationViewModel authenticationViewModel)
@@ -182,8 +273,6 @@ namespace KLTN.Services
             _unitOfWork.Save();
             return user.Status;
         }
-
-
 
         public bool UpdateEmployee(UpdateEmployeeViewModel employeeModel)
         {
@@ -307,6 +396,160 @@ namespace KLTN.Services
         {
             var user = _unitOfWork.UserRepository.Get(x => x.Email == email);
             return user != null ? true : false;
+        }
+
+        /// <summary>
+        ///Method LoadData return parameter provide properties for Action LoadDataController 
+        /// </summary>
+        /// <param name="dtParameters"></param>
+        /// <returns></returns>
+        public Tuple<IEnumerable<EmployeeViewModel>, int, int> LoadEmployee(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var user = GetAllEmployee();
+            var usertViewModels = _mapper.Map<IEnumerable<EmployeeViewModel>>(user);
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                usertViewModels = usertViewModels.Where(r =>
+                        r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Role.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.FirstName.ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Email.ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.BirthDay.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+            }
+
+            usertViewModels = orderAscendingDirection
+                ? usertViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : usertViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var viewModels = usertViewModels.OrderByDescending(x => x.Email).ToArray();
+            var filteredResultsCount = viewModels.ToArray().Length;
+            var totalResultsCount = user.Count();
+
+            var tuple = new Tuple<IEnumerable<EmployeeViewModel>, int, int>(viewModels, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        ///Method LoadData return parameter provide properties for Action LoadDataController 
+        /// </summary>
+        /// <param name="dtParameters"></param>
+        /// <returns></returns>
+        public Tuple<IEnumerable<AdminViewModel>, int, int> LoadAdmin(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var user = GetAllAdmin();
+            var usertViewModels = _mapper.Map<IEnumerable<AdminViewModel>>(user);
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                usertViewModels = usertViewModels.Where(r =>
+                        r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.FirstName.ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Email.ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.BirthDay.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+            }
+
+            usertViewModels = orderAscendingDirection
+                ? usertViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : usertViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var viewModels = usertViewModels.OrderByDescending(x => x.Email).ToArray();
+            var filteredResultsCount = viewModels.ToArray().Length;
+            var totalResultsCount = user.Count();
+
+            var tuple = new Tuple<IEnumerable<AdminViewModel>, int, int>(viewModels, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        ///Method LoadData return parameter provide properties for Action LoadDataController 
+        /// </summary>
+        /// <param name="dtParameters"></param>
+        /// <returns></returns>
+        public Tuple<IEnumerable<CustomerViewModel>, int, int> LoadCustomer(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var user = GetAllCustomer();
+            var usertViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(user);
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                usertViewModels = usertViewModels.Where(r =>
+                        r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.FirstName.ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Email.ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.BirthDay.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+            }
+
+            usertViewModels = orderAscendingDirection
+                ? usertViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : usertViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var viewModels = usertViewModels.OrderByDescending(x => x.Email).ToArray();
+            var filteredResultsCount = viewModels.ToArray().Length;
+            var totalResultsCount = user.Count();
+
+            var tuple = new Tuple<IEnumerable<CustomerViewModel>, int, int>(viewModels, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
         }
 
         //public string GetClaimUserMail()

@@ -4,15 +4,15 @@ using KLTN.DataModels.Models.Users;
 
 namespace KLTN.DataModels.AutoMapper
 {
-    public class UserProfiles : Profile
+    public class MappingProfile : Profile
     {
-        public UserProfiles()
+        public MappingProfile()
         {
-            CreateMap<AuthenticationViewModel, User>();
-            CreateMap<AdminViewModel, User>();
-            CreateMap<EmployeeViewModel, User>();
-            CreateMap<CustomerViewModel, User>();
-            CreateMap<EditUserViewModel, User>();
+            CreateMap<User, AuthenticationViewModel>();
+            CreateMap<User, AdminViewModel>();
+            CreateMap<User, EmployeeViewModel>();
+            CreateMap<User, CustomerViewModel>();
+            CreateMap<User ,EditUserViewModel>();
         }
     }
 }
