@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using KLTN.Common;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.AutoMapper;
+using KLTN.DataModels.Models.Users;
+using KLTN.DataModels.Validations.Users;
 using KLTN.Services;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -49,6 +52,11 @@ namespace KLTN.Web
             services.AddDbContext<EcommerceDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.DefaultConnection),
                     assembly => assembly.MigrationsAssembly(Settings.NameSpaceWeb)));
+
+            //Add Transient
+            services.AddTransient<IValidator<RegisterUserViewModel>, RegisterValidator>();
+            services.AddTransient<IValidator<CreateEmployeeViewModel>, CreateEmployeeValidator>();
+            services.AddTransient<IValidator<CreateAdminViewModel>, CreateAdminValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
