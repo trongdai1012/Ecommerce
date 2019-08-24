@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace DataAccess.Models
+namespace KLTN.DataAccess.Models
 {
-    class Order : BaseModel
+    public class Order : BaseModel
     {
         public decimal TotalPrice { get; set; }
-        public string AddressRecipient { get; set; }
-        public string PhoneRecipient { get; set; }
-        public string NameRecipient { get; set; }
+        public string RecipientAddress { get; set; }
+        public string RecipientPhone { get; set; }
+        public string RecipientName { get; set; }
+
+        public virtual Customer Customer { get; set; }
+        public virtual Delivery Delivery { get; set; }
+        public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 }

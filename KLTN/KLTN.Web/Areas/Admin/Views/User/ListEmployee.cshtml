@@ -1,0 +1,124 @@
+﻿@using KLTN.Common.Resources
+@{
+    ViewData["Title"] = "ListAdmin";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index"> @UserResource.HomeAdmin</a>
+                    </li>
+                    <li class="breadcrumb-item active">@UserResource.UserManager</li>
+
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.box -->
+<div class="col-12">
+    <div class="card">
+        @*@if (TempData[Constants.UpdateSuccess] != null)
+        {
+            <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
+        }*@
+        <div class="card-header">
+            <h3 class="card-title">@UserResource.UserManager</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="card-body box-body table-responsive">
+            <table id="user-index" class="table table-bordered columns-align-center table-hover">
+                <thead>
+                    <tr>
+                        <th>@UserResource.Id</th>
+                        <th>@UserResource.Email</th>
+                        <th>@UserResource.Role</th>
+                        <th>@UserResource.Fund</th>
+                        <th>@UserResource.CreateBy</th>
+                        <th>@UserResource.CreateAt</th>
+                        <th>@UserResource.Status</th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+</div>
+<!-- /.box -->
+
+@section scripts
+    {
+    <script src="~/js/userjs/user.js"></script>
+    <script src="~/lib/moment/moment.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datetime-moment/datetime-moment.js" asp-append-version="true"></script>
+    <script>
+        $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss");
+        $.fn.dataTable.moment("DD/MM/YYYY");
+
+        $("#user-index").DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            },
+            // Design Assets
+            stateSave: true,
+            autoWidth: true,
+            // ServerSide Setups
+            processing: true,
+            serverSide: true,
+            // Paging Setups
+            paging: true,
+            // Searching Setups
+            searching: { regex: true },
+            // Ajax Filter
+            ajax: {
+                url: "/Admin/User/LoadEmployee",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: function(d) {
+                    return JSON.stringify(d);
+                }
+            },
+            // Columns Setups
+            columns: [
+                { data: "id" },
+                { data: "email" },
+                { data: "role" },
+                { data: "firstName" },
+                { data: "createBy" },
+                {
+                    data: "createAt",
+                    render: function(data, type) {
+                        // If display or filter data is requested, format the date
+                        if (type === "display" || type === "filter") {
+                            return moment(data).format("DD/MM/YYYY");
+                        }
+                        // Otherwise the data type requested (`type`) is type detection or
+                        // sorting data, for which we want to use the raw date value, so just return
+                        // that, unaltered
+                        return data;
+                    }
+                },
+                {
+                    data: "status",
+                    "mRender": function(data, type, row) {
+                        var url;
+                        if (row["status"].toString() === "true") {
+                            url =
+                                "<p><strong>Kích hoạt <span class=\"glyphicon glyphicon-ok\" style=\"color:green\"></strong></p>";
+                        } else {
+                            url =
+                                "<p><strong>Kích hoạt <span class=\"glyphicon glyphicon-remove\" style=\"color:red\"></strong></p>";
+                        }
+                        return url;
+                    }
+                }
+            ]
+        });
+    </script>
+}

@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using FluentValidation;
+using KLTN.Common;
+using KLTN.DataAccess.Models;
+using KLTN.DataModels.AutoMapper;
+using KLTN.DataModels.Models.Users;
+using KLTN.DataModels.Validations.Users;
+using KLTN.Services;
+using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,8 +36,27 @@ namespace KLTN.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<EcommerceDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString(Constants.DefaultConnection),
+                    assembly => assembly.MigrationsAssembly(Settings.NameSpaceWeb)));
+
+            //Add Transient
+            services.AddTransient<IValidator<RegisterUserViewModel>, RegisterValidator>();
+            services.AddTransient<IValidator<CreateEmployeeViewModel>, CreateEmployeeValidator>();
+            services.AddTransient<IValidator<CreateAdminViewModel>, CreateAdminValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,8 +80,13 @@ namespace KLTN.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    name: MapRouteNames.AreaRoute,
+                    template: MapRoutesConfig.AreasExistsHomeIndex
+                );
+
+                routes.MapRoute(
+                    name: MapRouteNames.Default,
+                    template: MapRoutesConfig.HomeIndexId);
             });
         }
     }

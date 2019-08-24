@@ -1,8 +1,12 @@
-﻿namespace DataAccess.Models
+﻿using System.Collections.Generic;
+
+namespace KLTN.DataAccess.Models
 {
-    class Category : BaseModel
+    public class Category : BaseModel
     {
         public string Name { get; set; }
         public int ParrentCategoryId { get; set; }
+
+        public virtual List<Product> Products { get; set; }
     }
 }
