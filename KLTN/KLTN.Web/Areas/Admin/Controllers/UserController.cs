@@ -42,7 +42,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult RegisterEmployee(CreateEmployeeViewModel registerUser)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(registerUser);
             _userService.CreateEmployeeAccount(registerUser);
             return RedirectToAction("Index", "Home");
         }
