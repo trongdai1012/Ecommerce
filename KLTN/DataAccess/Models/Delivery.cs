@@ -5,6 +5,7 @@ namespace KLTN.DataAccess.Models
 {
     public class Delivery
     {
+        public int Id { get; set; }
         public int OrderId { get; set; }
         public DateTime ConfirmAt { get; set; }
         public int UserConfirmId { get; set; }
