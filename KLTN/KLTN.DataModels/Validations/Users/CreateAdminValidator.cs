@@ -25,7 +25,7 @@ namespace KLTN.DataModels.Validations.Users
             RuleFor(x => x.FirstName).MaximumLength(15).WithMessage("Độ dài tối đa 15 ký tự");
             RuleFor(x => x.LastName).NotEmpty().WithMessage("Họ đệm không được bỏ trống");
             RuleFor(x => x.LastName).MaximumLength(30).WithMessage("Độ dài tối đa 30 ký tự");
-            RuleFor(x => x.BirthDay).GreaterThan(DateTime.UtcNow).WithMessage("Ngày sinh không hợp lệ");
+            RuleFor(x => x.BirthDay).NotEmpty().WithMessage("Ngày sinh không hợp lệ");
             RuleFor(x => x.Phone).NotEmpty().WithMessage("Số điện thoại không được bỏ trống");
             RuleFor(x =>x.Phone).MaximumLength(20).WithMessage("Độ dài tối đa 20 ký tự");
         }

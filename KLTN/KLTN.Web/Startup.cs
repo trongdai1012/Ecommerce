@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using KLTN.Common;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.AutoMapper;
@@ -47,6 +48,8 @@ namespace KLTN.Web
 
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddMvc(setup => { }).AddFluentValidation();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<EcommerceDbContext>(options =>

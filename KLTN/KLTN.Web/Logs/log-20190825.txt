@@ -57,3 +57,6 @@
 2019-08-25 02:32:58.210 +07:00 [ERR] Have error when GetAllAdmin on UserService
 2019-08-25 02:36:35.401 +07:00 [ERR] Have error when GetAllAdmin on UserService
 2019-08-25 02:36:56.645 +07:00 [ERR] Have error when GetAllAdmin on UserService
+2019-08-25 20:25:46.222 +07:00 [ERR] Have an error when register user in UserService
+2019-08-25 20:41:12.119 +07:00 [ERR] Have an error when create customer in UserService
+2019-08-25 21:02:58.965 +07:00 [ERR] Have an error when create customer in UserService

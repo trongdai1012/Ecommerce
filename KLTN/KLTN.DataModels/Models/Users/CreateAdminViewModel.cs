@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace KLTN.DataModels.Models.Users
@@ -15,7 +16,8 @@ namespace KLTN.DataModels.Models.Users
         public byte Role { get; set; }
         public string LastName { get; set; }
         public bool Gender { get; set; }
-        public DateTime BirthDay { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime BirthDay { get; set; }  
         public string Address { get; set; }
         public string Phone { get; set; }
     }

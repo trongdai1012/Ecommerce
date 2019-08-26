@@ -12,14 +12,17 @@
     <div class="card">
         <div class="card-body register-card-body">
             <p class="login-box-msg">Register a new membership</p>
-            <form action="../../index.html" method="post">
+            <form asp-action="registerAdmin" method="post">
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="Email" class="form-control" placeholder="Email">
+                    <input asp-for="Email" class="form-control" placeholder="Email">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" asp-for="PassEmail" class="form-control" placeholder="Password">
@@ -29,6 +32,9 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span asp-validation-for="PassEmail" class="text-danger"></span>
+                </div>
                 <div class="input-group mb-3">
                     <input type="password" asp-for="ConfirmPassEmail" class="form-control" placeholder="Retype password">
                     <div class="input-group-append">
@@ -37,45 +43,58 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span asp-validation-for="ConfirmPassEmail" class="text-danger"></span>
+                </div>
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="Gmail" class="form-control" placeholder="Gmail">
+                    <input asp-for="Gmail" class="form-control" placeholder="Gmail">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span asp-validation-for="Gmail" class="text-danger"></span>
+                </div>
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="PassGmail" class="form-control" placeholder="Password Gmail">
+                    <input asp-for="PassGmail" class="form-control" placeholder="Password Gmail">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span asp-validation-for="PassGmail" class="text-danger"></span>
+                </div>
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="FirstName" class="form-control" placeholder="FirstName">
+                    <input asp-for="FirstName" class="form-control" placeholder="FirstName">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="LastName" class="form-control" placeholder="LastName">
+                    <input asp-for="LastName" class="form-control" placeholder="LastName">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="BirthDay" class="form-control" placeholder="BirthDay">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
+                    <input asp-for="BirthDay" class=" form-control" />
+                </div>
+                <div>
+                    <span asp-validation-for="BirthDay" class="text-danger"></span>
                 </div>
                 <div class="input-group mb-3">
                     <input type="checkbox" asp-for="Gender" class="form-control" placeholder="Gender">
@@ -85,22 +104,27 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="Phone" class="form-control" placeholder="Phone">
+                    <input asp-for="Phone" class="form-control" placeholder="Phone">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
                 <div class="input-group mb-3">
-                    <input type="email" asp-for="Address" class="form-control" placeholder="Address">
+                    <input asp-for="Address" class="form-control" placeholder="Address">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-4">
@@ -119,8 +143,12 @@
     </div><!-- /.card -->
 </div>
 <!-- /.register-box -->
-<script src="~/Admin/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="~/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@section scripts
+{
+    <script src="~/Admin/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+

@@ -56,7 +56,11 @@ namespace KLTN.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult RegisterAdmin(CreateAdminViewModel registerUser)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Co loi gi do ko xac dinh");
+                return View(registerUser);
+            }
             _userService.CreateAdminAccount(registerUser);
             return RedirectToAction("Index", "Home");
         }
