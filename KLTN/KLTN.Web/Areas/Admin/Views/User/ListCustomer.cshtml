@@ -42,6 +42,7 @@
                         <th>@UserResource.CreateBy</th>
                         <th>@UserResource.CreateAt</th>
                         <th>@UserResource.Status</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
 
@@ -114,6 +115,38 @@
                         } else {
                             url =
                                 "<p><strong>Kích hoạt <span class=\"glyphicon glyphicon-remove\" style=\"color:red\"></strong></p>";
+                        }
+                        return url;
+                    }
+                },
+                {
+                    "mData": "id",
+                    "mRender": function (data, type, row) {
+                        var url;
+                        if (row["status"].toString() === "true") {
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
+                                data +
+                                "\"" +
+                                "class = \"btn btn-info glyphicon glyphicon-info-sign\"></a> " +
+                                "<a title=\"Sửa\" href=\"Edit\\" +
+                                data +
+                                "\"" +
+                                " class=\"btn btn-warning fa fa-edit\"></a> " +
+                                "<a title=\"Khoá\" href=\"#\" class=\"btn-active btn btn-danger glyphicon glyphicon-lock\" data-id=\"" +
+                                row["id"] +
+                                "\"></a>";
+                        } else {
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
+                                data +
+                                "\"" +
+                                "class = \"btn btn-info glyphicon glyphicon-info-sign\"></a> " +
+                                "<a href=\"Edit\\" +
+                                data +
+                                "\"" +
+                                " class=\"btn btn-warning fa fa-edit\"></a> " +
+                                "<a title=\"Mở khoá\" href=\"#\" class=\"btn-active btn btn-success glyphicon glyphicon-unlock\" data-id=\"" +
+                                row["id"] +
+                                "\"> <i class=\"fa fa-unlock\"></i></a>";
                         }
                         return url;
                     }

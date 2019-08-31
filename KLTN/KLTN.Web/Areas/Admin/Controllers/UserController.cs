@@ -159,5 +159,23 @@ namespace KLTN.Web.Areas.Admin.Controllers
                     .Take(dtParameters.Length)
             });
         }
+
+        /// <summary>
+        /// Action ChangeStatus return JsonResult to ajax
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var statusResult = _userService.ChangeStatus(id);
+
+            return Json(new
+            {
+                status = statusResult
+            });
+        }
+
+
     }
 }

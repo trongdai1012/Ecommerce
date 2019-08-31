@@ -6,6 +6,9 @@ namespace KLTN.DataAccess.Models
     public class Order : BaseModel
     {
         public decimal TotalPrice { get; set; }
+        public int RecipientProvinceCode { get; set; }
+        public int RecipientDistrictCode { get; set; }
+        public int RecipientPrecinctCode { get; set; }
         public string RecipientAddress { get; set; }
         public string RecipientPhone { get; set; }
         public string RecipientName { get; set; }

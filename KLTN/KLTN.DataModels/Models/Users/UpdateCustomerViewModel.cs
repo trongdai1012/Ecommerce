@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KLTN.DataModels.Models.Users
 {
-    public class EditUserViewModel
+    public class UpdateCustomerViewModel
     {
         public int Id { get; set; }
         public string Email { get; set; }

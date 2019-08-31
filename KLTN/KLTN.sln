@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KLTN.DataAccess", "DataAcce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KLTN.Common", "KLTN.Common\KLTN.Common.csproj", "{12F70E81-D434-4627-96C3-E2D462519756}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KLTN.Services", "KLTN.Services\KLTN.Services.csproj", "{529EBFBA-1857-4E1D-B207-FB7CF476139A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KLTN.Services", "KLTN.Services\KLTN.Services.csproj", "{529EBFBA-1857-4E1D-B207-FB7CF476139A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KLTN.DataModels", "KLTN.DataModels\KLTN.DataModels.csproj", "{CB7D2EA6-77CF-419C-8E03-5E6CEB8AAB40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KLTN.DataModels", "KLTN.DataModels\KLTN.DataModels.csproj", "{CB7D2EA6-77CF-419C-8E03-5E6CEB8AAB40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

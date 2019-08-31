@@ -7,6 +7,7 @@ using KLTN.DataModels;
 using KLTN.DataModels.Models.Users;
 using KLTN.Services.Repositories;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Http;
 using MimeKit;
 using Serilog;
 using System;
@@ -19,9 +20,11 @@ namespace KLTN.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly HttpContext _httpContext;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContext = httpContextAccessor.HttpContext;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -106,7 +109,8 @@ namespace KLTN.Services
                     BirthDay = register.BirthDay,
                     Phone = register.Phone,
                     Address = register.Address,
-                    CreateBy = 1,
+                    CreateBy = GetClaimUserId(),
+                    IsConfirm = true,
                     CreateAt = DateTime.UtcNow
                 };
 
@@ -114,9 +118,7 @@ namespace KLTN.Services
 
                 var employee = new Employee
                 {
-                    Gmail = register.Gmail,
-                    PassGmail = register.PassGmail,
-                    Status = true,
+                    PassEmail = register.PassEmail,
                     StoreId = register.StoreId
                 };
 
@@ -150,7 +152,8 @@ namespace KLTN.Services
                     BirthDay = register.BirthDay,
                     Phone = register.Phone,
                     Address = register.Address,
-                    CreateBy = 1,
+                    CreateBy = GetClaimUserId(),
+                    IsConfirm = true,
                     CreateAt = DateTime.UtcNow
                 };
 
@@ -159,9 +162,7 @@ namespace KLTN.Services
                 var employee = new Employee
                 {
                     UserId = userRegister.Id,
-                    Gmail = register.Gmail,
-                    PassGmail = register.PassGmail,
-                    Status = true
+                    PassEmail = register.PassEmail
                 };
 
                 var adminRegister = _unitOfWork.EmployeeRepository.Create(employee);
@@ -178,22 +179,31 @@ namespace KLTN.Services
             }
         }
 
-        public AuthenticationViewModel Authentication(AuthenticationViewModel authenticationViewModel)
+        public Tuple<AuthenticationViewModel, int> Authentication(AuthenticationViewModel authenticationViewModel)
         {
             try
             {
-                var user = _unitOfWork.UserRepository.Get(x => x.Email == authenticationViewModel.Email && x.Password == authenticationViewModel.Password);
+                var user = _unitOfWork.UserRepository.Get(x => x.Email == authenticationViewModel.Email);
+
+                if (user == null) return new Tuple<AuthenticationViewModel, int>(null, -1);
+
+                if (user.Password != authenticationViewModel.Password)
+                    return new Tuple<AuthenticationViewModel, int>(null, -2);
+
+                if (user.IsConfirm == false) new Tuple<AuthenticationViewModel, int>(null, 0);
+
                 var authenticationView = _mapper.Map<AuthenticationViewModel>(user);
-                return authenticationView;
+
+                return new Tuple<AuthenticationViewModel, int>(authenticationView,1);
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when Authentication", e);
-                return null;
+                return new Tuple<AuthenticationViewModel, int>(null,-3);
             }
         }
 
-        public IEnumerable<CustomerViewModel> GetAllCustomer()
+        private IEnumerable<CustomerViewModel> GetAllCustomer()
         {
             try
             {
@@ -208,7 +218,7 @@ namespace KLTN.Services
             }
         }
 
-        public IEnumerable<EmployeeViewModel> GetAllEmployee()
+        private IEnumerable<EmployeeViewModel> GetAllEmployee()
         {
             try
             {
@@ -223,7 +233,7 @@ namespace KLTN.Services
             }
         }
 
-        public IEnumerable<AdminViewModel> GetAllAdmin()
+        private IEnumerable<AdminViewModel> GetAllAdmin()
         {
             try
             {
@@ -238,29 +248,6 @@ namespace KLTN.Services
             }
         }
 
-        public bool UpdateInfoUser(EditUserViewModel customerModel)
-        {
-            try
-            {
-                var user = _unitOfWork.UserRepository.GetById(customerModel.Id);
-                if (user == null) return false;
-                user.FirstName = customerModel.FirstName;
-                user.LastName = customerModel.LastName;
-                user.Phone = customerModel.Phone;
-                user.Gender = customerModel.Gender;
-                user.Address = customerModel.Address;
-                user.UpdateAt = DateTime.UtcNow;
-
-                _unitOfWork.Save();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log.Error("Have an error when UpdateInfoCustomer", e);
-                return false;
-            }
-        }
-
         /// <summary>
         /// Method ChangeStatus User
         /// </summary>
@@ -272,25 +259,6 @@ namespace KLTN.Services
             user.Status = !user.Status;
             _unitOfWork.Save();
             return user.Status;
-        }
-
-        public bool UpdateEmployee(UpdateEmployeeViewModel employeeModel)
-        {
-            try
-            {
-                var user = _unitOfWork.UserRepository.GetById(employeeModel.Id);
-                var employee = _unitOfWork.EmployeeRepository.Get(x => x.UserId == employeeModel.Id);
-                if (user == null || employee == null) return false;
-                user.Role = employeeModel.Role;
-                employee.StoreId = employeeModel.StoreId;
-                _unitOfWork.Save();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log.Error("Have an error when Update Employee in UserService", e);
-                return false;
-            }
         }
 
         /// <summary>
@@ -369,27 +337,117 @@ namespace KLTN.Services
             }
         }
 
-        public UpdateEmployeeViewModel GetEmployee(int id)
+        public Tuple<AdminViewModel, int> GetAdmin(int id)
         {
             try
             {
                 var user = _unitOfWork.UserRepository.GetById(id);
-                var employee = _unitOfWork.EmployeeRepository.Get(x => x.UserId == id);
-                var employeeModel = new UpdateEmployeeViewModel
-                {
-                    Id = id,
-                    StoreId = employee.StoreId,
-                    Role = user.Role
-                };
+                if (user == null) return new Tuple<AdminViewModel, int>(null, 2);
 
-                return employeeModel;
+                var admin = _unitOfWork.AdminRepository.Get(x => x.UserId == id);
+                if (admin == null) return new Tuple<AdminViewModel, int>(null, 3);
+
+                var adminModel = _mapper.Map<AdminViewModel>(user);
+
+                return new Tuple<AdminViewModel, int>(adminModel, 1);
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when GetEmployee in UserService", e);
-                return null;
+                return new Tuple<AdminViewModel, int>(null, 0);
+            }
+        }
+
+        public Tuple<EmployeeViewModel, int> GetEmployee(int id)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetById(id);
+                if (user == null) return new Tuple<EmployeeViewModel, int>(null, 2);
+
+                var employee = _unitOfWork.EmployeeRepository.Get(x => x.UserId == id);
+                if (employee == null) return new Tuple<EmployeeViewModel, int>(null, 3);
+
+                var employeeModel = _mapper.Map<EmployeeViewModel>(user);
+                employee.StoreId = employee.StoreId;
+
+                return new Tuple<EmployeeViewModel, int>(employeeModel, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when GetEmployee in UserService", e);
+                return new Tuple<EmployeeViewModel, int>(null, 0);
             }
 
+        }
+
+        public Tuple<CustomerViewModel, int> GetCustomer(int id)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetById(id);
+                if (user == null) return new Tuple<CustomerViewModel, int>(null, 2);
+
+                var customer = _unitOfWork.CustomerRepository.Get(x => x.UserId == id);
+                if (customer == null) return new Tuple<CustomerViewModel, int>(null, 3);
+
+                var customerModel = _mapper.Map<CustomerViewModel>(user);
+
+                return new Tuple<CustomerViewModel, int>(customerModel, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when GetEmployee in UserService", e);
+                return new Tuple<CustomerViewModel, int>(null, 0);
+            }
+        }
+
+        public int UpdateAdmin(UpdateAdminViewModel adminModel)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetById(adminModel.Id);
+                if (user == null) return 2;
+                var admin = _unitOfWork.AdminRepository.Get(x => x.UserId == adminModel.Id);
+                if (admin == null) return 3;
+                user.Password = adminModel.Password;
+                admin.PassEmail = adminModel.PassEmail;
+                user.UpdateAt = DateTime.Now;
+                user.UpdateBy = Convert.ToInt32(_httpContext.User.Identities);
+
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch (Exception)
+            {
+                Log.Error("Have an error when update admin in UserService");
+                return 0;
+            }
+        }
+
+        public int UpdateEmployee(UpdateEmployeeViewModel employeeModel)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetById(employeeModel.Id);
+                if (user == null) return 2;
+                var employee = _unitOfWork.EmployeeRepository.Get(x => x.UserId == employeeModel.Id);
+                if (employee == null) return 3;
+                user.Role = employeeModel.Role;
+                employee.StoreId = employeeModel.StoreId;
+                user.Password = employeeModel.Password;
+                employee.PassEmail = employeeModel.PassEmail;
+                user.UpdateAt = DateTime.Now;
+                user.UpdateBy = Convert.ToInt32(_httpContext.User.Identities);
+
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch (Exception)
+            {
+                Log.Error("Have an error when update employee in UserService");
+                return 0;
+            }
         }
 
         private bool CheckEmailExisted(string email)
@@ -552,16 +610,39 @@ namespace KLTN.Services
             return tuple;
         }
 
-        //public string GetClaimUserMail()
-        //{
-        //    var claimEmail = _httpContext.User.FindFirst(c => c.Type == "Email").Value;
-        //    return claimEmail;
-        //}
+        public int UpdateInfoUser(UpdateUserViewModel updateUser)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetById(GetClaimUserId());
+                if (user == null) return 0;
+                user.FirstName = updateUser.FirstName;
+                user.LastName = updateUser.LastName;
+                user.Phone = updateUser.Phone;
+                user.Address = updateUser.Address;
+                user.BirthDay = updateUser.BirthDay;
+                user.Gender = updateUser.Gender;
 
-        //public int GetClaimUserId()
-        //{
-        //    var claimId = Convert.ToInt32(_httpContext.User.FindFirst(c => c.Type == "Id").Value);
-        //    return claimId;
-        //}
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when update info user", e);
+                return -1;
+            }
+        }
+
+        public string GetClaimUserMail()
+        {
+            var claimEmail = _httpContext.User.FindFirst(c => c.Type == "Email").Value;
+            return claimEmail;
+        }
+
+        public int GetClaimUserId()
+        {
+            var claimId = Convert.ToInt32(_httpContext.User.Identities);
+            return claimId;
+        }
     }
 }

@@ -7,7 +7,6 @@ namespace KLTN.DataModels.Models.Users
     public class EmployeeViewModel : UserBaseViewModel
     {
         public string Email { get; set; }
-        public string Gmail { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool Gender { get; set; }

@@ -13,6 +13,7 @@ namespace KLTN.DataAccess.Models
         public string MetaTitle { get; set; }
         public string Description { get; set; }
         public byte Rate { get; set; }
+        public string Comment { get; set; }
         public int ViewCount { get; set; }
 
         public virtual List<ProductWareHoure> ProductWareHoures { get; set; }

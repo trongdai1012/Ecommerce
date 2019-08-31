@@ -25,7 +25,29 @@
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" asp-for="PassEmail" class="form-control" placeholder="Password">
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Retype password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <input asp-for="PassEmail" class="form-control" placeholder="Password Gmail">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -45,28 +67,6 @@
                 </div>
                 <div>
                     <span asp-validation-for="ConfirmPassEmail" class="text-danger"></span>
-                </div>
-                <div class="input-group mb-3">
-                    <input asp-for="Gmail" class="form-control" placeholder="Gmail">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <span asp-validation-for="Gmail" class="text-danger"></span>
-                </div>
-                <div class="input-group mb-3">
-                    <input asp-for="PassGmail" class="form-control" placeholder="Password Gmail">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <span asp-validation-for="PassGmail" class="text-danger"></span>
                 </div>
                 <div class="input-group mb-3">
                     <input asp-for="FirstName" class="form-control" placeholder="FirstName">

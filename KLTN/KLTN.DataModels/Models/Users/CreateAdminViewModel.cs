@@ -8,10 +8,10 @@ namespace KLTN.DataModels.Models.Users
     public class CreateAdminViewModel
     {
         public string Email { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
         public string PassEmail { get; set; }
         public string ConfirmPassEmail { get; set; }
-        public string Gmail { get; set; }
-        public string PassGmail { get; set; }
         public string FirstName { get; set; }
         public byte Role { get; set; }
         public string LastName { get; set; }

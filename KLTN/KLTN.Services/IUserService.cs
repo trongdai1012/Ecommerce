@@ -13,15 +13,7 @@ namespace KLTN.Services
 
         int CreateAdminAccount(CreateAdminViewModel register);
 
-        AuthenticationViewModel Authentication(AuthenticationViewModel authenticationViewModel);
-
-        IEnumerable<AdminViewModel> GetAllAdmin();
-
-        IEnumerable<EmployeeViewModel> GetAllEmployee();
-
-        IEnumerable<CustomerViewModel> GetAllCustomer();
-
-        bool UpdateInfoUser(EditUserViewModel customerModel);
+        Tuple<AuthenticationViewModel, int> Authentication(AuthenticationViewModel authenticationViewModel);
 
         /// <summary>
         /// Method ChangeStatus User
@@ -30,11 +22,17 @@ namespace KLTN.Services
         /// <returns></returns>
         bool ChangeStatus(int id);
 
-        UpdateEmployeeViewModel GetEmployee(int id);
-
-        bool UpdateEmployee(UpdateEmployeeViewModel employeeModel);
-
         bool ConfirmUser(string confirmString);
+
+        Tuple<AdminViewModel, int> GetAdmin(int id);
+
+        Tuple<EmployeeViewModel, int> GetEmployee(int id);
+
+        Tuple<CustomerViewModel, int> GetCustomer(int id);
+
+        int UpdateAdmin(UpdateAdminViewModel adminModel);
+
+        int UpdateEmployee(UpdateEmployeeViewModel employeeModel);
 
         /// <summary>
         /// Method LoadData return tuple UserViewModel int int
@@ -56,5 +54,7 @@ namespace KLTN.Services
         /// <param name="dtParameters"></param>
         /// <returns></returns>
         Tuple<IEnumerable<EmployeeViewModel>, int, int> LoadEmployee(DTParameters dtParameters);
+
+        int UpdateInfoUser(UpdateUserViewModel updateUser);
     }
 }

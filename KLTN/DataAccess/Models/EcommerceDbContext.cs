@@ -67,8 +67,7 @@ namespace KLTN.DataAccess.Models
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.UserId).IsUnique();
-                entity.Property(x => x.Gmail).HasColumnType(TypeOfSql.VarChar + "(50)");
-                entity.Property(x => x.PassGmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
+                entity.Property(x => x.PassEmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
                 entity
                 .HasOne(x => x.User)
                 .WithOne(x => x.Admin)
@@ -78,13 +77,7 @@ namespace KLTN.DataAccess.Models
                     new Admin
                     {
                         Id = 1,
-                        Gmail = "longs3tong@gmail.com",
-                        PassGmail = "123456",
-                        CreateAt = DateTime.UtcNow,
-                        CreateBy = 1,
-                        UpdateAt = DateTime.UtcNow,
-                        UpdateBy = 1,
-                        Status = true,
+                        PassEmail = "123456",
                         UserId = 1
                     }
                 );
@@ -128,8 +121,7 @@ namespace KLTN.DataAccess.Models
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.UserId).IsUnique();
-                entity.Property(x => x.Gmail).HasColumnType(TypeOfSql.VarChar + "(50)");
-                entity.Property(x => x.PassGmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
+                entity.Property(x => x.PassEmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
                 entity
                 .HasOne(x => x.User)
                 .WithOne(x => x.Employee)

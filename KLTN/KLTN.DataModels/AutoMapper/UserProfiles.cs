@@ -12,7 +12,6 @@ namespace KLTN.DataModels.AutoMapper
             CreateMap<User, AdminViewModel>();
             CreateMap<User, EmployeeViewModel>();
             CreateMap<User, CustomerViewModel>();
-            CreateMap<User ,EditUserViewModel>();
         }
     }
 }
