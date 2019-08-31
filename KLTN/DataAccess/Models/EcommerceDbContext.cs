@@ -58,7 +58,8 @@ namespace KLTN.DataAccess.Models
                         CreateBy = 1,
                         UpdateAt = DateTime.UtcNow,
                         UpdateBy = 1,
-                        Status = true
+                        Status = true,
+                        IsConfirm = true
                     }
                 );
             });
@@ -90,6 +91,11 @@ namespace KLTN.DataAccess.Models
                 entity.HasIndex(x => x.ParrentCategoryId);
                 entity.Property(x => x.CreateAt).HasDefaultValue(DateTime.Now);
                 entity.Property(x => x.UpdateAt).HasDefaultValue(DateTime.Now);
+                entity
+                .HasOne(x => x.User)
+                .WithMany(x => x.Categories)
+                .HasForeignKey(x => x.CreateBy)
+                .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Customer>(entity =>

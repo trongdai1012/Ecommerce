@@ -8,6 +8,7 @@ using KLTN.DataModels.Models.Users;
 using KLTN.DataModels.Validations.Users;
 using KLTN.Services;
 using KLTN.Services.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace KLTN.Web
 {
@@ -56,6 +58,16 @@ namespace KLTN.Web
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.DefaultConnection),
                     assembly => assembly.MigrationsAssembly(Settings.NameSpaceWeb)));
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.AccessDeniedPath = new PathString(RedirectConfig.AdminAccountAuthentication);
+                    options.LoginPath = new PathString(RedirectConfig.AccountAuthentication);
+                    options.ReturnUrlParameter = Constants.RequestPath;
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                });
+
             //Add Transient
             services.AddTransient<IValidator<RegisterUserViewModel>, RegisterValidator>();
             services.AddTransient<IValidator<CreateEmployeeViewModel>, CreateEmployeeValidator>();
@@ -79,6 +91,7 @@ namespace KLTN.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

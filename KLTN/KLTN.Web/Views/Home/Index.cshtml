@@ -5,4 +5,7 @@
 }
 
 <a title=\"Chi tuc" href="data" class = "btn btn-info glyphicon glyphicon-info-sign"></a>
+<p>@User.FindFirst(x=>x.Type=="Email").Value</p>
+<p>@User.FindFirst(x => x.Type == "Id").Value</p>
+<p>@User.FindFirst(x => x.Type == "Role").Value</p>
 

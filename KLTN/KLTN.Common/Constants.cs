@@ -13,6 +13,7 @@ namespace KLTN.Common
         public const string RequestPath = "RequestPath";
         public const string Id = "Id";
         public const string Email = "Email";
+        public const string Role = "Role";
         public const string IdHttp = "{id}";
         public const string Name = "Name";
         public const string Asc = "asc";
@@ -23,7 +24,6 @@ namespace KLTN.Common
         public const string UpdateSuccess = "UpdateSuccess";
         public const string UpdateFalse = "UpdateFalse";
         public const string DeleteSuccess = "DeleteSuccess";
-        public const string DeleteFalse = "DeleteFalse";
         public const string Plain = "plain";
         public const string Html = "html";
         public const string SmtpClient = "smtp.gmail.com";
@@ -86,5 +86,38 @@ namespace KLTN.Common
         public const string Asc = "asc";
         public const string OrderBy = "OrderBy";
         public const string OrderByDescending = "OrderByDescending";
+    }
+
+    public static class Signs
+    {
+        public const string Dot = ".";
+        public const string Comma = ",";
+        public const string Ellipsis = "...";
+        public const string Colon = ":";
+        public const string Semicolon = ";";
+        public const string Exclamation = "!";
+        public const string Mark = "?";
+        public const string Hyphen = "-";
+        public const string Ampersand = "&";
+        public const string Plus = "+";
+        public const string Equal = "=";
+        public const string BackSlash = "\\";
+        public const string Slash = "/";
+        public const string Tilde = "~";
+        public const string DoubleQuotationMarks = "";
+    }
+
+    public static class RedirectConfig
+    {
+        public const string HomeError = "/Home/Error";
+        public const string AdminAccountAuthentication = "/Account/Authentication";
+        public const string AccountAuthentication = "/Account/Authentication";
+        public const string AdminUserIndex = "/Admin/User/Index";
+        public const string AdminUserLoadTable = "/Admin/User/LoadTable";
+        public const string DataImages = "wwwroot/DataImage";
+        public const string HomeIndex = "/Home/Index";
+        public const string ContactFeedbackFailed = "/Contact/FeedbackFailed";
+        public const string ContactFeedbackSuccess = "/Contact/FeedbackSuccess";
+        public const string AdminContactIndex = "/Admin/Contact/Index";
     }
 }

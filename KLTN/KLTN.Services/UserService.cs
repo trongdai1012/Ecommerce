@@ -190,7 +190,7 @@ namespace KLTN.Services
                 if (user.Password != authenticationViewModel.Password)
                     return new Tuple<AuthenticationViewModel, int>(null, -2);
 
-                if (user.IsConfirm == false) new Tuple<AuthenticationViewModel, int>(null, 0);
+                if (user.IsConfirm == false) return new Tuple<AuthenticationViewModel, int>(null, 0);
 
                 var authenticationView = _mapper.Map<AuthenticationViewModel>(user);
 
@@ -342,19 +342,18 @@ namespace KLTN.Services
             try
             {
                 var user = _unitOfWork.UserRepository.GetById(id);
-                if (user == null) return new Tuple<AdminViewModel, int>(null, 2);
+                if (user == null) return new Tuple<AdminViewModel, int>(null, 3);
 
                 var admin = _unitOfWork.AdminRepository.Get(x => x.UserId == id);
-                if (admin == null) return new Tuple<AdminViewModel, int>(null, 3);
+                if (admin == null) return new Tuple<AdminViewModel, int>(null, 2);
 
                 var adminModel = _mapper.Map<AdminViewModel>(user);
-
                 return new Tuple<AdminViewModel, int>(adminModel, 1);
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when GetEmployee in UserService", e);
-                return new Tuple<AdminViewModel, int>(null, 0);
+                return new Tuple<AdminViewModel, int>(null, -1);
             }
         }
 
@@ -631,6 +630,16 @@ namespace KLTN.Services
                 Log.Error("Have an error when update info user", e);
                 return -1;
             }
+        }
+
+        public UpdateAdminViewModel GetAdminUpdate(int id)
+        {
+            var user = _unitOfWork.UserRepository.GetById(id);
+            var adminView = new UpdateAdminViewModel
+            {
+                Email = user.Email
+            };
+            return adminView;
         }
 
         public string GetClaimUserMail()
