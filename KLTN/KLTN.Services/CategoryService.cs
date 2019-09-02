@@ -66,14 +66,14 @@ namespace KLTN.Services
                 orderAscendingDirection = true;
             }
 
-            var listCategory = (from usc in _unitOfWork.UserRepository.ObjectContext
-                                join cate in _unitOfWork.CategoryRepository.ObjectContext on usc.Id equals cate.CreateBy
+            var listCategory = (from cate in _unitOfWork.CategoryRepository.ObjectContext
+                                join usc in _unitOfWork.UserRepository.ObjectContext on cate.CreateBy equals usc.Id
                                 join usu in _unitOfWork.UserRepository.ObjectContext on cate.UpdateBy equals usu.Id
                                 select new CategoryViewModel
                                 {
                                     Id = cate.Id,
                                     Name = cate.Name,
-                                    ParentCategoryId = cate.ParrentCategoryId,
+                                    ParentCategoryId = cate.ParrentCategoryId.Value,
                                     CreateAt = cate.CreateAt,
                                     CreateBy = usc.Email,
                                     UpdateAt = cate.UpdateAt,
@@ -127,19 +127,35 @@ namespace KLTN.Services
         /// Create category
         /// </summary>
         /// <param name="model"></param>
-        public void CreateCategory(CategoryViewModel model)
+        public int CreateCategory(CreateCategoryModel model)
         {
-            var category = new Category
+            var checkName = CheckNameCategoryExisted(model.Name);
+            if(checkName) return 0;
+            try
             {
-                Name = model.Name,
-                ParrentCategoryId = model.ParentCategoryId,
-                CreateAt = DateTime.UtcNow,
-                CreateBy = GetUserId(),
-                Status = true
+                var category = new Category
+                {
+                    Name = model.Name,
+                    ParrentCategoryId = model.ParrentCategoryID,
+                    CreateAt = DateTime.UtcNow,
+                    CreateBy = GetUserId(),
+                    Status = true
 
-            };
-            _unitOfWork.CategoryRepository.Create(category);
-            _unitOfWork.CategoryRepository.Save();
+                };
+                _unitOfWork.CategoryRepository.Create(category);
+                _unitOfWork.CategoryRepository.Save();
+                return 1;
+            }catch(Exception e)
+            {
+                Log.Error("Have an error when create category in service",e);
+                return -1;
+            }
+        }
+
+        private bool CheckNameCategoryExisted(string name)
+        {
+            var result = _unitOfWork.CategoryRepository.ObjectContext.Any(x => x.Name == name);
+            return result;
         }
 
         /// <summary>

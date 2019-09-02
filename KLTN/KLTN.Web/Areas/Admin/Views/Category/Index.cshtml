@@ -1,0 +1,176 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Quản lý thể loại sản phẩm</li>
+
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.box -->
+<div class="col-12">
+    <div class="card">
+        @*@if (TempData[Constants.UpdateSuccess] != null)
+            {
+                <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
+            }*@
+        <div class="card-header">
+            <h3 class="card-title">Quản lý thể loại sản phẩm</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="card-body box-body table-responsive">
+            <p class="text-right">
+                <a asp-area="Admin" asp-controller="Category" asp-action="RegisterAdmin" class="btn btn-primary">Thêm mới thể loại</a>
+            </p>
+            <table id="user-index" class="table table-bordered columns-align-center table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Thể loại cha</th>
+                        <th>Ngày tạo</th>
+                        <th>Người tạo</th>
+                        <th>Ngày cập nhật</th>
+                        <th>Người cập nhật</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+</div>
+<!-- /.box -->
+
+@section scripts
+    {
+    <script src="~/js/userjs/user.js"></script>
+    <script src="~/lib/moment/moment.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datetime-moment/datetime-moment.js" asp-append-version="true"></script>
+    <script>
+        $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss");
+        $.fn.dataTable.moment("DD/MM/YYYY");
+
+        $("#user-index").DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
+            },
+            // Design Assets
+            stateSave: true,
+            autoWidth: true,
+            // ServerSide Setups
+            processing: true,
+            serverSide: true,
+            // Paging Setups
+            paging: true,
+            // Searching Setups
+            searching: { regex: true },
+            // Ajax Filter
+            ajax: {
+                url: "/Admin/Category/LoadCategory",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: function(d) {
+                    return JSON.stringify(d);
+                }
+            },
+            // Columns Setups
+            columns: [
+                { data: "id" },
+                { data: "name" },
+                { data: "parentCategoryId" },
+                {
+                    data: "createAt",
+                    render: function(data, type) {
+                        // If display or filter data is requested, format the date
+                        if (type === "display" || type === "filter") {
+                            return moment(data).format("DD/MM/YYYY");
+                        }
+                        // Otherwise the data type requested (`type`) is type detection or
+                        // sorting data, for which we want to use the raw date value, so just return
+                        // that, unaltered
+                        return data;
+                    }
+                },
+                { data: "createBy" },
+                {
+                    data: "updateAt",
+                    render: function (data, type) {
+                        // If display or filter data is requested, format the date
+                        if (type === "display" || type === "filter") {
+                            return moment(data).format("DD/MM/YYYY");
+                        }
+                        // Otherwise the data type requested (`type`) is type detection or
+                        // sorting data, for which we want to use the raw date value, so just return
+                        // that, unaltered
+                        return data;
+                    }
+                },
+                { data: "updateBy" },
+                {
+                    data: "status",
+                    "mRender": function(data, type, row) {
+                        var url;
+                        if (row["status"].toString() === "true") {
+                            url =
+                                "<p><strong>Kích hoạt <span class=\"fa fa-check\" style=\"color:green\"></strong></p>";
+                        } else {
+                            url =
+                                "<p><strong>Kích hoạt <span class=\"fa fa-times\" style=\"color:red\"></strong></p>";
+                        }
+                        return url;
+                    }
+                },
+                {
+                    "mData": "id",
+                    "mRender": function(data, type, row) {
+                        var url;
+                        if (row["status"].toString() === "true") {
+                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                                data +
+                                "\"" +
+                                "class = \"btn btn-info fa fa-info-circle\"></a> " +
+                                "<a title=\"Sửa\" href=\"AdminUpdate\\" +
+                                data +
+                                "\"" +
+                                " class=\"btn btn-warning fa fa-edit\"></a> " +
+                                "<a title=\"Khoá\" href=\"#\" class=\"btn-active btn btn-danger fa fa-lock\" data-id=\"" +
+                                row["id"] +
+                                "\"></a>";
+                        } else {
+                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                                data +
+                                "\"" +
+                                "class = \"btn btn-info fa fa-info-circle\"></a> " +
+                                "<a href=\"AdminUpdate\\" +
+                                data +
+                                "\"" +
+                                " class=\"btn btn-warning fa fa-edit\"></a> " +
+                                "<a title=\"Mở khoá\" href=\"#\" class=\"btn-active btn btn-success fa fa-unlock\" data-id=\"" +
+                                row["id"] +
+                                "\"></a>";
+                        }
+                        return url;
+                    }
+                }
+            ]
+        });
+    </script>
+}
+

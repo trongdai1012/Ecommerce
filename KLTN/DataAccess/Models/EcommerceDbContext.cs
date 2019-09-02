@@ -60,6 +60,25 @@ namespace KLTN.DataAccess.Models
                         UpdateBy = 1,
                         Status = true,
                         IsConfirm = true
+                    },
+                    new User
+                    {
+                        Id = 2,
+                        Email = "admin1@gmail.com",
+                        Password = "123456",
+                        Role = (byte)EnumRole.Admin,
+                        FirstName = "Admin",
+                        LastName = "Manager",
+                        Gender = true,
+                        BirthDay = Convert.ToDateTime("10-12-1994"),
+                        Phone = "+84981965080",
+                        Address = "Bac Giang",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1,
+                        Status = true,
+                        IsConfirm = true
                     }
                 );
             });
@@ -89,6 +108,7 @@ namespace KLTN.DataAccess.Models
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Name).HasColumnType(TypeOfSql.NVarChar + "(30)");
                 entity.HasIndex(x => x.ParrentCategoryId);
+                entity.Property(x => x.ParrentCategoryId).IsRequired(false);
                 entity.Property(x => x.CreateAt).HasDefaultValue(DateTime.Now);
                 entity.Property(x => x.UpdateAt).HasDefaultValue(DateTime.Now);
                 entity
@@ -96,6 +116,16 @@ namespace KLTN.DataAccess.Models
                 .WithMany(x => x.Categories)
                 .HasForeignKey(x => x.CreateBy)
                 .OnDelete(DeleteBehavior.Restrict);
+                entity.HasData(
+                    new Category
+                    {
+                        Id = 1,
+                        Name = "Điện thoại",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2
+                    });
             });
 
             modelBuilder.Entity<Customer>(entity =>

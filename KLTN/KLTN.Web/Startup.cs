@@ -50,6 +50,7 @@ namespace KLTN.Web
 
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddMvc(setup => { }).AddFluentValidation();
 

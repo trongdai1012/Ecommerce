@@ -8,7 +8,7 @@ namespace KLTN.DataModels.Models.Category
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ParentCategoryId { get; set; }
+        public int? ParentCategoryId { get; set; }
         public DateTime CreateAt { get; set; }
         public string CreateBy { get; set; }
         public DateTime UpdateAt { get; set; }

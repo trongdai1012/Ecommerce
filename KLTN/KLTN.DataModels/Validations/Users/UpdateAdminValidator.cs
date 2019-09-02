@@ -7,7 +7,7 @@ namespace KLTN.DataModels.Validations.Users
     {
         public UpdateAdminValidator()
         {
-            RuleFor(x=>x.);
+            //RuleFor(x=>x.);
         }
     }
 }
