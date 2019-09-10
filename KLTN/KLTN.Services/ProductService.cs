@@ -1,217 +1,122 @@
 ﻿using AutoMapper;
+using KLTN.Common;
+using KLTN.Common.Datatables;
+using KLTN.Common.Infrastructure;
+using KLTN.DataModels.Models.Brands;
+using KLTN.DataModels.Models.Products;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace KLTN.Services
 {
-    //public class ProductService : IProductService
-    //{
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //private readonly IUnitOfWork _unitOfWork;
+    public class ProductService : IProductService
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly IUnitOfWork _unitOfWork;
 
-        //private readonly HttpContext _httpContext;
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //private readonly IMapper _mapper;
+        private readonly HttpContext _httpContext;
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly IMapper _mapper;
 
-        ///// <summary>
-        ///// Constructor category service
-        ///// </summary>
-        ///// <param name="mapper"></param>
-        ///// <param name="httpContext"></param>
-        ///// <param name="genericRepository"></param>
-        ///// <param name="genericRepositoryUser"></param>
-        //public ProductService(IMapper mapper, IHttpContextAccessor httpContext, IUnitOfWork unitOfWork)
-        //{
-        //    _httpContext = httpContext.HttpContext;
-        //    _unitOfWork = unitOfWork;
-        //    _mapper = mapper;
-        //}
+        /// <summary>
+        /// Constructor category service
+        /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="httpContext"></param>
+        /// <param name="genericRepository"></param>
+        /// <param name="genericRepositoryUser"></param>
+        public ProductService(IMapper mapper, IHttpContextAccessor httpContext, IUnitOfWork unitOfWork)
+        {
+            _httpContext = httpContext.HttpContext;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
 
-        ///// <summary>
-        ///// Method GetAll get all category
-        ///// </summary>
-        ///// <returns></returns>
-        //public IEnumerable<CategoryViewModel> GetAll()
-        //{
-        //    var listCate = _unitOfWork.BrandRepository.GetAll();
-        //    var listCateModel = _mapper.Map<IEnumerable<CategoryViewModel>>(listCate);
-        //    return listCateModel;
-        //}
+        /// <summary>
+        /// Method GetAll get all category
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<LaptopViewModel> GetAllLaptop()
+        {
+            var listLaptop = _unitOfWork.ProductRepository.GetMany(x=>x.CategoryId==(int)EnumCategory.Laptop);
+            var listLaptopModel = _mapper.Map<IEnumerable<LaptopViewModel>>(listLaptop);
+            return listLaptopModel;
+        }
 
-        ///// <summary>
-        ///// Get all list categories
-        ///// </summary>
-        ///// <returns></returns>
-        //public Tuple<IEnumerable<CategoryViewModel>, int, int> LoadCategory(DTParameters dtParameters)
-        //{
-        //    var searchBy = dtParameters.Search?.Value;
-        //    string orderCriteria;
-        //    bool orderAscendingDirection;
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<LaptopViewModel>, int, int> LoadLaptop(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
 
-        //    if (dtParameters.Order != null)
-        //    {
-        //        // in this example we just default sort on the 1st column
-        //        orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
-        //        orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
-        //    }
-        //    else
-        //    {
-        //        // if we have an empty search then just order the results by Id ascending
-        //        orderCriteria = ParamConstants.Id;
-        //        orderAscendingDirection = true;
-        //    }
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
 
-        //    var listCategory = (from cate in _unitOfWork.BrandRepository.ObjectContext
-        //                        join usc in _unitOfWork.UserRepository.ObjectContext on cate.CreateBy equals usc.Id
-        //                        join usu in _unitOfWork.UserRepository.ObjectContext on cate.UpdateBy equals usu.Id
-        //                        select new CategoryViewModel
-        //                        {
-        //                            Id = cate.Id,
-        //                            Name = cate.Name,
-        //                            ParentCategoryId = cate.ParrentCategoryId.Value,
-        //                            CreateAt = cate.CreateAt,
-        //                            CreateBy = usc.Email,
-        //                            UpdateAt = cate.UpdateAt,
-        //                            UpdateBy = usu.Email,
-        //                            Status = cate.Status
-        //                        });
+            var listLaptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              where pro.CategoryId == (int)EnumCategory.Laptop
+                              select new LaptopViewModel
+                              {
+                                 Id = pro.Id,
+                                 Name = pro.Name,
+                                 ProductCode = pro.ProductCode,
+                                 Category = Enum.GetName(typeof(EnumCategory),pro.CategoryId),
+                                 Brand = bra.Name,
+                                 InitialPrice = pro.InitialPrice,
+                                 CurrentPrice = pro.CurrentPrice,
+                                 CreateAt = pro.CreateAt,
+                                 CreateBy = usc.Email,
+                                 UpdateAt = pro.UpdateAt,
+                                 UpdateBy = usu.Email,
+                                 Status = pro.Status
+                             });
 
-        //    var categoryViewModels = _mapper.Map<IEnumerable<CategoryViewModel>>(listCategory);
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listLaptop = listLaptop.Where(r =>
+                        r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Brand.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+            }
 
-        //    if (!string.IsNullOrEmpty(searchBy))
-        //    {
-        //        categoryViewModels = categoryViewModels.Where(r =>
-        //                r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-        //                r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-        //                r.ParentCategoryId.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-        //                r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
-        //    }
+            listLaptop = orderAscendingDirection
+               ? listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+               : listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
 
-        //    categoryViewModels = orderAscendingDirection
-        //       ? categoryViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
-        //       : categoryViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+            var viewModels = listLaptop.OrderBy(x => x.Id).ToArray();
+            var filteredResultsCount = viewModels.ToArray().Length;
+            var totalResultsCount = viewModels.Count();
 
-        //    var viewModels = categoryViewModels.OrderBy(x => x.Id).ToArray();
-        //    var filteredResultsCount = viewModels.ToArray().Length;
-        //    var totalResultsCount = viewModels.Count();
+            var tuple = new Tuple<IEnumerable<LaptopViewModel>, int, int>(viewModels, filteredResultsCount,
+                totalResultsCount);
 
-        //    var tuple = new Tuple<IEnumerable<CategoryViewModel>, int, int>(viewModels, filteredResultsCount,
-        //        totalResultsCount);
-
-        //    return tuple;
-        //}
-
-        ///// <summary>
-        ///// Get a category by id
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        //public CategoryViewModel GetCategoryById(int? id)
-        //{
-        //    var category = _unitOfWork.BrandRepository.GetById(id);
-        //    if (category == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    var categoryViewModel = _mapper.Map<CategoryViewModel>(category);
-        //    return categoryViewModel;
-        //}
-
-        ///// <summary>
-        ///// Create category
-        ///// </summary>
-        ///// <param name="model"></param>
-        //public int CreateCategory(CreateCategoryModel model)
-        //{
-        //    var checkName = CheckNameCategoryExisted(model.Name);
-        //    if (checkName) return 0;
-        //    try
-        //    {
-        //        var category = new Category();
-        //        category.Name = model.Name;
-        //        category.ParrentCategoryId = model.ParrentCategoryID;
-        //        category.CreateAt = DateTime.UtcNow;
-        //        category.CreateBy = GetUserId();
-        //        category.UpdateAt = DateTime.UtcNow;
-        //        category.UpdateBy = GetUserId();
-        //        category.Status = true;
-        //        _unitOfWork.BrandRepository.Create(category);
-        //        _unitOfWork.BrandRepository.Save();
-        //        return 1;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Error("Have an error when create category in service", e);
-        //        return -1;
-        //    }
-        //}
-
-        //private bool CheckNameCategoryExisted(string name)
-        //{
-        //    var result = _unitOfWork.BrandRepository.ObjectContext.Any(x => x.Name == name);
-        //    return result;
-        //}
-
-        ///// <summary>
-        ///// Update category
-        ///// </summary>
-        ///// <param name="model"></param>
-        //public int UpdateCategory(CategoryViewModel model)
-        //{
-        //    try
-        //    {
-        //        var category = _unitOfWork.BrandRepository.GetById(model.Id);
-        //        if (category == null) return 0;
-        //        category.Name = model.Name;
-        //        category.ParrentCategoryId = model.ParentCategoryId;
-        //        category.UpdateAt = DateTime.Now;
-        //        category.UpdateBy = GetUserId();
-        //        _unitOfWork.BrandRepository.Save();
-        //        return 1;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Error("Have an error when update category in categoryService", e);
-        //        return -1;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Remove category by id
-        ///// </summary>
-        ///// <param name="id"></param>
-        //public void DeleteCategoryById(int? id)
-        //{
-        //    _unitOfWork.BrandRepository.Delete(id);
-        //    _unitOfWork.Save();
-        //}
-
-        ///// <summary>
-        ///// Method GetUserMail return Claim Mail
-        ///// </summary>
-        ///// <returns></returns>
-        //private string GetUserMail()
-        //{
-        //    return _httpContext.User.FindFirst(x => x.Type == Constants.Email).Value;
-        //}
-
-        ///// <summary>
-        ///// Method GetUserId return Claim Id
-        ///// </summary>
-        ///// <returns></returns>
-        //private int GetUserId()
-        //{
-        //    var userId = Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == Constants.Id).Value);
-        //    return userId;
-        //}
-    //}
+            return tuple;
+        }
+    }
 }

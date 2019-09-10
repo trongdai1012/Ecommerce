@@ -102,6 +102,19 @@ namespace KLTN.DataAccess.Models
                 );
             });
 
+            modelBuilder.Entity<BrandCategory>(entity=>
+            {
+                entity.HasKey(x => new { x.BrandId, x.CategoryId });
+                entity
+                .HasOne(x => x.Brand)
+                .WithMany(x => x.BrandCategories)
+                .HasForeignKey(x => x.BrandId);
+                entity
+                .HasOne(x => x.Category)
+                .WithMany(x => x.BrandCategories)
+                .HasForeignKey(x => x.CategoryId);
+            });
+
             modelBuilder.Entity<Brand>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -188,22 +201,12 @@ namespace KLTN.DataAccess.Models
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.BrandId);
-                entity
-                .HasOne(x => x.Brand)
-                .WithMany(x => x.Laptops)
-                .HasForeignKey(x => x.BrandId)
-                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Mobile>(entity =>
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.BrandId);
-                entity
-                .HasOne(x => x.Brand)
-                .WithMany(x => x.Mobiles)
-                .HasForeignKey(x => x.BrandId)
-                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -244,6 +247,11 @@ namespace KLTN.DataAccess.Models
                 entity.Property(x => x.MetaTitle).HasColumnType(TypeOfSql.VarChar + "(10)");
                 entity.Property(x => x.Description).HasColumnType(TypeOfSql.NText);
                 entity.Property(x => x.Rate).HasColumnType(TypeOfSql.TinyInt);
+                entity
+                .HasOne(x => x.Brand)
+                .WithMany(x => x.Products)
+                .HasForeignKey(x => x.BrandId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<UserConfirm>(entity =>

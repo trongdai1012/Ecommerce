@@ -7,6 +7,8 @@ namespace KLTN.DataAccess.Models
     {
         public string ProductCode { get; set; }
         public string Name { get; set; }
+        public int CategoryId { get; set; }
+        public int BrandId { get; set; }
         public decimal InitialPrice { get; set; }
         public decimal CurrentPrice { get; set; }
         public decimal PromotionPrice { get; set; }
@@ -20,7 +22,8 @@ namespace KLTN.DataAccess.Models
         public int TotalSold { get; set; }
         public int Amount { get; set; }
 
-        public virtual Brand Supplier { get; set; }
+        public virtual Brand Brand { get; set; }
+        public virtual Category Category { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -33,7 +33,7 @@
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
             <p class="text-right">
-                <a asp-area="Admin" asp-controller="Category" asp-action="RegisterAdmin" class="btn btn-primary">Thêm mới thể loại</a>
+                <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="btn btn-primary">Thêm mới thể loại</a>
             </p>
             <table id="user-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
@@ -84,7 +84,7 @@
                 type: "POST",
                 contentType: "application/json",
                 dataType: "json",
-                data: function(d) {
+                data: function (d) {
                     return JSON.stringify(d);
                 }
             },
@@ -94,7 +94,7 @@
                 { data: "name" },
                 {
                     data: "createAt",
-                    render: function(data, type) {
+                    render: function (data, type) {
                         // If display or filter data is requested, format the date
                         if (type === "display" || type === "filter") {
                             return moment(data).format("DD/MM/YYYY");
@@ -122,7 +122,7 @@
                 { data: "updateBy" },
                 {
                     data: "status",
-                    "mRender": function(data, type, row) {
+                    "mRender": function (data, type, row) {
                         var url;
                         if (row["status"].toString() === "true") {
                             url =
@@ -136,7 +136,7 @@
                 },
                 {
                     "mData": "id",
-                    "mRender": function(data, type, row) {
+                    "mRender": function (data, type, row) {
                         var url;
                         if (row["status"].toString() === "true") {
                             url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
