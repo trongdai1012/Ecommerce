@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KLTN.DataModels.Models.Category
+namespace KLTN.DataModels.Models.Brands
 {
-    public class CategoryViewModel
+    public class BrandViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int? ParentCategoryId { get; set; }
+        public string Address { get; set; }
         public DateTime CreateAt { get; set; }
         public string CreateBy { get; set; }
         public DateTime UpdateAt { get; set; }

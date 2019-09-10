@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace KLTN.DataAccess.Models
+{
+    public class Image
+    {
+        public int Id { get; set; }
+        public int ProductId { get; set; }
+        public string Url { get; set; }
+    }
+}

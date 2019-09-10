@@ -1,0 +1,75 @@
+﻿@using KLTN.DataModels.Models.Brands
+@model CreateBrandModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="register-box">
+    <div class="register-logo">
+        <a href="../../index2.html"><b>Admin</b>LTE</a>
+    </div>
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="login-box-msg">Register a new membership</p>
+            <form asp-action="registerAdmin" method="post">
+                <div class="input-group mb-3">
+                    <input asp-for="Name" class="form-control" placeholder="Name">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <input asp-for="Address" class="form-control" placeholder="Address">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                @*<div class="input-group mb-3">
+            <select asp-for="ParrentCategoryID" asp-items="@Model.ListCategory" class="form-control">
+                <option></option>
+            </select>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <span asp-validation-for="ParrentCategoryID" class="text-danger"></span>
+        </div>*@
+                <div class="row">
+                    <div class="col-4">
+
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+        </div>
+        <!-- /.form-box -->
+    </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+@section scripts
+    {
+    <script src="~/Admin/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

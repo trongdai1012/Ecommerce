@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
 using KLTN.DataAccess.Models;
-using KLTN.DataModels.Models.Category;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using KLTN.DataModels.Models.Brands;
 
 namespace KLTN.DataModels.AutoMapper
 {
-    public class CategoryProfiles : Profile
+    public class BrandProfiles : Profile
     {
-        public CategoryProfiles()
+        public BrandProfiles()
         {
-            CreateMap<Category, CategoryViewModel>();
+            CreateMap<Brand, BrandViewModel>();
+            CreateMap<Brand, CreateBrandModel>();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace KLTN.DataAccess.Models
         public string Phone { get; set; }
         public bool IsConfirm { get; set; }
 
-        public virtual List<Category> Categories { get; set; }
+        public virtual List<Brand> Brands { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual Admin Admin { get; set; }

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
@@ -36,12 +35,11 @@
             <p class="text-right">
                 <a asp-area="Admin" asp-controller="Category" asp-action="RegisterAdmin" class="btn btn-primary">Thêm mới thể loại</a>
             </p>
-            <table id="user-index" class="table table-bordered columns-align-center table-hover">
+            <table id="user-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Thể loại cha</th>
                         <th>Ngày tạo</th>
                         <th>Người tạo</th>
                         <th>Ngày cập nhật</th>
@@ -82,7 +80,7 @@
             searching: { regex: true },
             // Ajax Filter
             ajax: {
-                url: "/Admin/Category/LoadCategory",
+                url: "/Admin/Brand/LoadBrand",
                 type: "POST",
                 contentType: "application/json",
                 dataType: "json",
@@ -94,7 +92,6 @@
             columns: [
                 { data: "id" },
                 { data: "name" },
-                { data: "parentCategoryId" },
                 {
                     data: "createAt",
                     render: function(data, type) {

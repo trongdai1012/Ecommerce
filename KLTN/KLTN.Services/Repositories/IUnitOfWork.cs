@@ -13,19 +13,19 @@ namespace KLTN.Services.Repositories
         //declare entities Repository
         IGenericRepository<User> UserRepository { get; }
         IGenericRepository<Admin> AdminRepository { get; }
-        IGenericRepository<Category> CategoryRepository { get; }
+        IGenericRepository<Brand> BrandRepository { get; }
         IGenericRepository<Customer> CustomerRepository { get; }
         IGenericRepository<Delivery> DeliveryRepository { get; }
         IGenericRepository<Employee> EmployeeRepository { get; }
         IGenericRepository<Feedback> FeedbackRepository { get; }
+        IGenericRepository<Image> ImageRepository { get; }
+        IGenericRepository<Laptop> LaptopRepository { get; }
+        IGenericRepository<Mobile> MobileRepository { get; }
         IGenericRepository<Order> OrderRepository { get; }
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Product> ProductRepository { get; }
-        IGenericRepository<ProductWareHoure> ProductWareHoureRepository { get; }
-        IGenericRepository<Store> StoreRepository { get; }
-        IGenericRepository<Supplier> SupplierRepository { get; }
-        IGenericRepository<WareHouse> WareHouseRepository { get; }
         IGenericRepository<UserConfirm> UserConfirmRepository { get; }
+        IGenericRepository<Warranty> WarrantyRepository { get; }
 
         /// <summary>
         /// Save db

@@ -118,8 +118,7 @@ namespace KLTN.Services
 
                 var employee = new Employee
                 {
-                    PassEmail = register.PassEmail,
-                    StoreId = register.StoreId
+                    PassEmail = register.PassEmail
                 };
 
                 var employeeRegister = _unitOfWork.EmployeeRepository.Create(employee);
@@ -368,7 +367,6 @@ namespace KLTN.Services
                 if (employee == null) return new Tuple<EmployeeViewModel, int>(null, 3);
 
                 var employeeModel = _mapper.Map<EmployeeViewModel>(user);
-                employee.StoreId = employee.StoreId;
 
                 return new Tuple<EmployeeViewModel, int>(employeeModel, 1);
             }
@@ -433,7 +431,6 @@ namespace KLTN.Services
                 var employee = _unitOfWork.EmployeeRepository.Get(x => x.UserId == employeeModel.Id);
                 if (employee == null) return 3;
                 user.Role = employeeModel.Role;
-                employee.StoreId = employeeModel.StoreId;
                 user.Password = employeeModel.Password;
                 employee.PassEmail = employeeModel.PassEmail;
                 user.UpdateAt = DateTime.Now;

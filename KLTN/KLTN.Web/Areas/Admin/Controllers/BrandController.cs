@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using AutoMapper;
 using KLTN.Common.Datatables;
-using KLTN.DataModels.Models.Category;
+using KLTN.DataModels.Models.Brands;
 using KLTN.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
-    public class CategoryController : BaseController
+    public class BrandController : BaseController
     {
-        private readonly ICategoryService _categoryService;
+        private readonly IBrandService _brandService;
         private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryService categoryService, IMapper mapper)
+        public BrandController(IBrandService brandService, IMapper mapper)
         {
-            _categoryService = categoryService;
+            _brandService = brandService;
             _mapper = mapper;
         }
 
@@ -27,9 +25,9 @@ namespace KLTN.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult LoadCategory([FromBody] DTParameters dtParameters)
+        public IActionResult LoadBrand([FromBody] DTParameters dtParameters)
         {
-            var tupleData = _categoryService.LoadCategory(dtParameters);
+            var tupleData = _brandService.LoadBrand(dtParameters);
 
             return Json(new
             {
@@ -44,24 +42,33 @@ namespace KLTN.Web.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
+            //var listCateParent = _categoryService.GetAll();
+            //var cate = new CreateBrandModel();
+            //cate.ListCategory = listCateParent.Select(x =>
+            //    new SelectListItem()
+            //    {
+            //        Text = x.Name,
+            //        Value = x.Id.ToString()
+            //    }
+            //).ToList();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(CreateCategoryModel categoryModel)
+        public IActionResult Create(CreateBrandModel brandModel)
         {
-            if (!ModelState.IsValid) return View(categoryModel);
-            var result = _categoryService.CreateCategory(categoryModel);
+            if (!ModelState.IsValid) return View(brandModel);
+            var result = _brandService.CreateBrand(brandModel);
             switch(result)
             {
                 case 0:
                     ModelState.AddModelError("", "Tên thể loại sản phẩm đã tồn tại");
-                    return View(categoryModel);
+                    return View(brandModel);
                 case 1:
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Brand");
                 default:
                     ModelState.AddModelError("", "Có lỗi không xác định khi tạo thể loại sản phẩm, vui lòng liên hệ người quản trị");
-                    return View(categoryModel);
+                    return View(brandModel);
             }
         }
     }

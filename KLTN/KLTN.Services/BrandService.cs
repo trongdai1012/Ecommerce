@@ -2,7 +2,7 @@
 using KLTN.Common;
 using KLTN.Common.Datatables;
 using KLTN.DataAccess.Models;
-using KLTN.DataModels.Models.Category;
+using KLTN.DataModels.Models.Brands;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Http;
 using Serilog;
@@ -16,7 +16,7 @@ namespace KLTN.Services
     /// <summary>
     /// Class category service
     /// </summary>
-    public class CategoryService : ICategoryService
+    public class BrandService : IBrandService
     {
         /// <summary>
         /// 
@@ -36,7 +36,7 @@ namespace KLTN.Services
         /// <param name="httpContext"></param>
         /// <param name="genericRepository"></param>
         /// <param name="genericRepositoryUser"></param>
-        public CategoryService(IMapper mapper, IHttpContextAccessor httpContext, IUnitOfWork unitOfWork)
+        public BrandService(IMapper mapper, IHttpContextAccessor httpContext, IUnitOfWork unitOfWork)
         {
             _httpContext = httpContext.HttpContext;
             _unitOfWork = unitOfWork;
@@ -44,10 +44,21 @@ namespace KLTN.Services
         }
 
         /// <summary>
-        /// Get all list categories 
+        /// Method GetAll get all category
         /// </summary>
         /// <returns></returns>
-        public Tuple<IEnumerable<CategoryViewModel>, int, int> LoadCategory(DTParameters dtParameters)
+        public IEnumerable<BrandViewModel> GetAll()
+        {
+            var listBrand = _unitOfWork.BrandRepository.GetAll();
+            var listBrandModel = _mapper.Map<IEnumerable<BrandViewModel>>(listBrand);
+            return listBrandModel;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<BrandViewModel>, int, int> LoadBrand(DTParameters dtParameters)
         {
             var searchBy = dtParameters.Search?.Value;
             string orderCriteria;
@@ -66,41 +77,41 @@ namespace KLTN.Services
                 orderAscendingDirection = true;
             }
 
-            var listCategory = (from cate in _unitOfWork.CategoryRepository.ObjectContext
-                                join usc in _unitOfWork.UserRepository.ObjectContext on cate.CreateBy equals usc.Id
-                                join usu in _unitOfWork.UserRepository.ObjectContext on cate.UpdateBy equals usu.Id
-                                select new CategoryViewModel
+            var listBrand = (from brand in _unitOfWork.BrandRepository.ObjectContext
+                                join usc in _unitOfWork.UserRepository.ObjectContext on brand.CreateBy equals usc.Id
+                                join usu in _unitOfWork.UserRepository.ObjectContext on brand.UpdateBy equals usu.Id
+                                select new BrandViewModel
                                 {
-                                    Id = cate.Id,
-                                    Name = cate.Name,
-                                    ParentCategoryId = cate.ParrentCategoryId.Value,
-                                    CreateAt = cate.CreateAt,
+                                    Id = brand.Id,
+                                    Name = brand.Name,
+                                    Address = brand.Address,
+                                    CreateAt = brand.CreateAt,
                                     CreateBy = usc.Email,
-                                    UpdateAt = cate.UpdateAt,
+                                    UpdateAt = brand.UpdateAt,
                                     UpdateBy = usu.Email,
-                                    Status = cate.Status
+                                    Status = brand.Status
                                 });
 
-            var categoryViewModels = _mapper.Map<IEnumerable<CategoryViewModel>>(listCategory);
+            var brandViewModels = _mapper.Map<IEnumerable<BrandViewModel>>(listBrand);
 
             if (!string.IsNullOrEmpty(searchBy))
             {
-                categoryViewModels = categoryViewModels.Where(r =>
+                brandViewModels = brandViewModels.Where(r =>
                         r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
                         r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.ParentCategoryId.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                        r.Address.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
                         r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
             }
 
-            categoryViewModels = orderAscendingDirection
-               ? categoryViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
-               : categoryViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+            brandViewModels = orderAscendingDirection
+               ? brandViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+               : brandViewModels.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
 
-            var viewModels = categoryViewModels.OrderBy(x => x.Id).ToArray();
+            var viewModels = brandViewModels.OrderBy(x => x.Id).ToArray();
             var filteredResultsCount = viewModels.ToArray().Length;
             var totalResultsCount = viewModels.Count();
 
-            var tuple = new Tuple<IEnumerable<CategoryViewModel>, int, int>(viewModels, filteredResultsCount,
+            var tuple = new Tuple<IEnumerable<BrandViewModel>, int, int>(viewModels, filteredResultsCount,
                 totalResultsCount);
 
             return tuple;
@@ -111,15 +122,15 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public CategoryViewModel GetCategoryById(int? id)
+        public BrandViewModel GetBrandById(int? id)
         {
-            var category = _unitOfWork.CategoryRepository.GetById(id);
+            var category = _unitOfWork.BrandRepository.GetById(id);
             if (category == null)
             {
                 return null;
             }
 
-            var categoryViewModel = _mapper.Map<CategoryViewModel>(category);
+            var categoryViewModel = _mapper.Map<BrandViewModel>(category);
             return categoryViewModel;
         }
 
@@ -127,34 +138,34 @@ namespace KLTN.Services
         /// Create category
         /// </summary>
         /// <param name="model"></param>
-        public int CreateCategory(CreateCategoryModel model)
+        public int CreateBrand(CreateBrandModel model)
         {
-            var checkName = CheckNameCategoryExisted(model.Name);
-            if(checkName) return 0;
+            var checkName = CheckNameBrandExisted(model.Name);
+            if (checkName) return 0;
             try
             {
-                var category = new Category
-                {
-                    Name = model.Name,
-                    ParrentCategoryId = model.ParrentCategoryID,
-                    CreateAt = DateTime.UtcNow,
-                    CreateBy = GetUserId(),
-                    Status = true
-
-                };
-                _unitOfWork.CategoryRepository.Create(category);
-                _unitOfWork.CategoryRepository.Save();
+                var brand = new Brand();
+                brand.Name = model.Name;
+                brand.Address = model.Address;
+                brand.CreateAt = DateTime.UtcNow;
+                brand.CreateBy = GetUserId();
+                brand.UpdateAt = DateTime.UtcNow;
+                brand.UpdateBy = GetUserId();
+                brand.Status = true;
+                _unitOfWork.BrandRepository.Create(brand);
+                _unitOfWork.BrandRepository.Save();
                 return 1;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
-                Log.Error("Have an error when create category in service",e);
+                Log.Error("Have an error when create category in service", e);
                 return -1;
             }
         }
 
-        private bool CheckNameCategoryExisted(string name)
+        private bool CheckNameBrandExisted(string name)
         {
-            var result = _unitOfWork.CategoryRepository.ObjectContext.Any(x => x.Name == name);
+            var result = _unitOfWork.BrandRepository.ObjectContext.Any(x => x.Name == name);
             return result;
         }
 
@@ -162,17 +173,17 @@ namespace KLTN.Services
         /// Update category
         /// </summary>
         /// <param name="model"></param>
-        public int UpdateCategory(CategoryViewModel model)
+        public int UpdateBrand(BrandViewModel model)
         {
             try
             {
-                var category = _unitOfWork.CategoryRepository.GetById(model.Id);
-                if (category == null) return 0;
-                category.Name = model.Name;
-                category.ParrentCategoryId = model.ParentCategoryId;
-                category.UpdateAt = DateTime.Now;
-                category.UpdateBy = GetUserId();
-                _unitOfWork.CategoryRepository.Save();
+                var brand = _unitOfWork.BrandRepository.GetById(model.Id);
+                if (brand == null) return 0;
+                brand.Name = model.Name;
+                brand.Address = model.Address;
+                brand.UpdateAt = DateTime.Now;
+                brand.UpdateBy = GetUserId();
+                _unitOfWork.BrandRepository.Save();
                 return 1;
             }
             catch (Exception e)
@@ -188,7 +199,7 @@ namespace KLTN.Services
         /// <param name="id"></param>
         public void DeleteCategoryById(int? id)
         {
-            _unitOfWork.CategoryRepository.Delete(id);
+            _unitOfWork.BrandRepository.Delete(id);
             _unitOfWork.Save();
         }
 

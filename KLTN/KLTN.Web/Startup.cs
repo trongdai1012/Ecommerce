@@ -43,6 +43,7 @@ namespace KLTN.Web
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
+                mc.AddProfile(new BrandProfiles());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
@@ -50,7 +51,7 @@ namespace KLTN.Web
 
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IBrandService, BrandService>();
 
             services.AddMvc(setup => { }).AddFluentValidation();
 

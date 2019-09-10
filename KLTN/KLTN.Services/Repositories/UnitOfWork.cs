@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using KLTN.DataAccess.Models;
+﻿using KLTN.DataAccess.Models;
 
 namespace KLTN.Services.Repositories
 {
@@ -11,7 +8,7 @@ namespace KLTN.Services.Repositories
 
         public IGenericRepository<Admin> AdminRepository { get; set; }
 
-        public IGenericRepository<Category> CategoryRepository { get; set; }
+        public IGenericRepository<Brand> BrandRepository { get; set; }
 
         public IGenericRepository<Customer> CustomerRepository { get; set; }
 
@@ -21,21 +18,21 @@ namespace KLTN.Services.Repositories
 
         public IGenericRepository<Feedback> FeedbackRepository { get; set; }
 
+        public IGenericRepository<Image> ImageRepository { get; set; }
+
+        public IGenericRepository<Laptop> LaptopRepository { get; set; }
+
+        public IGenericRepository<Mobile> MobileRepository { get; set; }
+
         public IGenericRepository<Order> OrderRepository { get; set; }
 
         public IGenericRepository<OrderDetail> OrderDetailRepository { get; set; }
 
         public IGenericRepository<Product> ProductRepository { get; set; }
 
-        public IGenericRepository<ProductWareHoure> ProductWareHoureRepository { get; set; }
-
-        public IGenericRepository<Store> StoreRepository { get; set; }
-
-        public IGenericRepository<Supplier> SupplierRepository { get; set; }
-
-        public IGenericRepository<WareHouse> WareHouseRepository { get; set; }
-
         public IGenericRepository<UserConfirm> UserConfirmRepository { get; set; }
+
+        public IGenericRepository<Warranty> WarrantyRepository { get; set; }
 
         private EcommerceDbContext _ecommerceDbContext;
 
@@ -56,19 +53,19 @@ namespace KLTN.Services.Repositories
         {
             UserRepository = new GenericRepository<User>(_ecommerceDbContext);
             AdminRepository = new GenericRepository<Admin>(_ecommerceDbContext);
-            CategoryRepository = new GenericRepository<Category>(_ecommerceDbContext);
+            BrandRepository = new GenericRepository<Brand>(_ecommerceDbContext);
             CustomerRepository = new GenericRepository<Customer>(_ecommerceDbContext);
             DeliveryRepository = new GenericRepository<Delivery>(_ecommerceDbContext);
             EmployeeRepository = new GenericRepository<Employee>(_ecommerceDbContext);
             FeedbackRepository = new GenericRepository<Feedback>(_ecommerceDbContext);
+            ImageRepository = new GenericRepository<Image>(_ecommerceDbContext);
+            LaptopRepository = new GenericRepository<Laptop>(_ecommerceDbContext);
+            MobileRepository = new GenericRepository<Mobile>(_ecommerceDbContext);
             OrderRepository = new GenericRepository<Order>(_ecommerceDbContext);
             OrderDetailRepository = new GenericRepository<OrderDetail>(_ecommerceDbContext);
             ProductRepository = new GenericRepository<Product>(_ecommerceDbContext);
-            ProductWareHoureRepository = new GenericRepository<ProductWareHoure>(_ecommerceDbContext);
-            StoreRepository = new GenericRepository<Store>(_ecommerceDbContext);
-            SupplierRepository = new GenericRepository<Supplier>(_ecommerceDbContext);
-            WareHouseRepository = new GenericRepository<WareHouse>(_ecommerceDbContext);
             UserConfirmRepository = new GenericRepository<UserConfirm>(_ecommerceDbContext);
+            WarrantyRepository = new GenericRepository<Warranty>(_ecommerceDbContext);
         }
 
         /// <summary>
