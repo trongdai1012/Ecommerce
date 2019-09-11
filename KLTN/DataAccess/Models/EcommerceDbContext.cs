@@ -83,6 +83,16 @@ namespace KLTN.DataAccess.Models
                 );
             });
 
+            modelBuilder.Entity<UserConfirm>(entity=>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasIndex(x => x.UserId).IsUnique();
+                entity
+                .HasOne(x => x.User)
+                .WithOne(x => x.UserConfirm)
+                .HasForeignKey<UserConfirm>(x=>x.UserId);
+            });
+
             modelBuilder.Entity<Admin>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -212,7 +222,6 @@ namespace KLTN.DataAccess.Models
             modelBuilder.Entity<Mobile>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.BrandId);
             });
 
             modelBuilder.Entity<Order>(entity =>

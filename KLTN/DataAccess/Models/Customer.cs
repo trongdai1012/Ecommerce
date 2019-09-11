@@ -7,7 +7,6 @@ namespace KLTN.DataAccess.Models
     {
         public int UserId { get; set; }
         public byte Rank { get; set; }
-        public bool IsConfirm { get; set; }
 
         public User User { get; set; }
         public virtual List<Feedback> Feedbacks { get; set; }

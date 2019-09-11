@@ -11,11 +11,14 @@
     <title>ConfirmUser</title>
 </head>
 <body>
-    <form asp-action="ConfirmUser" method="post">
+    <form id="confirm" asp-action="ConfirmUser" method="post">
         <div class="col-4">
             <input type="hidden" asp-for="confirmString"/>
-            <button type="submit" class="btn btn-primary btn-block btn-flat">Click </button>
+            <button type="submit" class="btn btn-primary btn-block btn-flat"></button>
         </div>
     </form>
 </body>
 </html>
+<script type="text/javascript">
+        document.forms["confirm"].submit();
+</script>
