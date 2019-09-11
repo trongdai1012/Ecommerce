@@ -8,7 +8,6 @@ namespace KLTN.DataAccess.Models
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
-        public int BrandId { get; set; }
         public string Screen { get; set; }
         public string OperatingSystem { get; set; }
         public string Camera { get; set; }

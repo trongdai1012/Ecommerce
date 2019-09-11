@@ -122,16 +122,24 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public BrandViewModel GetBrandById(int? id)
+        public Tuple<BrandViewModel,int> GetBrandById(int? id)
         {
-            var category = _unitOfWork.BrandRepository.GetById(id);
-            if (category == null)
+            try
             {
-                return null;
-            }
+                var brand = _unitOfWork.BrandRepository.GetById(id);
+                if (brand == null)
+                {
+                    return new Tuple<BrandViewModel,int>(null,0);
+                }
 
-            var categoryViewModel = _mapper.Map<BrandViewModel>(category);
-            return categoryViewModel;
+                var brandViewModel = _mapper.Map<BrandViewModel>(brand);
+                return new Tuple<BrandViewModel, int>(brandViewModel, 1);
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error when get brand by id in brand service",e);
+                return new Tuple<BrandViewModel, int>(null, -1);
+            }
         }
 
         /// <summary>

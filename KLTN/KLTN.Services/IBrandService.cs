@@ -10,7 +10,7 @@ namespace KLTN.Services
     {
         Tuple<IEnumerable<BrandViewModel>, int, int> LoadBrand(DTParameters dtParameters);
 
-        BrandViewModel GetBrandById(int? id);
+        Tuple<BrandViewModel, int> GetBrandById(int? id);
 
         int CreateBrand(CreateBrandModel model);
 

@@ -23,7 +23,7 @@ namespace KLTN.Services
             _mapper = mapper;
         }
 
-        public CategoryViewModel GetCategoryById(int? id)*/
+        public CategoryViewModel GetCategoryById(int? id)
         {
             var product = (from cate in _unitOfWork.CategoryRepository.ObjectContext
                            join usc in _unitOfWork.UserRepository.ObjectContext on cate.CreateBy equals usc.Id

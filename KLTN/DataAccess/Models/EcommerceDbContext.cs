@@ -200,7 +200,6 @@ namespace KLTN.DataAccess.Models
             modelBuilder.Entity<Laptop>(entity=>
             {
                 entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.BrandId);
             });
 
             modelBuilder.Entity<Mobile>(entity =>
@@ -239,6 +238,7 @@ namespace KLTN.DataAccess.Models
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(x => x.Id);
+                entity.HasIndex(x => new { x.BrandId, x.CategoryId });
                 entity.Property(x => x.ProductCode).HasColumnType(TypeOfSql.VarChar + "(10)");
                 entity.Property(x => x.Name).HasColumnType(TypeOfSql.NVarChar + "(30)");
                 entity.Property(x => x.InitialPrice).HasColumnType(TypeOfSql.Decimal);
@@ -251,6 +251,11 @@ namespace KLTN.DataAccess.Models
                 .HasOne(x => x.Brand)
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.BrandId)
+                .OnDelete(DeleteBehavior.Cascade);
+                entity
+                .HasOne(x => x.Category)
+                .WithMany(x => x.Products)
+                .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
             });
 

@@ -2,6 +2,7 @@
 using KLTN.Common;
 using KLTN.Common.Datatables;
 using KLTN.Common.Infrastructure;
+using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Brands;
 using KLTN.DataModels.Models.Products;
 using KLTN.Services.Repositories;
@@ -42,14 +43,42 @@ namespace KLTN.Services
         }
 
         /// <summary>
-        /// Method GetAll get all category
+        /// Get a product by id
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public IEnumerable<LaptopViewModel> GetAllLaptop()
+        public Tuple<LaptopViewModel, int> GetLaptopById(int? id)
         {
-            var listLaptop = _unitOfWork.ProductRepository.GetMany(x=>x.CategoryId==(int)EnumCategory.Laptop);
-            var listLaptopModel = _mapper.Map<IEnumerable<LaptopViewModel>>(listLaptop);
-            return listLaptopModel;
+            try
+            {
+                var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                                  join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                                  join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                                  join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                                  where pro.CategoryId == (int)EnumCategory.Laptop && pro.Id ==  id
+                                  select new LaptopViewModel
+                                  {
+                                      Id = pro.Id,
+                                      Name = pro.Name,
+                                      ProductCode = pro.ProductCode,
+                                      Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                      Brand = bra.Name,
+                                      InitialPrice = pro.InitialPrice,
+                                      CurrentPrice = pro.CurrentPrice,
+                                      CreateAt = pro.CreateAt,
+                                      CreateBy = usc.Email,
+                                      UpdateAt = pro.UpdateAt,
+                                      UpdateBy = usu.Email,
+                                      Status = pro.Status
+                                  }).FirstOrDefault();
+                if (laptop == null) return new Tuple<LaptopViewModel, int>(null, 0);
+                return new Tuple<LaptopViewModel, int>(laptop, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get brand by id in brand service", e);
+                return new Tuple<LaptopViewModel, int>(null, -1);
+            }
         }
 
         /// <summary>
@@ -82,19 +111,19 @@ namespace KLTN.Services
                               where pro.CategoryId == (int)EnumCategory.Laptop
                               select new LaptopViewModel
                               {
-                                 Id = pro.Id,
-                                 Name = pro.Name,
-                                 ProductCode = pro.ProductCode,
-                                 Category = Enum.GetName(typeof(EnumCategory),pro.CategoryId),
-                                 Brand = bra.Name,
-                                 InitialPrice = pro.InitialPrice,
-                                 CurrentPrice = pro.CurrentPrice,
-                                 CreateAt = pro.CreateAt,
-                                 CreateBy = usc.Email,
-                                 UpdateAt = pro.UpdateAt,
-                                 UpdateBy = usu.Email,
-                                 Status = pro.Status
-                             });
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  ProductCode = pro.ProductCode,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  Status = pro.Status
+                              });
 
             if (!string.IsNullOrEmpty(searchBy))
             {
@@ -117,6 +146,60 @@ namespace KLTN.Services
                 totalResultsCount);
 
             return tuple;
+        }
+
+        public int CreateLaptop(CreateLaptopViewModel laptopModel)
+        {
+            try
+            {
+                var product = new Product
+                {
+                    ProductCode = laptopModel.ProductCode,
+                    Name = laptopModel.Name,
+                    CategoryId = (int)EnumCategory.Laptop,
+                    BrandId = laptopModel.BrandId,
+                    InitialPrice = laptopModel.InitialPrice,
+                    CurrentPrice = laptopModel.CurrentPrice,
+                    PromotionPrice = laptopModel.PromotionPrice,
+                    DurationWarranty = laptopModel.DurationWarranty,
+                    MetaTitle = laptopModel.MetaTitle,
+                    Description = laptopModel.Description,
+                    Rate = 0,
+                    ViewCount = 0,
+                    LikeCount = 0,
+                    TotalSold = 0,
+                    Amount = laptopModel.Amount
+                };
+
+                var productCreate = _unitOfWork.ProductRepository.Create(product);
+
+                var laptop = new Laptop
+                {
+                    ProductId = productCreate.Id,
+                    Screen = laptopModel.Screen,
+                    OperatingSystem = laptopModel.OperatingSystem,
+                    Camera = laptopModel.Camera,
+                    CPU = laptopModel.CPU,
+                    RAM = laptopModel.RAM,
+                    ROM = laptopModel.ROM,
+                    Card = laptopModel.Card,
+                    Design = laptopModel.Design,
+                    Size = laptopModel.Size,
+                    PortSupport = laptopModel.PortSupport,
+                    Pin = laptopModel.Pin,
+                    Color = laptopModel.Color,
+                    Weight = laptopModel.Weight
+                };
+
+                _unitOfWork.LaptopRepository.Create(laptop);
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error when create laptop in service",e);
+                return 0;
+            }
         }
     }
 }
