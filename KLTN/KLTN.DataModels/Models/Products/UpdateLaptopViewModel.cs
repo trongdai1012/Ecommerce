@@ -1,13 +1,22 @@
-﻿using System;
+﻿using KLTN.DataAccess.Models;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace KLTN.DataAccess.Models
+namespace KLTN.DataModels.Models.Products
 {
-    public class Laptop
+    public class UpdateLaptopViewModel
     {
         public int Id { get; set; }
-        public int ProductId { get; set; }
+        public string ProductCode { get; set; }
+        public string Name { get; set; }
+        public int BrandId { get; set; }
+        public decimal InitialPrice { get; set; }
+        public decimal CurrentPrice { get; set; }
+        public decimal PromotionPrice { get; set; }
+        public int DurationWarranty { get; set; }
+        public string MetaTitle { get; set; }
+        public string Description { get; set; }
+        public List<Image> Images { get; set; }
         public string Screen { get; set; }
         public string OperatingSystem { get; set; }
         public string Camera { get; set; }

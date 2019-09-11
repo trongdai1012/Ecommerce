@@ -14,8 +14,5 @@
         public string SIM { get; set; }
         public string Pin { get; set; }
         public string Color { get; set; }
-        public int BrandId { get; set; }
-
-        public virtual Brand Brand { get; set; }
     }
 }

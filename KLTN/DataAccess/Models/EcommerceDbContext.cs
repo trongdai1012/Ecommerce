@@ -13,6 +13,7 @@ namespace KLTN.DataAccess.Models
 
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Brand> Suppliers { get; set; }
+        public DbSet<CommentProduct> CommentProducts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -138,6 +139,12 @@ namespace KLTN.DataAccess.Models
                         UpdateBy = 2,
                         Status = true
                     });
+            });
+
+            modelBuilder.Entity<CommentProduct>(entity=>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasIndex(x => x.ProductId);
             });
 
             modelBuilder.Entity<Customer>(entity =>
