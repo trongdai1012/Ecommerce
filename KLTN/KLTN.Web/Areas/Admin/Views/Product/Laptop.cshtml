@@ -28,23 +28,23 @@
                 <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
             }*@
         <div class="card-header">
-            <h3 class="card-title">Quản lý thương hiệu sản phẩm</h3>
+            <h3 class="card-title">Quản lý laptop</h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
             <p class="text-right">
-                <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="btn btn-primary">Thêm mới thương hiệu</a>
+                <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="btn btn-primary">Thêm mới sản phẩm</a>
             </p>
-            <table id="brand-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
+            <table id="product-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Tên</th>
-                        <th>Địa chỉ</th>
-                        <th>Ngày tạo</th>
-                        <th>Người tạo</th>
-                        <th>Ngày cập nhật</th>
-                        <th>Người cập nhật</th>
+                        <th>Thương hiệu</th>
+                        <th>Hình ảnh</th>
+                        <th>Lượt xem</th>
+                        <th>Lượt thích</th>
+                        <th>Lượt mua</th>
                         <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
@@ -65,7 +65,7 @@
         $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss");
         $.fn.dataTable.moment("DD/MM/YYYY");
 
-        $("#brand-index").DataTable({
+        $("#product-index").DataTable({
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
             },
@@ -81,7 +81,7 @@
             searching: { regex: true },
             // Ajax Filter
             ajax: {
-                url: "/Admin/Brand/LoadBrand",
+                url: "/Admin/Product/LoadLaptop",
                 type: "POST",
                 contentType: "application/json",
                 dataType: "json",
@@ -93,35 +93,17 @@
             columns: [
                 { data: "id" },
                 { data: "name" },
-                { data: "address" },
+                { data: "brand" },
                 {
-                    data: "createAt",
-                    render: function (data, type) {
-                        // If display or filter data is requested, format the date
-                        if (type === "display" || type === "filter") {
-                            return moment(data).format("DD/MM/YYYY");
-                        }
-                        // Otherwise the data type requested (`type`) is type detection or
-                        // sorting data, for which we want to use the raw date value, so just return
-                        // that, unaltered
-                        return data;
+                    data: "imageDefault",
+                    "mRender": function (data) {
+                        var url = "<img src=" +"/" + data + " style = \"width: 100px; height: 70px\" </img> ";
+                        return url;
                     }
                 },
-                { data: "createBy" },
-                {
-                    data: "updateAt",
-                    render: function (data, type) {
-                        // If display or filter data is requested, format the date
-                        if (type === "display" || type === "filter") {
-                            return moment(data).format("DD/MM/YYYY");
-                        }
-                        // Otherwise the data type requested (`type`) is type detection or
-                        // sorting data, for which we want to use the raw date value, so just return
-                        // that, unaltered
-                        return data;
-                    }
-                },
-                { data: "updateBy" },
+                { data: "viewCount" },
+                { data: "likeCount" },
+                { data: "totalSold" },
                 {
                     data: "status",
                     "mRender": function (data, type, row) {

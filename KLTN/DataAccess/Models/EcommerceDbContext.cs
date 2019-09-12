@@ -12,7 +12,7 @@ namespace KLTN.DataAccess.Models
         }
 
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Brand> Suppliers { get; set; }
+        public DbSet<Brand> Brands { get; set; }
         public DbSet<CommentProduct> CommentProducts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
@@ -83,14 +83,14 @@ namespace KLTN.DataAccess.Models
                 );
             });
 
-            modelBuilder.Entity<UserConfirm>(entity=>
+            modelBuilder.Entity<UserConfirm>(entity =>
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.UserId).IsUnique();
                 entity
                 .HasOne(x => x.User)
                 .WithOne(x => x.UserConfirm)
-                .HasForeignKey<UserConfirm>(x=>x.UserId);
+                .HasForeignKey<UserConfirm>(x => x.UserId);
             });
 
             modelBuilder.Entity<Admin>(entity =>
@@ -113,7 +113,7 @@ namespace KLTN.DataAccess.Models
                 );
             });
 
-            modelBuilder.Entity<BrandCategory>(entity=>
+            modelBuilder.Entity<BrandCategory>(entity =>
             {
                 entity.HasKey(x => new { x.BrandId, x.CategoryId });
                 entity
@@ -137,12 +137,13 @@ namespace KLTN.DataAccess.Models
                 .HasOne(x => x.User)
                 .WithMany(x => x.Brands)
                 .HasForeignKey(x => x.CreateBy)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
                 entity.HasData(
                     new Brand
                     {
                         Id = 1,
-                        Name = "IPorn",
+                        Name = "IPhone",
+                        Address = "US",
                         CreateAt = DateTime.UtcNow,
                         CreateBy = 1,
                         UpdateAt = DateTime.UtcNow,
@@ -151,7 +152,34 @@ namespace KLTN.DataAccess.Models
                     });
             });
 
-            modelBuilder.Entity<CommentProduct>(entity=>
+            modelBuilder.Entity<Category>(entity=>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasData(
+                    new Category
+                    {
+                        Id = 1,
+                        Name = "Laptop",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Category
+                    {
+                        Id = 2,
+                        Name = "Điện thoại",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1,
+                        Status = true
+                    });
+            });
+
+            modelBuilder.Entity<CommentProduct>(entity =>
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.ProductId);
@@ -207,18 +235,6 @@ namespace KLTN.DataAccess.Models
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<Image>(entity=>
-            {
-                entity.HasKey(x=>x.Id);
-                entity.HasIndex(x => x.ProductId);
-                entity.Property(x => x.Url).HasColumnType(TypeOfSql.NVarChar+"(100)");
-            });
-
-            modelBuilder.Entity<Laptop>(entity=>
-            {
-                entity.HasKey(x => x.Id);
-            });
-
             modelBuilder.Entity<Mobile>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -255,12 +271,12 @@ namespace KLTN.DataAccess.Models
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => new { x.BrandId, x.CategoryId });
-                entity.Property(x => x.ProductCode).HasColumnType(TypeOfSql.VarChar + "(10)");
+                entity.Property(x => x.ProductCode).HasColumnType(TypeOfSql.VarChar + "(20)");
                 entity.Property(x => x.Name).HasColumnType(TypeOfSql.NVarChar + "(30)");
                 entity.Property(x => x.InitialPrice).HasColumnType(TypeOfSql.Decimal);
                 entity.Property(x => x.CurrentPrice).HasColumnType(TypeOfSql.Decimal);
                 entity.Property(x => x.PromotionPrice).HasColumnType(TypeOfSql.Decimal);
-                entity.Property(x => x.MetaTitle).HasColumnType(TypeOfSql.VarChar + "(10)");
+                entity.Property(x => x.MetaTitle).HasColumnType(TypeOfSql.VarChar + "(20)");
                 entity.Property(x => x.Description).HasColumnType(TypeOfSql.NText);
                 entity.Property(x => x.Rate).HasColumnType(TypeOfSql.TinyInt);
                 entity
@@ -273,6 +289,84 @@ namespace KLTN.DataAccess.Models
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
+                for (int i = 1; i <= 1000; i++)
+                {
+                    entity.HasData(
+                        new Product
+                        {
+                            Id = i,
+                            ProductCode = "lap-mi-" + i,
+                            Name = "Laptop Xiaomi " + i,
+                            BrandId = 1,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 1500000 * i,
+                            CurrentPrice = 1350000 * i,
+                            PromotionPrice = (1500000 - 1350000) * i,
+                            DurationWarranty = 12,
+                            MetaTitle = "lap-top-xiaomi" + i,
+                            Description = "Laptop thuong hieu Xiaomi",
+                            Rate = (byte)(new Random().Next(1, 5)),
+                            ViewCount = new Random().Next(1,50000),
+                            LikeCount = new Random().Next(1,10000),
+                            TotalSold = new Random().Next(1,5000),
+                            Amount = new Random().Next(),
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
+                }
+            });
+
+
+            modelBuilder.Entity<Image>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasIndex(x => x.ProductId);
+                entity.Property(x => x.Url).HasColumnType(TypeOfSql.NVarChar + "(100)");
+                entity.Property(x => x.Order).HasColumnType("TinyInt");
+                entity
+                .HasOne(x => x.Product)
+                .WithMany(x => x.Images)
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+                for (int i = 1; i <= 1000; i++)
+                {
+                    entity.HasData(
+                        new Image
+                        {
+                            Id = i,
+                            ProductId = i,
+                            Url = "laptop-mi-01.jpg"
+                        });
+                }
+            });
+
+            modelBuilder.Entity<Laptop>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                for (int i = 1; i <= 1000; i++)
+                {
+                    entity.HasData(
+                        new Laptop
+                        {
+                            Id = i,
+                            ProductId = i,
+                            Screen = "15.6 inch, Full HD (1920 x 1080)",
+                            CPU = "Intel Core i5 Coffee Lake, 8265U, 1.60 GHz",
+                            RAM = "4 GB, DDR4 (On board +1 khe), 2133 MHz",
+                            ROM = "HDD: 1 TB SATA3, Intel Optane 16GB",
+                            Card = "Card đồ họa tích hợp, Intel® UHD Graphics 620",
+                            PortSupport = "2 x USB 3.0, HDMI, LAN (RJ45), USB Type-C",
+                            OperatingSystem = "Windows 10 Home SL",
+                            Design = "Vỏ nhựa, PIN liền",
+                            Size = "Dày 22.45 mm, 2.0 kg",
+                            Camera = "8.0mpx",
+                            Color = "Đen",
+                            Pin = "Pin liền, 3 cell"
+                        });
+                }
             });
 
             modelBuilder.Entity<UserConfirm>(entity =>
@@ -283,10 +377,10 @@ namespace KLTN.DataAccess.Models
                 entity
                 .HasOne(x => x.User)
                 .WithOne(x => x.UserConfirm)
-                .HasForeignKey<UserConfirm>(x=>x.UserId);
+                .HasForeignKey<UserConfirm>(x => x.UserId);
             });
 
-            modelBuilder.Entity<Warranty>(entity=>
+            modelBuilder.Entity<Warranty>(entity =>
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.ProducId);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿    using System.Collections.Generic;
 
 namespace KLTN.DataAccess.Models
 {
@@ -24,5 +23,6 @@ namespace KLTN.DataAccess.Models
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
+        public virtual List<Image> Images { get; set; }
     }
 }
