@@ -55,7 +55,7 @@ namespace KLTN.Web
             services.AddScoped<IProductService, ProductService>();
 
             services.AddMvc(setup => { }).AddFluentValidation();
-
+            services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<EcommerceDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.DefaultConnection),
@@ -95,6 +95,8 @@ namespace KLTN.Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

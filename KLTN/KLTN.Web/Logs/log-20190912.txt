@@ -67,3 +67,4 @@ The statement has been terminated.
    at KLTN.Web.Program.Main(String[] args) in E:\Ecommerce\KLTN\KLTN.Web\Program.cs:line 39
 ClientConnectionId:99701feb-183e-4baf-8d7d-b68630941fc0
 Error Number:547,State:0,Class:16
+2019-09-12 15:43:32.308 +07:00 [ERR] Have an error when create category in service

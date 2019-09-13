@@ -16,7 +16,7 @@ namespace KLTN.Services
 
         Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopSold();
 
-        //CategoryViewModel GetCategoryById(int? id);
+        Tuple<LaptopViewModel, int> GetLaptopById(int? id);
 
         //int CreateCategory(CreateCategoryModel model);
 
