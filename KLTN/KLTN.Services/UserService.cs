@@ -72,12 +72,12 @@ namespace KLTN.Services
 
                 var contentMail =
                     "Cảm ơn bạn đã đăng ký tài khoản trên website của chúng tôi!"
-                    + @"https://localhost:44338"
+                    + @"http://"+_httpContext.Request.Host
                     + Environment.NewLine
                     + Environment.NewLine
                     + "Vui lòng click vào link bên dưới để kích hoạt tài khoản của bạn"
                     + Environment.NewLine
-                    + @"https://localhost:44338" + @"/Admin/User/ConfirmUser/" + userRegister.Id + "=" + userConfirm.ConfirmString;
+                    + @"https://"+_httpContext.Request.Host + @"/Admin/User/ConfirmUser/" + userRegister.Id + "=" + userConfirm.ConfirmString;
                 SendMailConfirm(register.Email, register.FirstName, contentMail);
 
                 _unitOfWork.Save();

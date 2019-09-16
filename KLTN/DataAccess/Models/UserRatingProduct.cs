@@ -4,13 +4,12 @@ using System.Text;
 
 namespace KLTN.DataAccess.Models
 {
-    public class Image
+    public class UserRatingProduct
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
         public int ProductId { get; set; }
-        public string Url { get; set; }
-        public byte Order { get; set; }
-
-        public Product Product { get; set; }
+        public byte Rate { get; set; }
+        public string Comment { get; set; }
     }
 }

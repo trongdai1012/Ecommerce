@@ -8,9 +8,17 @@ namespace KLTN.Services
 {
     public interface IProductService
     {
+        Tuple<ProductViewModel, int> GetProductById(int? id);
+
         Tuple<IEnumerable<LaptopViewModel>, int, int> LoadLaptop(DTParameters dtParameters);
 
-        //CategoryViewModel GetCategoryById(int? id);
+        Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopView();
+
+        Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopLike();
+
+        Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopSold();
+
+        Tuple<LaptopViewModel, int> GetLaptopById(int? id);
 
         //int CreateCategory(CreateCategoryModel model);
 

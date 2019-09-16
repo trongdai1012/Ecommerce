@@ -45,6 +45,30 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        public Tuple<ProductViewModel, int> GetProductById(int? id)
+        {
+            try
+            {
+                var product = _unitOfWork.ProductRepository.GetById(id);
+                if (product == null) return new Tuple<ProductViewModel, int>(null, 0);
+                var productModel = _mapper.Map<ProductViewModel>(product);
+                productModel.Image = _unitOfWork.ImageRepository.Get(x => x.ProductId == productModel.Id).Url;
+                product.ViewCount += 1;
+                _unitOfWork.Save();
+                return new Tuple<ProductViewModel, int>(productModel, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get product by id in product service", e);
+                return new Tuple<ProductViewModel, int>(null, -1);
+            }
+        }
+
+        /// <summary>
+        /// Get a product by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Tuple<LaptopViewModel, int> GetLaptopById(int? id)
         {
             try
@@ -81,9 +105,24 @@ namespace KLTN.Services
                                   CreateBy = usc.Email,
                                   UpdateAt = pro.UpdateAt,
                                   UpdateBy = usu.Email,
-                                  Status = pro.Status
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  orderby img.Order
+                                                  select img.Url
+                                                  ).FirstOrDefault(),
+                                  Amount = pro.Amount
                               }).FirstOrDefault();
                 if (laptop == null) return new Tuple<LaptopViewModel, int>(null, 0);
+                var product = _unitOfWork.ProductRepository.GetById(id);
+                product.ViewCount += 1;
+                _unitOfWork.Save();
                 return new Tuple<LaptopViewModel, int>(laptop, 1);
             }
             catch (Exception e)
@@ -148,7 +187,18 @@ namespace KLTN.Services
                                   CreateBy = usc.Email,
                                   UpdateAt = pro.UpdateAt,
                                   UpdateBy = usu.Email,
-                                  Status = pro.Status
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  orderby img.Order
+                                                  select img.Url
+                                                  ).FirstOrDefault()
                               });
 
             if (!string.IsNullOrEmpty(searchBy))
@@ -172,6 +222,201 @@ namespace KLTN.Services
                 totalResultsCount);
 
             return tuple;
+        }
+
+        /// <summary>
+        /// Get a product by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopView()
+        {
+            try
+            {
+                var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                              where pro.CategoryId == (int)EnumCategory.Laptop
+                              orderby pro.ViewCount descending
+                              select new LaptopViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  ProductCode = pro.ProductCode,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  Screen = lap.Screen,
+                                  OperatingSystem = lap.OperatingSystem,
+                                  Camera = lap.Camera,
+                                  CPU = lap.CPU,
+                                  RAM = lap.RAM,
+                                  ROM = lap.ROM,
+                                  Card = lap.Card,
+                                  Design = lap.Design,
+                                  Size = lap.Size,
+                                  PortSupport = lap.PortSupport,
+                                  Pin = lap.Pin,
+                                  Color = lap.Color,
+                                  Weight = lap.Weight,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  orderby img.Order
+                                                  select img.Url
+                                                  ).FirstOrDefault()
+                              }).Take(8);
+                if (laptop == null) return new Tuple<IEnumerable<LaptopViewModel>, int>(null, 0);
+                return new Tuple<IEnumerable<LaptopViewModel>, int>(laptop, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get brand by id in brand service", e);
+                return new Tuple<IEnumerable<LaptopViewModel>, int>(null, -1);
+            }
+        }
+
+        /// <summary>
+        /// Get a product by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopLike()
+        {
+            try
+            {
+                var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                              where pro.CategoryId == (int)EnumCategory.Laptop
+                              orderby pro.LikeCount descending
+                              select new LaptopViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  ProductCode = pro.ProductCode,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  Screen = lap.Screen,
+                                  OperatingSystem = lap.OperatingSystem,
+                                  Camera = lap.Camera,
+                                  CPU = lap.CPU,
+                                  RAM = lap.RAM,
+                                  ROM = lap.ROM,
+                                  Card = lap.Card,
+                                  Design = lap.Design,
+                                  Size = lap.Size,
+                                  PortSupport = lap.PortSupport,
+                                  Pin = lap.Pin,
+                                  Color = lap.Color,
+                                  Weight = lap.Weight,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  orderby img.Order
+                                                  select img.Url
+                                                  ).FirstOrDefault()
+                              }).Take(8);
+                if (laptop == null) return new Tuple<IEnumerable<LaptopViewModel>, int>(null, 0);
+                return new Tuple<IEnumerable<LaptopViewModel>, int>(laptop, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get brand by id in brand service", e);
+                return new Tuple<IEnumerable<LaptopViewModel>, int>(null, -1);
+            }
+        }
+
+        /// <summary>
+        /// Get a product by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopSold()
+        {
+            try
+            {
+                var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                              where pro.CategoryId == (int)EnumCategory.Laptop
+                              orderby pro.TotalSold descending
+                              select new LaptopViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  ProductCode = pro.ProductCode,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  Screen = lap.Screen,
+                                  OperatingSystem = lap.OperatingSystem,
+                                  Camera = lap.Camera,
+                                  CPU = lap.CPU,
+                                  RAM = lap.RAM,
+                                  ROM = lap.ROM,
+                                  Card = lap.Card,
+                                  Design = lap.Design,
+                                  Size = lap.Size,
+                                  PortSupport = lap.PortSupport,
+                                  Pin = lap.Pin,
+                                  Color = lap.Color,
+                                  Weight = lap.Weight,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  orderby img.Order
+                                                  select img.Url
+                                                  ).FirstOrDefault()
+                              }).Take(8);
+                if (laptop == null) return new Tuple<IEnumerable<LaptopViewModel>, int>(null, 0);
+                return new Tuple<IEnumerable<LaptopViewModel>, int>(laptop, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get brand by id in brand service", e);
+                return new Tuple<IEnumerable<LaptopViewModel>, int>(null, -1);
+            }
         }
 
         public int CreateLaptop(CreateLaptopViewModel laptopModel)

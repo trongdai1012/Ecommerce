@@ -18,6 +18,7 @@ namespace KLTN.DataModels.Models.Products
         public string MetaTitle { get; set; }
         public string Description { get; set; }
         public List<Image> Images { get; set; }
+        public string ImageDefault { get; set; }
         public byte Rate { get; set; }
         public List<CommentProduct> Comment { get; set; }
         public int ViewCount { get; set; }
