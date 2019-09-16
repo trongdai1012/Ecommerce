@@ -44,6 +44,7 @@ namespace KLTN.Web
             {
                 mc.AddProfile(new MappingProfile());
                 mc.AddProfile(new BrandProfiles());
+                mc.AddProfile(new ProductProfiles());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
@@ -55,11 +56,16 @@ namespace KLTN.Web
             services.AddScoped<IProductService, ProductService>();
 
             services.AddMvc(setup => { }).AddFluentValidation();
-            services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<EcommerceDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.DefaultConnection),
                     assembly => assembly.MigrationsAssembly(Settings.NameSpaceWeb)));
+            services.AddSession(options =>
+            {
+                options.Cookie.IsEssential = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                options.Cookie.SameSite = SameSiteMode.None;
+            });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -91,12 +97,12 @@ namespace KLTN.Web
                 app.UseHsts();
             }
 
+            app.UseSession();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
-            app.UseSession();
 
             app.UseMvc(routes =>
             {

@@ -45,6 +45,30 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        public Tuple<ProductViewModel, int> GetProductById(int? id)
+        {
+            try
+            {
+                var product = _unitOfWork.ProductRepository.GetById(id);
+                if (product == null) return new Tuple<ProductViewModel, int>(null, 0);
+                var productModel = _mapper.Map<ProductViewModel>(product);
+                productModel.Image = _unitOfWork.ImageRepository.Get(x => x.ProductId == productModel.Id).Url;
+                product.ViewCount += 1;
+                _unitOfWork.Save();
+                return new Tuple<ProductViewModel, int>(productModel, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get product by id in product service", e);
+                return new Tuple<ProductViewModel, int>(null, -1);
+            }
+        }
+
+        /// <summary>
+        /// Get a product by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Tuple<LaptopViewModel, int> GetLaptopById(int? id)
         {
             try
@@ -92,9 +116,13 @@ namespace KLTN.Services
                                                   where img.ProductId == pro.Id
                                                   orderby img.Order
                                                   select img.Url
-                                                  ).FirstOrDefault()
+                                                  ).FirstOrDefault(),
+                                  Amount = pro.Amount
                               }).FirstOrDefault();
                 if (laptop == null) return new Tuple<LaptopViewModel, int>(null, 0);
+                var product = _unitOfWork.ProductRepository.GetById(id);
+                product.ViewCount += 1;
+                _unitOfWork.Save();
                 return new Tuple<LaptopViewModel, int>(laptop, 1);
             }
             catch (Exception e)
@@ -252,7 +280,7 @@ namespace KLTN.Services
                                                   ).FirstOrDefault()
                               }).Take(8);
                 if (laptop == null) return new Tuple<IEnumerable<LaptopViewModel>, int>(null, 0);
-                return new Tuple<IEnumerable<LaptopViewModel>,int>(laptop, 1);
+                return new Tuple<IEnumerable<LaptopViewModel>, int>(laptop, 1);
             }
             catch (Exception e)
             {

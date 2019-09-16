@@ -5,12 +5,13 @@ namespace KLTN.Common.Helpers
 {
     public static class SessionHelper
     {
-        public static void SetObjectAsJson(this ISession session, string key, object value)
+        public static void SetObjectAsJson(ISession session, string key, object value)
         {
-            session.SetString(key, JsonConvert.SerializeObject(value));
+            var seriValue = JsonConvert.SerializeObject(value);
+            session.SetString(key, seriValue);
         }
 
-        public static T GetObjectFromJson<T>(this ISession session, string key)
+        public static T GetObjectFromJson<T>(ISession session, string key)
         {
             var value = session.GetString(key);
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);

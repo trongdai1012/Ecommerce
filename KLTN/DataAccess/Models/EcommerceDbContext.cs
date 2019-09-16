@@ -309,7 +309,7 @@ namespace KLTN.DataAccess.Models
                             ViewCount = new Random().Next(1,50000),
                             LikeCount = new Random().Next(1,10000),
                             TotalSold = new Random().Next(1,5000),
-                            Amount = new Random().Next(),
+                            Amount = new Random().Next(1,2000),
                             Status = true,
                             CreateAt = DateTime.UtcNow,
                             CreateBy = 1,

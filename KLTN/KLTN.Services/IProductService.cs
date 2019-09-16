@@ -8,6 +8,8 @@ namespace KLTN.Services
 {
     public interface IProductService
     {
+        Tuple<ProductViewModel, int> GetProductById(int? id);
+
         Tuple<IEnumerable<LaptopViewModel>, int, int> LoadLaptop(DTParameters dtParameters);
 
         Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopView();

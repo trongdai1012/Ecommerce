@@ -5,6 +5,7 @@ using KLTN.Services;
 
 namespace KLTN.Web.Controllers
 {
+    [Route("Home")]
     public class HomeController : Controller
     {
         private readonly IProductService _productService;
@@ -14,6 +15,9 @@ namespace KLTN.Web.Controllers
             _productService = productService;
         }
 
+        [Route("")]
+        [Route("index")]
+        [Route("~/")]
         public IActionResult Index()
         {
             ViewBag.TopView = _productService.GetLaptopTopView().Item1;
