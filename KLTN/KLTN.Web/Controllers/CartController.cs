@@ -29,12 +29,19 @@ namespace KLTN.Web.Controllers
         }
 
         [Route("buy/{id}")]
-        public IActionResult Buy(string id)
+        public IActionResult Buy(string id, int? quantity)
         {
             if (SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") == null)
             {
                 var cart = new List<CartItem>();
-                cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = 1 });
+                if (quantity == null)
+                {
+                    cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = 1 });
+                }
+                else
+                {
+                    cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = quantity.Value });
+                }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             else
@@ -43,11 +50,26 @@ namespace KLTN.Web.Controllers
                 int index = IsExist(id);
                 if (index != -1)
                 {
-                    cart[index].Quantity++;
+                    if (quantity == null)
+                    {
+                        cart[index].Quantity += 1;
+                    }
+                    else
+                    {
+                        cart[index].Quantity += quantity.Value;
+                    }
                 }
                 else
                 {
-                    cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = 1 });
+                    if (quantity == null)
+                    {
+                        cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = 1 });
+                    }
+                    else
+                    {
+                        cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = quantity.Value });
+                    }
+
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
@@ -60,6 +82,24 @@ namespace KLTN.Web.Controllers
             List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
             int index = IsExist(id);
             cart.RemoveAt(index);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            return RedirectToAction("Index");
+        }
+
+        [Route("update")]
+        public IActionResult Update([FromQuery]string id, [FromQuery]int? quantity)
+        {
+            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            int index = IsExist(id);
+            var cartModel = cart.ElementAt(index);
+            if (quantity == null || quantity < 1)
+            {
+                cartModel.Quantity = 1;
+            }else
+            {
+                cartModel.Quantity = quantity.Value;
+            }
+
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
