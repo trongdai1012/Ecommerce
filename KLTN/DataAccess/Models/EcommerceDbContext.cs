@@ -14,6 +14,7 @@ namespace KLTN.DataAccess.Models
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<CommentProduct> CommentProducts { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -185,6 +186,20 @@ namespace KLTN.DataAccess.Models
                 entity.HasIndex(x => x.ProductId);
             });
 
+            modelBuilder.Entity<Contact>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasIndex(x => x.HandlerId);
+                entity.Property(x => x.Title).HasColumnType(TypeOfSql.NVarChar + "(50)");
+                entity.Property(x => x.Content).HasColumnType(TypeOfSql.NText);
+                entity.Property(x => x.ContentReply).HasColumnType(TypeOfSql.NText);
+                entity
+                .HasOne(x => x.Customer)
+                .WithMany(x => x.Contacts)
+                .HasForeignKey(x => x.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -221,18 +236,21 @@ namespace KLTN.DataAccess.Models
                 .HasForeignKey<Employee>(x => x.UserId);
             });
 
-            modelBuilder.Entity<Feedback>(entity =>
+            modelBuilder.Entity<Feedback>(entity=>
             {
                 entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.HandlerId);
-                entity.Property(x => x.Title).HasColumnType(TypeOfSql.NVarChar + "(50)");
-                entity.Property(x => x.Content).HasColumnType(TypeOfSql.NText);
-                entity.Property(x => x.ContentReply).HasColumnType(TypeOfSql.NText);
+                entity.Property(x => x.Rate).HasColumnType(TypeOfSql.TinyInt);
+                entity.Property(x => x.Comment).HasColumnType(TypeOfSql.NText);
                 entity
                 .HasOne(x => x.Customer)
                 .WithMany(x => x.Feedbacks)
                 .HasForeignKey(x => x.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+                entity
+                .HasOne(x => x.Product)
+                .WithMany(x => x.Feedbacks)
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Mobile>(entity =>

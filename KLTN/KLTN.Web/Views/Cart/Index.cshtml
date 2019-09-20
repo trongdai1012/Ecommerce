@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
 }
 <!--================Home Banner Area =================-->
 <section class="banner_area">
@@ -34,7 +35,7 @@
                             <th scope="col">Thành tiền</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="col-md-12">
                         @foreach (var item in ViewBag.cart)
                         {
                             <tr>
@@ -58,12 +59,12 @@
                                         <input type="text"
                                                name="qty"
                                                id="@item.Product.Id"
-                                               maxlength="12"
+                                               data-id="@item.Product.Id"
+                                               maxlength="6"
                                                value="@item.Quantity"
                                                title="Quantity:"
-                                               class="input-text qty"
-                                               onkeyup="AddToCart(@item.Product.Id)"
-                                               />
+                                               class="input-text qty inputqty"
+                                               style="width:100%" />
                                         <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
                                                 class="increase items-count"
                                                 type="button">
@@ -76,10 +77,9 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td>
-                                    <h5>@(item.Product.CurrentPrice * item.Quantity)</h5>
+                                <td style="padding-left:0px;padding-right:0px;width:150px">
+                                    <h5 style="width:100%" id="total-@item.Product.Id">@string.Format(info, "{0:C0}", (item.Product.CurrentPrice * item.Quantity))</h5>
                                 </td>
-                                @*<td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Remove</a></td>*@
                             </tr>
                         }
                         <tr class="bottom_button">
@@ -102,8 +102,8 @@
                             <td>
                                 <h5>Tổng tiền</h5>
                             </td>
-                            <td>
-                                <h5> @ViewBag.total</h5>
+                            <td style="padding-left:0px;padding-right:0px">
+                                <h5 id="subtotal" style="width:100%">@string.Format(info, "{0:C0}", ViewBag.total)</h5>
                             </td>
                         </tr>
                         <tr class="shipping_area">
@@ -209,6 +209,7 @@
 </div>
 @section scripts
     {
+    <script src="~/js/cartjs/cart.js"></script>
     @*<script>
             function AddToCart(id) {
                 var quantity = document.getElementById(id).value;
@@ -223,11 +224,11 @@
                 });
             }
         </script>*@
-    <script>
-        function AddToCart(id) {
-            var quantity = document.getElementById(id).value;
-            $.get('@Url.Action("Update","Cart")', { id: id, quantity: quantity });
-            location.reload();
-        }
-    </script>
+    @*<script>
+            function AddToCart(id) {
+                var quantity = document.getElementById(id).value;
+                $.get('@Url.Action("Update","Cart")', { id: id, quantity: quantity });
+                location.reload();
+            }
+    </script>*@
 }

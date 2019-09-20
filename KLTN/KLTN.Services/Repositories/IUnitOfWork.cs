@@ -15,6 +15,7 @@ namespace KLTN.Services.Repositories
         IGenericRepository<Admin> AdminRepository { get; }
         IGenericRepository<Brand> BrandRepository { get; }
         IGenericRepository<Category> CategoryRepository { get; }
+        IGenericRepository<Contact> ContactRepository { get; }
         IGenericRepository<Customer> CustomerRepository { get; }
         IGenericRepository<Delivery> DeliveryRepository { get; }
         IGenericRepository<Employee> EmployeeRepository { get; }

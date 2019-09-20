@@ -24,5 +24,6 @@ namespace KLTN.DataAccess.Models
         public virtual Category Category { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
         public virtual List<Image> Images { get; set; }
+        public virtual List<Feedback> Feedbacks { get; set; }
     }
 }

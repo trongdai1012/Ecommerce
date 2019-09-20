@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace KLTN.DataAccess.Models
 {
@@ -6,14 +8,13 @@ namespace KLTN.DataAccess.Models
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public int HandlerId { get; set; }
-        public string Title { get; set; }
-        public string Content { get; set; }
-        public string ContentReply { get; set; }
-        public DateTime FeedbackAt { get; set; }
-        public DateTime ReplyFeedbackAt { get; set; }
-        public bool Status { get; set; }
+        public int ProductId { get; set; }
+        public byte Rate { get; set; }
+        public string Comment { get; set; }
+        public bool IsLike { get; set; }
+        public bool IsBought { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

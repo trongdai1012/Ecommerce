@@ -3,6 +3,7 @@
     ViewData["Title"] = "LaptopDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="~/css/rating.css"/>
 <!--================Home Banner Area =================-->
 <section class="banner_area">
     <div class="banner_inner d-flex align-items-center">
@@ -434,7 +435,7 @@
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                                <i class="fa fa-star-o"></i> 01
                                             </a>
                                         </li>
                                         <li>
@@ -443,8 +444,8 @@
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                                <i class="fa fa-star-o"></i>
+                                                <i class="fa fa-star-o"></i> 01
                                             </a>
                                         </li>
                                         <li>
@@ -452,19 +453,19 @@
                                                 2 Star
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                                <i class="fa fa-star-o"></i>
+                                                <i class="fa fa-star-o"></i>
+                                                <i class="fa fa-star-o"></i> 01
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">
                                                 1 Star
                                                 <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                                <i class="fa fa-star-o"></i>
+                                                <i class="fa fa-star-o"></i>
+                                                <i class="fa fa-star-o"></i>
+                                                <i class="fa fa-star-o"></i> 01
                                             </a>
                                         </li>
                                     </ul>
@@ -544,33 +545,42 @@
                         <div class="review_box">
                             <h4>Add a Review</h4>
                             <p>Your Rating:</p>
-                            <ul class="list">
+                            <div class="row">
+                                <div class="rating">
+                                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Meh">5 stars</label>
+                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Kinda bad">4 stars</label>
+                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Kinda bad">3 stars</label>
+                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Sucks big tim">2 stars</label>
+                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+                                </div>
+                            </div>
+                            @*<ul class="list">
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul>*@
                             <p>Outstanding</p>
                             <form class="row contact_form"
                                   action="contact_process.php"
@@ -579,46 +589,16 @@
                                   novalidate="novalidate">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <input type="text"
-                                               class="form-control"
-                                               id="name"
-                                               name="name"
-                                               placeholder="Your Full name" />
+                                        <textarea type="text"
+                                                  class="form-control"
+                                                  id="name"
+                                                  name="name"
+                                                  placeholder="Bình luận">
+                                        </textarea>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="email"
-                                               class="form-control"
-                                               id="email"
-                                               name="email"
-                                               placeholder="Email Address" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input type="text"
-                                               class="form-control"
-                                               id="number"
-                                               name="number"
-                                               placeholder="Phone Number" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <textarea class="form-control"
-                                                  name="message"
-                                                  id="message"
-                                                  rows="1"
-                                                  placeholder="Review"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <button type="submit"
-                                            value="submit"
-                                            class="btn submit_btn">
-                                        Submit Now
-                                    </button>
+                                <div class="col-md-12 text-right btn-rate">
+
                                 </div>
                             </form>
                         </div>

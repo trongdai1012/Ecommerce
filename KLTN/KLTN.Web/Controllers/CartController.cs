@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using KLTN.Common.Helpers;
 using KLTN.DataModels.Models.Products;
 using KLTN.Services;
@@ -86,8 +85,27 @@ namespace KLTN.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        
+        //public IActionResult Update([FromQuery]string id, [FromQuery]int? quantity)
+        //{
+        //    List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+        //    int index = IsExist(id);
+        //    var cartModel = cart.ElementAt(index);
+        //    if (quantity == null || quantity < 1)
+        //    {
+        //        cartModel.Quantity = 1;
+        //    }else
+        //    {
+        //        cartModel.Quantity = quantity.Value;
+        //    }
+
+        //    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+        //    return RedirectToAction("Index");
+        //}
+
         [Route("update")]
-        public IActionResult Update([FromQuery]string id, [FromQuery]int? quantity)
+        [HttpPut]
+        public JsonResult Update(string id, int? quantity)
         {
             List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
             int index = IsExist(id);
@@ -95,13 +113,28 @@ namespace KLTN.Web.Controllers
             if (quantity == null || quantity < 1)
             {
                 cartModel.Quantity = 1;
-            }else
+            }
+            else
             {
                 cartModel.Quantity = quantity.Value;
             }
 
+            var totalPrice = cartModel.Product.CurrentPrice * cartModel.Quantity;
+
+            decimal subTotalPrice = 0;
+            foreach (var item in cart)
+            {
+                subTotalPrice += item.Quantity * item.Product.CurrentPrice;
+            }
+
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            return RedirectToAction("Index");
+            return Json(
+                new
+                {
+                    quantity = cartModel.Quantity,
+                    total = totalPrice,
+                    subTotal = subTotalPrice
+                });
         }
 
         private int IsExist(string id)
