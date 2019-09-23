@@ -18,7 +18,7 @@ namespace KLTN.Services
 
         private readonly IMapper _mapper;
 
-        public FeedbackService(IUnitOfWork unitOfWork, HttpContextAccessor contextAccessor, IMapper mapper)
+        public FeedbackService(IUnitOfWork unitOfWork, IHttpContextAccessor contextAccessor, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _httpContext = contextAccessor.HttpContext;
