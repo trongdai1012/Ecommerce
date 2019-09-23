@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using KLTN.Services;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace KLTN.Web.Controllers
 {
-    [Route("Product")]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -45,5 +46,21 @@ namespace KLTN.Web.Controllers
 
         //    }
         //}
+
+        [HttpGet]
+        public IActionResult FeedbackProduct(int id)
+        {
+            try
+            {
+                var listFeedback = _feedbackService.GetFeedbackByProducId(id);
+                return PartialView("FeedbackProduct", listFeedback);
+                
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error at FeedbackProduct in ProductController", e);
+                return BadRequest();
+            }
+        }
     }
 }
