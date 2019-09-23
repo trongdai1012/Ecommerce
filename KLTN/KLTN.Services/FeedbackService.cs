@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AutoMapper;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Feedbacks;
 using KLTN.Services.Repositories;
@@ -15,10 +16,21 @@ namespace KLTN.Services
 
         private readonly HttpContext _httpContext;
 
-        public FeedbackService(IUnitOfWork unitOfWork, HttpContextAccessor contextAccessor)
+        private readonly IMapper _mapper;
+
+        public FeedbackService(IUnitOfWork unitOfWork, HttpContextAccessor contextAccessor, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _httpContext = contextAccessor.HttpContext;
+            _mapper = mapper;
+        }
+
+        public IEnumerable<FeedbackViewModel> GetFeedbackByProducId(int id)
+        {
+            var listFeedback = _unitOfWork.FeedbackRepository.GetMany(x=>x.ProductId==id);
+            var listFeedbackModel = _mapper.Map<IEnumerable<FeedbackViewModel>>(listFeedback);
+
+            return listFeedbackModel;
         }
 
         public bool Rating(int productId, string comment, byte rate)
