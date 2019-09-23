@@ -25,6 +25,8 @@ namespace KLTN.Services
         bool ConfirmUser(string confirmString);
 
         Tuple<AdminViewModel, int> GetAdmin(int id);
+        
+        Tuple<UpdateAdminViewModel, int> GetAdminUpdate(int id);
 
         Tuple<EmployeeViewModel, int> GetEmployee(int id);
 

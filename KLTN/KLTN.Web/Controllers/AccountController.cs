@@ -110,18 +110,18 @@ namespace KLTN.Web.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Register(RegisterUserViewModel registerUser)
-        {
-            if (!ModelState.IsValid) return View();
-            _userService.Register(registerUser);
-            return RedirectToAction("Index", "Home");
-        }
+//        [HttpGet]
+//        public IActionResult Register()
+//        {
+//            return View();
+//        }
+//
+//        [HttpPost]
+//        public IActionResult Register(RegisterUserViewModel registerUser)
+//        {
+//            if (!ModelState.IsValid) return View();
+//            _userService.Register(registerUser);
+//            return RedirectToAction("Index", "Home");
+//        }
     }
 }

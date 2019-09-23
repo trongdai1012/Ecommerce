@@ -21,11 +21,6 @@ namespace KLTN.Web.Controllers
             _feedbackService = feedbackService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult LaptopDetail(int id)
         {
             var laptop = _productService.GetLaptopById(id).Item1;
