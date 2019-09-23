@@ -199,19 +199,19 @@ namespace KLTN.Web.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult EmployeeDetail(int id)
-        {
-            return View();
-        }
-
-        public IActionResult CustomerDetail(int id)
-        {
-            return View();
-        }
+//        public IActionResult EmployeeDetail(int id)
+//        {
+//            return View();
+//        }
+//
+//        public IActionResult CustomerDetail(int id)
+//        {
+//            return View();
+//        }
 
         public IActionResult AdminUpdate(int id)
         {
-            var admin = _userService.GetAdmin(id);
+            var admin = _userService.GetAdminUpdate(id);
             return View(admin.Item1);
         }
 

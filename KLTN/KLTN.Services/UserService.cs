@@ -355,6 +355,26 @@ namespace KLTN.Services
                 return new Tuple<AdminViewModel, int>(null, -1);
             }
         }
+        
+        public Tuple<UpdateAdminViewModel, int> GetAdminUpdate(int id)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetById(id);
+                if (user == null) return new Tuple<UpdateAdminViewModel, int>(null, 3);
+
+                var admin = _unitOfWork.AdminRepository.Get(x => x.UserId == id);
+                if (admin == null) return new Tuple<UpdateAdminViewModel, int>(null, 2);
+
+                var adminModel = _mapper.Map<UpdateAdminViewModel>(user);
+                return new Tuple<UpdateAdminViewModel, int>(adminModel, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when GetEmployee in UserService", e);
+                return new Tuple<UpdateAdminViewModel, int>(null, -1);
+            }
+        }
 
         public Tuple<EmployeeViewModel, int> GetEmployee(int id)
         {
@@ -629,15 +649,15 @@ namespace KLTN.Services
             }
         }
 
-        public UpdateAdminViewModel GetAdminUpdate(int id)
-        {
-            var user = _unitOfWork.UserRepository.GetById(id);
-            var adminView = new UpdateAdminViewModel
-            {
-                Email = user.Email
-            };
-            return adminView;
-        }
+//        public UpdateAdminViewModel GetAdminUpdate(int id)
+//        {
+//            var user = _unitOfWork.UserRepository.GetById(id);
+//            var adminView = new UpdateAdminViewModel
+//            {
+//                Email = user.Email
+//            };
+//            return adminView;
+//        }
 
         public string GetClaimUserMail()
         {
