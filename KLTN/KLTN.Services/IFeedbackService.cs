@@ -1,4 +1,5 @@
 ﻿using KLTN.DataModels.Models.Feedbacks;
+using System;
 using System.Collections.Generic;
 
 namespace KLTN.Services
@@ -7,6 +8,6 @@ namespace KLTN.Services
     {
         bool Rating(int productId, string comment, byte rate);
 
-        IEnumerable<FeedbackViewModel> GetFeedbackByProducId(int id);
+        Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback> GetFeedbackByProducId(int id);
     }
 }

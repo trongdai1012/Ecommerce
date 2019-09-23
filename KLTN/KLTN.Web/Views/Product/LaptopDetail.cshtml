@@ -256,8 +256,48 @@
     </script>
     <script>
         var valueStar = 0;
+        var cmt;
         function GetValueStar(id) {
             valueStar = document.getElementById(id).value;
+        }
+
+        function Rating(productId, comment, rate) {
+            $.ajax({
+                url: '/Product/Rating',
+                data: { productId: productId, comment: comment, rate: rate },
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status) {
+                        GetFeedback(@Model.Id);
+                        alert('Đánh giá thành công!');
+                    } else {
+                        alert('Vui lòng chọn thang điểm đánh giá trước.');
+                    }
+                }
+            })
+        };
+
+        $(document).on('click', '#rating-btn', function () {
+            cmt = document.getElementById('comment').value;
+            Rating(@Model.Id, cmt, valueStar);
+            valueStar = 0;
+        });
+
+        $(function () {
+            GetFeedback(@Model.Id);
+        });
+        function GetFeedback(id) {
+            $.ajax({
+                url: '/Product/FeedbackProduct',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: { id: id }
+            }).done(function (result) {
+                $('#myTabContent').html(result);
+                });
         }
     </script>
 }

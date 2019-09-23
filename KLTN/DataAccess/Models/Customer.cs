@@ -10,6 +10,5 @@ namespace KLTN.DataAccess.Models
 
         public User User { get; set; }
         public virtual List<Contact> Contacts { get; set; }
-        public virtual List<Feedback> Feedbacks { get; set; }
     }
 }

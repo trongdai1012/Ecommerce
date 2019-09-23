@@ -57,10 +57,12 @@ namespace KLTN.Web
             services.AddScoped<IFeedbackService, FeedbackService>();
 
             services.AddMvc(setup => { }).AddFluentValidation();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<EcommerceDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.DefaultConnection),
                     assembly => assembly.MigrationsAssembly(Settings.NameSpaceWeb)));
+
             services.AddSession(options =>
             {
                 options.Cookie.IsEssential = true;

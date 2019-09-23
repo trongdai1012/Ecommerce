@@ -21,5 +21,6 @@ namespace KLTN.DataAccess.Models
         public virtual Employee Employee { get; set; }
         public virtual Admin Admin { get; set; }
         public virtual UserConfirm UserConfirm { get; set; }
+        public virtual List<Feedback> Feedbacks { get; set; }
     }
 }

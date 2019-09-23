@@ -1,3 +1,0 @@
-2019-09-06 11:12:42.379 +07:00 [ERR] Have an error when create category in service
-2019-09-06 11:13:31.489 +07:00 [ERR] Have an error when create category in service
-2019-09-06 11:17:07.245 +07:00 [ERR] Have an error when create category in service

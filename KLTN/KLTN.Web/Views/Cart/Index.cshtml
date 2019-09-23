@@ -210,25 +210,4 @@
 @section scripts
     {
     <script src="~/js/cartjs/cart.js"></script>
-    @*<script>
-            function AddToCart(id) {
-                var quantity = document.getElementById(id).value;
-                $.ajax({
-                    url: '/Cart/Update',
-                    data: {
-                        id: id,
-                        quantity: quantity
-                    },
-                }).done(function () {
-                    alert('Added');
-                });
-            }
-        </script>*@
-    @*<script>
-            function AddToCart(id) {
-                var quantity = document.getElementById(id).value;
-                $.get('@Url.Action("Update","Cart")', { id: id, quantity: quantity });
-                location.reload();
-            }
-    </script>*@
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using KLTN.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -28,35 +25,46 @@ namespace KLTN.Web.Controllers
             return View(laptop);
         }
 
-        //public JsonResult Rating(int productId, byte rate, string comment)
-        //{
-        //    try
-        //    {
-        //        var myRating = _feedbackService.Rating(productId, comment, rate);
-        //        if(myRating)
-        //        {
-        //            return Json(
-        //                new {
-                            
-        //                });
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
+        [HttpPost]
+        public JsonResult Rating(int productId, byte rate, string comment)
+        {
+            if(rate<1 || rate > 5) return Json( new {status = false});
+            try
+            {
+                var myRating = _feedbackService.Rating(productId, comment, rate);
+                if (myRating)
+                {
+                    return Json(
+                        new
+                        {
+                            status = true
+                        });
+                }
+                return Json(
+                    new
+                    {
+                        status = false
+                    });
+            }
+            catch (Exception e)
+            {
+                return Json(
+                    new
+                    {
+                        status = false
+                    });
+            }
+        }
 
-        //    }
-        //}
-
-        [HttpGet]
+        [HttpPost]
         public IActionResult FeedbackProduct(int id)
         {
             try
             {
                 var listFeedback = _feedbackService.GetFeedbackByProducId(id);
-                return PartialView("FeedbackProduct", listFeedback);
-                
+                return PartialView("_FeedbackProduct", listFeedback);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Error("Have an error at FeedbackProduct in ProductController", e);
                 return BadRequest();

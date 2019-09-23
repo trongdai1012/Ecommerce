@@ -8,6 +8,7 @@ namespace KLTN.DataModels.Models.Feedbacks
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public int ProductId { get; set; }
         public byte Rate { get; set; }
         public string Comment { get; set; }

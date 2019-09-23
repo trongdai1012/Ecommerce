@@ -242,9 +242,9 @@ namespace KLTN.DataAccess.Models
                 entity.Property(x => x.Rate).HasColumnType(TypeOfSql.TinyInt);
                 entity.Property(x => x.Comment).HasColumnType(TypeOfSql.NText);
                 entity
-                .HasOne(x => x.Customer)
+                .HasOne(x => x.User)
                 .WithMany(x => x.Feedbacks)
-                .HasForeignKey(x => x.CustomerId)
+                .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
                 entity
                 .HasOne(x => x.Product)

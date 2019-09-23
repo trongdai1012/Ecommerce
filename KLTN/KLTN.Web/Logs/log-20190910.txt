@@ -1,1 +1,0 @@
-2019-09-10 10:47:06.333 +07:00 [ERR] Have an error when create category in service
