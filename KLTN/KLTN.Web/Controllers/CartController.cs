@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using KLTN.Common.Helpers;
+using KLTN.DataModels.Models.Orders;
 using KLTN.DataModels.Models.Products;
 using KLTN.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KLTN.Web.Controllers
@@ -13,9 +15,12 @@ namespace KLTN.Web.Controllers
     {
         private readonly IProductService _productService;
 
-        public CartController(IProductService productService)
+        private readonly IOrderService _orderService;
+
+        public CartController(IProductService productService, IOrderService orderService)
         {
             _productService = productService;
+            _orderService = orderService;
         }
 
         [Route("index")]
@@ -84,24 +89,37 @@ namespace KLTN.Web.Controllers
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
-
         
-        //public IActionResult Update([FromQuery]string id, [FromQuery]int? quantity)
-        //{
-        //    List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-        //    int index = IsExist(id);
-        //    var cartModel = cart.ElementAt(index);
-        //    if (quantity == null || quantity < 1)
-        //    {
-        //        cartModel.Quantity = 1;
-        //    }else
-        //    {
-        //        cartModel.Quantity = quantity.Value;
-        //    }
+        [Authorize]
+        [HttpGet]
+        [Route("Payment")]
+        public IActionResult Payment()
+        {
+            return View();
+        }
 
-        //    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        [Authorize]
+        public IActionResult Payment(OrderViewModel orderView)
+        {
+            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            if (cart == null) return BadRequest();
+            var listOrdDT = new List<OrderDetailViewModel>();
+            foreach (var item in cart)
+            {
+                listOrdDT.Add(new OrderDetailViewModel
+                {
+                    ProductId = item.Product.Id,
+                    Quantity = item.Quantity,
+                    Image = item.Product.Image,
+                    Price = item.Product.CurrentPrice
+                });
+            }
+
+            _orderService.Create(orderView,listOrdDT);
+
+            return RedirectToAction("Index","Home");
+        }
 
         [Route("update")]
         [HttpPut]

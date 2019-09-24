@@ -55,6 +55,7 @@ namespace KLTN.Web
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddMvc(setup => { }).AddFluentValidation();
 
