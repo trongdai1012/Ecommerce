@@ -30,9 +30,10 @@ namespace KLTN.Services
         {
             try
             {
-                var listFeedback = (from fb in _unitOfWork.FeedbackRepository.ObjectContext
+                var listFeedback = from fb in _unitOfWork.FeedbackRepository.ObjectContext
                                     join user in _unitOfWork.UserRepository.ObjectContext on fb.UserId equals user.Id
                                     where fb.ProductId == id
+                                    orderby fb.RatedAt descending
                                     select new FeedbackViewModel
                                     {
                                         Id = fb.Id,
@@ -42,15 +43,16 @@ namespace KLTN.Services
                                         IsBought = fb.IsBought,
                                         IsLike = fb.IsLike,
                                         ProductId = fb.ProductId,
-                                        Rate = fb.Rate
-                                    });
+                                        Rate = fb.Rate,
+                                        RatedAt = fb.RatedAt
+                                    };
                 var rateCount = new RateCountFeedback
                 {
-                    OneStar = listFeedback.Where(x => x.Rate == 1).Count(),
-                    TwoStar = listFeedback.Where(x => x.Rate == 2).Count(),
-                    ThreeStar = listFeedback.Where(x => x.Rate == 3).Count(),
-                    FourStar = listFeedback.Where(x => x.Rate == 4).Count(),
-                    FiveStar = listFeedback.Where(x => x.Rate == 5).Count(),
+                    OneStar = listFeedback.Count(x => x.Rate == 1),
+                    TwoStar = listFeedback.Count(x => x.Rate == 2),
+                    ThreeStar = listFeedback.Count(x => x.Rate == 3),
+                    FourStar = listFeedback.Count(x => x.Rate == 4),
+                    FiveStar = listFeedback.Count(x => x.Rate == 5),
                     Id = id
                 };
                 return new Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback>(listFeedback,rateCount);
@@ -74,7 +76,8 @@ namespace KLTN.Services
                         UserId = GetUserId(),
                         Rate = rate,
                         IsBought = true,
-                        Comment = comment
+                        Comment = comment,
+                        RatedAt = DateTime.UtcNow
                     };
                     _unitOfWork.FeedbackRepository.Create(newFeedback);
                     _unitOfWork.Save();
@@ -82,6 +85,7 @@ namespace KLTN.Services
                 }
                 feedback.Comment = comment;
                 feedback.Rate = rate;
+                feedback.RatedAt = DateTime.UtcNow;
                 _unitOfWork.Save();
                 return true;
             }
@@ -108,7 +112,7 @@ namespace KLTN.Services
                 return true;
             }
 
-            feedback.IsLike = !feedback.IsLike;
+            feedback.IsLike = true;
             _unitOfWork.Save();
             return feedback.IsLike;
         }

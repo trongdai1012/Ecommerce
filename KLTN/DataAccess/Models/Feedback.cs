@@ -13,6 +13,7 @@ namespace KLTN.DataAccess.Models
         public string Comment { get; set; }
         public bool IsLike { get; set; }
         public bool IsBought { get; set; }
+        public DateTime RatedAt { get; set; }
 
         public virtual User User { get; set; }
         public virtual Product Product { get; set; }

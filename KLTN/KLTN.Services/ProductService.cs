@@ -21,6 +21,7 @@ namespace KLTN.Services
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly HttpContext _httpContext;
+
         /// <summary>
         /// 
         /// </summary>
@@ -74,52 +75,53 @@ namespace KLTN.Services
             try
             {
                 var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop && pro.Id == id
-                              select new LaptopViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  Rate = pro.Rate,
-                                  Screen = lap.Screen,
-                                  OperatingSystem = lap.OperatingSystem,
-                                  Camera = lap.Camera,
-                                  CPU = lap.CPU,
-                                  RAM = lap.RAM,
-                                  ROM = lap.ROM,
-                                  Card = lap.Card,
-                                  Design = lap.Design,
-                                  Size = lap.Size,
-                                  PortSupport = lap.PortSupport,
-                                  Pin = lap.Pin,
-                                  Color = lap.Color,
-                                  Weight = lap.Weight,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
-                                  Status = pro.Status,
-                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                            where img.ProductId == pro.Id
-                                            select img).ToList(),
-                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                                  where img.ProductId == pro.Id
-                                                  orderby img.Order
-                                                  select img.Url
-                                                  ).FirstOrDefault(),
-                                  Amount = pro.Amount
-                              }).FirstOrDefault();
+                    join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                    join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                    join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                    join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                    where pro.CategoryId == (int) EnumCategory.Laptop && pro.Id == id
+                    select new LaptopViewModel
+                    {
+                        Id = pro.Id,
+                        Name = pro.Name,
+                        ProductCode = pro.ProductCode,
+                        Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                        Brand = bra.Name,
+                        Description = pro.Description,
+                        InitialPrice = pro.InitialPrice,
+                        CurrentPrice = pro.CurrentPrice,
+                        Rate = pro.Rate,
+                        Screen = lap.Screen,
+                        OperatingSystem = lap.OperatingSystem,
+                        Camera = lap.Camera,
+                        CPU = lap.CPU,
+                        RAM = lap.RAM,
+                        ROM = lap.ROM,
+                        Card = lap.Card,
+                        Design = lap.Design,
+                        Size = lap.Size,
+                        PortSupport = lap.PortSupport,
+                        Pin = lap.Pin,
+                        Color = lap.Color,
+                        Weight = lap.Weight,
+                        CreateAt = pro.CreateAt,
+                        CreateBy = usc.Email,
+                        UpdateAt = pro.UpdateAt,
+                        UpdateBy = usu.Email,
+                        ViewCount = pro.ViewCount,
+                        LikeCount = pro.LikeCount,
+                        TotalSold = pro.TotalSold,
+                        Status = pro.Status,
+                        Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                            where img.ProductId == pro.Id
+                            select img).ToList(),
+                        ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                where img.ProductId == pro.Id
+                                orderby img.Order
+                                select img.Url
+                            ).FirstOrDefault(),
+                        Amount = pro.Amount
+                    }).FirstOrDefault();
                 if (laptop == null) return new Tuple<LaptopViewModel, int>(null, 0);
                 var product = _unitOfWork.ProductRepository.GetById(id);
                 product.ViewCount += 1;
@@ -157,63 +159,64 @@ namespace KLTN.Services
             }
 
             var listLaptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop
-                              select new LaptopViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  Screen = lap.Screen,
-                                  OperatingSystem = lap.OperatingSystem,
-                                  Camera = lap.Camera,
-                                  CPU = lap.CPU,
-                                  RAM = lap.RAM,
-                                  ROM = lap.ROM,
-                                  Card = lap.Card,
-                                  Design = lap.Design,
-                                  Size = lap.Size,
-                                  PortSupport = lap.PortSupport,
-                                  Pin = lap.Pin,
-                                  Color = lap.Color,
-                                  Weight = lap.Weight,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
-                                  Status = pro.Status,
-                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                            where img.ProductId == pro.Id
-                                            select img).ToList(),
-                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                                  where img.ProductId == pro.Id
-                                                  orderby img.Order
-                                                  select img.Url
-                                                  ).FirstOrDefault()
-                              });
+                join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                where pro.CategoryId == (int) EnumCategory.Laptop
+                select new LaptopViewModel
+                {
+                    Id = pro.Id,
+                    Name = pro.Name,
+                    ProductCode = pro.ProductCode,
+                    Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                    Brand = bra.Name,
+                    InitialPrice = pro.InitialPrice,
+                    CurrentPrice = pro.CurrentPrice,
+                    Description = pro.Description,
+                    Screen = lap.Screen,
+                    OperatingSystem = lap.OperatingSystem,
+                    Camera = lap.Camera,
+                    CPU = lap.CPU,
+                    RAM = lap.RAM,
+                    ROM = lap.ROM,
+                    Card = lap.Card,
+                    Design = lap.Design,
+                    Size = lap.Size,
+                    PortSupport = lap.PortSupport,
+                    Pin = lap.Pin,
+                    Color = lap.Color,
+                    Weight = lap.Weight,
+                    CreateAt = pro.CreateAt,
+                    CreateBy = usc.Email,
+                    UpdateAt = pro.UpdateAt,
+                    UpdateBy = usu.Email,
+                    ViewCount = pro.ViewCount,
+                    LikeCount = pro.LikeCount,
+                    TotalSold = pro.TotalSold,
+                    Status = pro.Status,
+                    Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                        where img.ProductId == pro.Id
+                        select img).ToList(),
+                    ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                            where img.ProductId == pro.Id
+                            orderby img.Order
+                            select img.Url
+                        ).FirstOrDefault()
+                });
 
             if (!string.IsNullOrEmpty(searchBy))
             {
                 listLaptop = listLaptop.Where(r =>
-                        r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Brand.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Brand.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
             }
 
             listLaptop = orderAscendingDirection
-               ? listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
-               : listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+                ? listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
 
             var viewModels = listLaptop.OrderBy(x => x.Id).ToArray();
             var filteredResultsCount = viewModels.ToArray().Length;
@@ -235,59 +238,66 @@ namespace KLTN.Services
             try
             {
                 var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop
-                              orderby pro.ViewCount descending
-                              select new LaptopViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  Rate = pro.Rate,
-                                  Screen = lap.Screen,
-                                  OperatingSystem = lap.OperatingSystem,
-                                  Camera = lap.Camera,
-                                  CPU = lap.CPU,
-                                  RAM = lap.RAM,
-                                  ROM = lap.ROM,
-                                  Card = lap.Card,
-                                  Design = lap.Design,
-                                  Size = lap.Size,
-                                  PortSupport = lap.PortSupport,
-                                  Pin = lap.Pin,
-                                  Color = lap.Color,
-                                  Weight = lap.Weight,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
-                                  Status = pro.Status,
-                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                            where img.ProductId == pro.Id
-                                            select img).ToList(),
-                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                                  where img.ProductId == pro.Id
-                                                  orderby img.Order
-                                                  select img.Url
-                                                  ).FirstOrDefault()
-                              }).Take(8);
-                return laptop == null ? null : laptop;
+                    join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                    join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                    join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                    join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                    where pro.CategoryId == (int) EnumCategory.Laptop
+                    orderby pro.ViewCount descending
+                    select new LaptopViewModel
+                    {
+                        Id = pro.Id,
+                        Name = pro.Name,
+                        ProductCode = pro.ProductCode,
+                        Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                        Brand = bra.Name,
+                        InitialPrice = pro.InitialPrice,
+                        CurrentPrice = pro.CurrentPrice,
+                        Rate = pro.Rate,
+                        Screen = lap.Screen,
+                        OperatingSystem = lap.OperatingSystem,
+                        Camera = lap.Camera,
+                        CPU = lap.CPU,
+                        RAM = lap.RAM,
+                        ROM = lap.ROM,
+                        Card = lap.Card,
+                        Design = lap.Design,
+                        Size = lap.Size,
+                        PortSupport = lap.PortSupport,
+                        Pin = lap.Pin,
+                        Color = lap.Color,
+                        Weight = lap.Weight,
+                        CreateAt = pro.CreateAt,
+                        CreateBy = usc.Email,
+                        UpdateAt = pro.UpdateAt,
+                        UpdateBy = usu.Email,
+                        ViewCount = pro.ViewCount,
+                        LikeCount = pro.LikeCount,
+                        TotalSold = pro.TotalSold,
+                        Status = pro.Status,
+                        Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                            where img.ProductId == pro.Id
+                            select img).ToList(),
+                        ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                where img.ProductId == pro.Id
+                                orderby img.Order
+                                select img.Url
+                            ).FirstOrDefault()
+                    }).Take(8);
+                return laptop;
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when get brand by id in brand service", e);
                 return null;
             }
+        }
+
+        private bool GetLike(int productId)
+        {
+            var feedback =
+                _unitOfWork.FeedbackRepository.Get(x => x.ProductId == productId && x.UserId == GetClaimUserId());
+            return feedback != null && feedback.IsLike;
         }
 
         /// <summary>
@@ -300,52 +310,52 @@ namespace KLTN.Services
             try
             {
                 var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop
-                              orderby pro.LikeCount descending
-                              select new LaptopViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  Rate = pro.Rate,
-                                  Screen = lap.Screen,
-                                  OperatingSystem = lap.OperatingSystem,
-                                  Camera = lap.Camera,
-                                  CPU = lap.CPU,
-                                  RAM = lap.RAM,
-                                  ROM = lap.ROM,
-                                  Card = lap.Card,
-                                  Design = lap.Design,
-                                  Size = lap.Size,
-                                  PortSupport = lap.PortSupport,
-                                  Pin = lap.Pin,
-                                  Color = lap.Color,
-                                  Weight = lap.Weight,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
-                                  Status = pro.Status,
-                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                            where img.ProductId == pro.Id
-                                            select img).ToList(),
-                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                                  where img.ProductId == pro.Id
-                                                  orderby img.Order
-                                                  select img.Url
-                                                  ).FirstOrDefault()
-                              }).Take(8);
+                    join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                    join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                    join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                    join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                    where pro.CategoryId == (int) EnumCategory.Laptop
+                    orderby pro.LikeCount descending
+                    select new LaptopViewModel
+                    {
+                        Id = pro.Id,
+                        Name = pro.Name,
+                        ProductCode = pro.ProductCode,
+                        Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                        Brand = bra.Name,
+                        InitialPrice = pro.InitialPrice,
+                        CurrentPrice = pro.CurrentPrice,
+                        Rate = pro.Rate,
+                        Screen = lap.Screen,
+                        OperatingSystem = lap.OperatingSystem,
+                        Camera = lap.Camera,
+                        CPU = lap.CPU,
+                        RAM = lap.RAM,
+                        ROM = lap.ROM,
+                        Card = lap.Card,
+                        Design = lap.Design,
+                        Size = lap.Size,
+                        PortSupport = lap.PortSupport,
+                        Pin = lap.Pin,
+                        Color = lap.Color,
+                        Weight = lap.Weight,
+                        CreateAt = pro.CreateAt,
+                        CreateBy = usc.Email,
+                        UpdateAt = pro.UpdateAt,
+                        UpdateBy = usu.Email,
+                        ViewCount = pro.ViewCount,
+                        LikeCount = pro.LikeCount,
+                        TotalSold = pro.TotalSold,
+                        Status = pro.Status,
+                        Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                            where img.ProductId == pro.Id
+                            select img).ToList(),
+                        ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                where img.ProductId == pro.Id
+                                orderby img.Order
+                                select img.Url
+                            ).FirstOrDefault()
+                    }).Take(8);
                 return laptop;
             }
             catch (Exception e)
@@ -365,52 +375,52 @@ namespace KLTN.Services
             try
             {
                 var laptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop
-                              orderby pro.TotalSold descending
-                              select new LaptopViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  Screen = lap.Screen,
-                                  Rate = pro.Rate,
-                                  OperatingSystem = lap.OperatingSystem,
-                                  Camera = lap.Camera,
-                                  CPU = lap.CPU,
-                                  RAM = lap.RAM,
-                                  ROM = lap.ROM,
-                                  Card = lap.Card,
-                                  Design = lap.Design,
-                                  Size = lap.Size,
-                                  PortSupport = lap.PortSupport,
-                                  Pin = lap.Pin,
-                                  Color = lap.Color,
-                                  Weight = lap.Weight,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
-                                  Status = pro.Status,
-                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                            where img.ProductId == pro.Id
-                                            select img).ToList(),
-                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
-                                                  where img.ProductId == pro.Id
-                                                  orderby img.Order
-                                                  select img.Url
-                                                  ).FirstOrDefault()
-                              }).Take(8);
+                    join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                    join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                    join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                    join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                    where pro.CategoryId == (int) EnumCategory.Laptop
+                    orderby pro.TotalSold descending
+                    select new LaptopViewModel
+                    {
+                        Id = pro.Id,
+                        Name = pro.Name,
+                        ProductCode = pro.ProductCode,
+                        Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                        Brand = bra.Name,
+                        InitialPrice = pro.InitialPrice,
+                        CurrentPrice = pro.CurrentPrice,
+                        Screen = lap.Screen,
+                        Rate = pro.Rate,
+                        OperatingSystem = lap.OperatingSystem,
+                        Camera = lap.Camera,
+                        CPU = lap.CPU,
+                        RAM = lap.RAM,
+                        ROM = lap.ROM,
+                        Card = lap.Card,
+                        Design = lap.Design,
+                        Size = lap.Size,
+                        PortSupport = lap.PortSupport,
+                        Pin = lap.Pin,
+                        Color = lap.Color,
+                        Weight = lap.Weight,
+                        CreateAt = pro.CreateAt,
+                        CreateBy = usc.Email,
+                        UpdateAt = pro.UpdateAt,
+                        UpdateBy = usu.Email,
+                        ViewCount = pro.ViewCount,
+                        LikeCount = pro.LikeCount,
+                        TotalSold = pro.TotalSold,
+                        Status = pro.Status,
+                        Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                            where img.ProductId == pro.Id
+                            select img).ToList(),
+                        ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                where img.ProductId == pro.Id
+                                orderby img.Order
+                                select img.Url
+                            ).FirstOrDefault()
+                    }).Take(8);
                 return laptop;
             }
             catch (Exception e)
@@ -419,20 +429,22 @@ namespace KLTN.Services
                 return null;
             }
         }
-        
-        public Tuple<IEnumerable<LaptopViewModel>,IEnumerable<LaptopViewModel>,IEnumerable<LaptopViewModel>, int> GetProductRecommender()
+
+        public Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, int>
+            GetProductRecommender()
         {
             try
             {
                 var topView = GetLaptopTopView();
                 var topLike = GetLaptopTopLike();
                 var topSold = GetLaptopTopSold();
-                return new Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, int>(topView,topLike,topSold,1);
+                return new Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>,
+                    IEnumerable<LaptopViewModel>, int>(topView, topLike, topSold, 1);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return  null;
+                return null;
             }
         }
 
@@ -446,7 +458,7 @@ namespace KLTN.Services
                 {
                     ProductCode = laptopModel.ProductCode,
                     Name = laptopModel.Name,
-                    CategoryId = (int)EnumCategory.Laptop,
+                    CategoryId = (int) EnumCategory.Laptop,
                     BrandId = laptopModel.BrandId,
                     InitialPrice = laptopModel.InitialPrice,
                     CurrentPrice = laptopModel.CurrentPrice,
@@ -550,37 +562,39 @@ namespace KLTN.Services
             try
             {
                 var mobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Mobile && pro.Id == id
-                              select new MobileViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  Status = pro.Status,
-                                  Screen = mobi.Screen,
-                                  OperatingSystem = mobi.OperatingSystem,
-                                  RearCamera = mobi.RearCamera,
-                                  FrontCamera = mobi.FrontCamera,
-                                  CPU = mobi.CPU,
-                                  RAM = mobi.RAM,
-                                  ROM = mobi.ROM,
-                                  SIM = mobi.SIM,
-                                  Pin = mobi.Pin,
-                                  Color = mobi.Color
-                              }).FirstOrDefault();
-                return mobile == null ? new Tuple<MobileViewModel, int>(null, 0) : new Tuple<MobileViewModel, int>(mobile, 1);
+                    join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                    join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                    join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                    join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
+                    where pro.CategoryId == (int) EnumCategory.Mobile && pro.Id == id
+                    select new MobileViewModel
+                    {
+                        Id = pro.Id,
+                        Name = pro.Name,
+                        ProductCode = pro.ProductCode,
+                        Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                        Brand = bra.Name,
+                        InitialPrice = pro.InitialPrice,
+                        CurrentPrice = pro.CurrentPrice,
+                        CreateAt = pro.CreateAt,
+                        CreateBy = usc.Email,
+                        UpdateAt = pro.UpdateAt,
+                        UpdateBy = usu.Email,
+                        Status = pro.Status,
+                        Screen = mobi.Screen,
+                        OperatingSystem = mobi.OperatingSystem,
+                        RearCamera = mobi.RearCamera,
+                        FrontCamera = mobi.FrontCamera,
+                        CPU = mobi.CPU,
+                        RAM = mobi.RAM,
+                        ROM = mobi.ROM,
+                        SIM = mobi.SIM,
+                        Pin = mobi.Pin,
+                        Color = mobi.Color
+                    }).FirstOrDefault();
+                return mobile == null
+                    ? new Tuple<MobileViewModel, int>(null, 0)
+                    : new Tuple<MobileViewModel, int>(mobile, 1);
             }
             catch (Exception e)
             {
@@ -613,49 +627,49 @@ namespace KLTN.Services
             }
 
             var listMobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Mobile
-                              select new MobileViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  Status = pro.Status,
-                                  Screen = mobi.Screen,
-                                  OperatingSystem = mobi.OperatingSystem,
-                                  RearCamera = mobi.RearCamera,
-                                  FrontCamera = mobi.FrontCamera,
-                                  CPU = mobi.CPU,
-                                  RAM = mobi.RAM,
-                                  ROM = mobi.ROM,
-                                  SIM = mobi.SIM,
-                                  Pin = mobi.Pin,
-                                  Color = mobi.Color
-                              });
+                join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
+                where pro.CategoryId == (int) EnumCategory.Mobile
+                select new MobileViewModel
+                {
+                    Id = pro.Id,
+                    Name = pro.Name,
+                    ProductCode = pro.ProductCode,
+                    Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                    Brand = bra.Name,
+                    InitialPrice = pro.InitialPrice,
+                    CurrentPrice = pro.CurrentPrice,
+                    CreateAt = pro.CreateAt,
+                    CreateBy = usc.Email,
+                    UpdateAt = pro.UpdateAt,
+                    UpdateBy = usu.Email,
+                    Status = pro.Status,
+                    Screen = mobi.Screen,
+                    OperatingSystem = mobi.OperatingSystem,
+                    RearCamera = mobi.RearCamera,
+                    FrontCamera = mobi.FrontCamera,
+                    CPU = mobi.CPU,
+                    RAM = mobi.RAM,
+                    ROM = mobi.ROM,
+                    SIM = mobi.SIM,
+                    Pin = mobi.Pin,
+                    Color = mobi.Color
+                });
 
             if (!string.IsNullOrEmpty(searchBy))
             {
                 listMobile = listMobile.Where(r =>
-                        r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Brand.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Brand.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
             }
 
             listMobile = orderAscendingDirection
-               ? listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
-               : listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+                ? listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
 
             var viewModels = listMobile.OrderBy(x => x.Id).ToArray();
             var filteredResultsCount = viewModels.ToArray().Length;
@@ -677,7 +691,7 @@ namespace KLTN.Services
                 {
                     ProductCode = mobileModel.ProductCode,
                     Name = mobileModel.Name,
-                    CategoryId = (int)EnumCategory.Laptop,
+                    CategoryId = (int) EnumCategory.Laptop,
                     BrandId = mobileModel.BrandId,
                     InitialPrice = mobileModel.InitialPrice,
                     CurrentPrice = mobileModel.CurrentPrice,

@@ -14,5 +14,6 @@ namespace KLTN.DataModels.Models.Feedbacks
         public string Comment { get; set; }
         public bool IsLike { get; set; }
         public bool IsBought { get; set; }
+        public DateTime RatedAt { get; set; }
     }
 }

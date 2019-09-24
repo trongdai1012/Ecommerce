@@ -11,9 +11,12 @@
 @section scripts
 {
     <script>
-        $(function () {
+//        $(function () {
+//            GetListProduct();
+//        });
+        window.onload = function() {
             GetListProduct();
-        });
+        }
         function GetListProduct() {
             $.ajax({
                 url: '/Home/ListProduct',
@@ -25,5 +28,20 @@
                 $('#listProduct').html(result);
             });
         }
-    </script>   
+    </script>
+    <script>
+        function LikeProduct(id) {
+            $.ajax({
+                url: '/Product/LikeProduct',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: {productId : id},
+                success: function() {
+                    GetListProduct();
+                }
+            });
+        }
+    </script>
 }

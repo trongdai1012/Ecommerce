@@ -1,149 +1,182 @@
-﻿@model Tuple<IEnumerable<LaptopViewModel>,IEnumerable<LaptopViewModel>,IEnumerable<LaptopViewModel>, int>
+﻿@model Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, int>
 
 <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="main_title">
-                    <h2 style="padding-top:5px"><span>Laptop được chú ý nhất</span></h2>
-                    <p>Mời bạn tham khảo</p>
-                </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="main_title">
+                <h2 style="padding-top: 5px">
+                    <span>Laptop được chú ý nhất</span>
+                </h2>
+                <p>Mời bạn tham khảo</p>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            @foreach (var item in Model.Item1)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="single-product">
-                        <div class="product-img">
+    <div class="row">
+        @foreach (var item in Model.Item1)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product">
+                    <div class="product-img">
+                        <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
+                            <img class="img-fluid w-100" src="/@item.ImageDefault" alt=""/>
+                        </a>
+                        <div class="p_icon">
                             <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                <img class="img-fluid w-100" src="/@item.ImageDefault" alt="" />
+                                <i class="ti-eye"></i>
                             </a>
-                            <div class="p_icon">
-                                <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                    <i class="ti-eye"></i>
-                                </a>
-                                <a href="#">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a onclick="LikeProduct(@item.Id)">
                                     <i class="ti-heart"></i>
                                 </a>
-                                <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id">
-                                    <i class="ti-shopping-cart"></i>
+                            }
+                            else
+                            {
+                                <a asp-action="Authentication" asp-controller="Account">
+                                    <i class="ti-heart"></i>
                                 </a>
-                            </div>
-                        </div>
-                        <div class="product-btm">
-                            <a href="#" class="d-block">
-                                <h4>@item.Name</h4>
+                            }
+                            <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id">
+                                <i class="ti-shopping-cart"></i>
                             </a>
-                            <div class="mt-3">
-                                <div>
-                                    <span class="mr-4">@item.CurrentPrice</span>
-                                </div>
-                                <div>
-                                    <del>@item.InitialPrice</del>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="product-btm">
+                        <a href="#" class="d-block">
+                            <h4>@item.Name</h4>
+                        </a>
+                        <div class="mt-3">
+                            <div>
+                                <span class="mr-4">@item.CurrentPrice</span>
+                            </div>
+                            <div>
+                                <del>@item.InitialPrice</del>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="main_title">
-                    <h2><span>Laptop được yêu thích nhất</span></h2>
-                    <p>Mời bạn tham khảo</p>
-                </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="main_title">
+                <h2>
+                    <span>Laptop được yêu thích nhất</span>
+                </h2>
+                <p>Mời bạn tham khảo</p>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            @foreach (var item in Model.Item2)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="single-product">
-                        <div class="product-img">
+    <div class="row">
+        @foreach (var item in Model.Item2)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product">
+                    <div class="product-img">
+                        <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
+                            <img class="img-fluid w-100" src="/@item.ImageDefault" alt=""/>
+                        </a>
+                        <div class="p_icon">
                             <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                <img class="img-fluid w-100" src="/@item.ImageDefault" alt="" />
+                                <i class="ti-eye"></i>
                             </a>
-                            <div class="p_icon">
-                                <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                    <i class="ti-eye"></i>
-                                </a>
-                                <a href="#">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a onclick="LikeProduct(@item.Id)">
                                     <i class="ti-heart"></i>
                                 </a>
-                                <a href="#">
-                                    <i class="ti-shopping-cart"></i>
+                            }
+                            else
+                            {
+                                <a asp-action="Authentication" asp-controller="Account">
+                                    <i class="ti-heart"></i>
                                 </a>
-                            </div>
-                        </div>
-                        <div class="product-btm">
-                            <a href="#" class="d-block">
-                                <h4>@item.Name</h4>
+                            }
+                            <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id">
+                                <i class="ti-shopping-cart"></i>
                             </a>
-                            <div class="mt-3">
-                                <div>
-                                    <span class="mr-4">@item.CurrentPrice</span>
-                                </div>
-                                <div>
-                                    <del>@item.InitialPrice</del>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="product-btm">
+                        <a href="#" class="d-block">
+                            <h4>@item.Name</h4>
+                        </a>
+                        <div class="mt-3">
+                            <div>
+                                <span class="mr-4">@item.CurrentPrice</span>
+                            </div>
+                            <div>
+                                <del>@item.InitialPrice</del>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="main_title">
-                    <h2><span>Laptop được mua nhiều nhất</span></h2>
-                    <p>Mời bạn tham khảo</p>
-                </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="main_title">
+                <h2>
+                    <span>Laptop được mua nhiều nhất</span>
+                </h2>
+                <p>Mời bạn tham khảo</p>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            @foreach (var item in Model.Item3)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="single-product">
-                        <div class="product-img">
+    <div class="row">
+        @foreach (var item in Model.Item3)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product">
+                    <div class="product-img">
+                        <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
+                            <img class="img-fluid w-100" src="/@item.ImageDefault" alt=""/>
+                        </a>
+                        <div class="p_icon">
                             <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                <img class="img-fluid w-100" src="/@item.ImageDefault" alt="" />
+                                <i class="ti-eye"></i>
                             </a>
-                            <div class="p_icon">
-                                <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                    <i class="ti-eye"></i>
-                                </a>
-                                <a href="#">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a onclick="LikeProduct(@item.Id)">
                                     <i class="ti-heart"></i>
                                 </a>
-                                <a href="#">
-                                    <i class="ti-shopping-cart"></i>
+                            }
+                            else
+                            {
+                                <a asp-action="Authentication" asp-controller="Account">
+                                    <i class="ti-heart"></i>
                                 </a>
-                            </div>
-                        </div>
-                        <div class="product-btm">
-                            <a href="#" class="d-block">
-                                <h4>@item.Name</h4>
+                            }
+                            <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id">
+                                <i class="ti-shopping-cart"></i>
                             </a>
-                            <div class="mt-3">
-                                <div>
-                                    <span class="mr-4">@item.CurrentPrice</span>
-                                </div>
-                                <div>
-                                    <del>@item.InitialPrice</del>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="product-btm">
+                        <a href="#" class="d-block">
+                            <h4>@item.Name</h4>
+                        </a>
+                        <div class="mt-3">
+                            <div>
+                                <span class="mr-4">@item.CurrentPrice</span>
+                            </div>
+                            <div>
+                                <del>@item.InitialPrice</del>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
+</div>

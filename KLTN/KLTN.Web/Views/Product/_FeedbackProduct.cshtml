@@ -311,7 +311,7 @@
                             </div>
                             <div class="media-body">
                                 <h4>@item.CustomerName</h4>
-                                @if (@item.Rate == 5)
+                                @if (item.Rate == 5)
                                 {
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -346,6 +346,7 @@
                         <p>
                             @item.Comment
                         </p>
+                        <p>@item.RatedAt.ToLocalTime().ToString("dd-MM-yyyy hh:mm:ss")</p>
                     </div>
                 }
             </div>
