@@ -230,7 +230,7 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopView()
+        private IEnumerable<LaptopViewModel> GetLaptopTopView()
         {
             try
             {
@@ -281,13 +281,12 @@ namespace KLTN.Services
                                                   select img.Url
                                                   ).FirstOrDefault()
                               }).Take(8);
-                if (laptop == null) return new Tuple<IEnumerable<LaptopViewModel>, int>(null, 0);
-                return new Tuple<IEnumerable<LaptopViewModel>, int>(laptop, 1);
+                return laptop == null ? null : laptop;
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when get brand by id in brand service", e);
-                return new Tuple<IEnumerable<LaptopViewModel>, int>(null, -1);
+                return null;
             }
         }
 
@@ -296,7 +295,7 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopLike()
+        private IEnumerable<LaptopViewModel> GetLaptopTopLike()
         {
             try
             {
@@ -347,13 +346,12 @@ namespace KLTN.Services
                                                   select img.Url
                                                   ).FirstOrDefault()
                               }).Take(8);
-                if (laptop == null) return new Tuple<IEnumerable<LaptopViewModel>, int>(null, 0);
-                return new Tuple<IEnumerable<LaptopViewModel>, int>(laptop, 1);
+                return laptop;
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when get brand by id in brand service", e);
-                return new Tuple<IEnumerable<LaptopViewModel>, int>(null, -1);
+                return null;
             }
         }
 
@@ -362,7 +360,7 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Tuple<IEnumerable<LaptopViewModel>, int> GetLaptopTopSold()
+        private IEnumerable<LaptopViewModel> GetLaptopTopSold()
         {
             try
             {
@@ -413,13 +411,28 @@ namespace KLTN.Services
                                                   select img.Url
                                                   ).FirstOrDefault()
                               }).Take(8);
-                if (laptop == null) return new Tuple<IEnumerable<LaptopViewModel>, int>(null, 0);
-                return new Tuple<IEnumerable<LaptopViewModel>, int>(laptop, 1);
+                return laptop;
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when get brand by id in brand service", e);
-                return new Tuple<IEnumerable<LaptopViewModel>, int>(null, -1);
+                return null;
+            }
+        }
+        
+        public Tuple<IEnumerable<LaptopViewModel>,IEnumerable<LaptopViewModel>,IEnumerable<LaptopViewModel>, int> GetProductRecommender()
+        {
+            try
+            {
+                var topView = GetLaptopTopView();
+                var topLike = GetLaptopTopLike();
+                var topSold = GetLaptopTopSold();
+                return new Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, int>(topView,topLike,topSold,1);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return  null;
             }
         }
 
@@ -567,8 +580,7 @@ namespace KLTN.Services
                                   Pin = mobi.Pin,
                                   Color = mobi.Color
                               }).FirstOrDefault();
-                if (mobile == null) return new Tuple<MobileViewModel, int>(null, 0);
-                return new Tuple<MobileViewModel, int>(mobile, 1);
+                return mobile == null ? new Tuple<MobileViewModel, int>(null, 0) : new Tuple<MobileViewModel, int>(mobile, 1);
             }
             catch (Exception e)
             {

@@ -20,13 +20,16 @@ namespace KLTN.Web.Controllers
         [Route("~/")]
         public IActionResult Index()
         {
-            ViewBag.TopView = _productService.GetLaptopTopView().Item1;
-
-            ViewBag.TopLike = _productService.GetLaptopTopLike().Item1;
-
-            ViewBag.TopSold = _productService.GetLaptopTopSold().Item1;
 
             return View();
+        }
+
+        [Route("ListProduct")]
+        [HttpPost]
+        public IActionResult ListProduct()
+         {
+            var model = _productService.GetProductRecommender();
+            return PartialView("_RecommenderProduct", model);
         }
 
         public IActionResult Privacy()

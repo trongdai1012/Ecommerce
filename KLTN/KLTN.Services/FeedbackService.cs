@@ -92,6 +92,27 @@ namespace KLTN.Services
             }
         }
 
+        public bool LikeProduct(int productId)
+        {
+            var feedback = _unitOfWork.FeedbackRepository.Get(x => x.ProductId == productId && x.UserId == GetUserId());
+            if (feedback == null)
+            {
+                var newFeedback = new Feedback
+                {
+                    ProductId = productId,
+                    UserId = GetUserId(),
+                    IsLike = true
+                };
+                _unitOfWork.FeedbackRepository.Create(newFeedback);
+                _unitOfWork.Save();
+                return true;
+            }
+
+            feedback.IsLike = !feedback.IsLike;
+            _unitOfWork.Save();
+            return feedback.IsLike;
+        }
+
         private int GetUserId()
         {
             return Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == "Id").Value);

@@ -4,152 +4,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="inspired_product_area section_gap_bottom_custom">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="main_title">
-                    <h2 style="padding-top:5px"><span>Laptop được chú ý nhất</span></h2>
-                    <p>Mời bạn tham khảo</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            @foreach (var item in ViewBag.TopView)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="single-product">
-                        <div class="product-img">
-                            <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                <img class="img-fluid w-100" src="/@item.ImageDefault" alt="" />
-                            </a>
-                            <div class="p_icon">
-                                <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                    <i class="ti-eye"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="ti-heart"></i>
-                                </a>
-                                <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id">
-                                    <i class="ti-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="product-btm">
-                            <a href="#" class="d-block">
-                                <h4>@item.Name</h4>
-                            </a>
-                            <div class="mt-3">
-                                <div>
-                                    <span class="mr-4">@item.CurrentPrice</span>
-                                </div>
-                                <div>
-                                    <del>@item.InitialPrice</del>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="main_title">
-                    <h2><span>Laptop được yêu thích nhất</span></h2>
-                    <p>Mời bạn tham khảo</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            @foreach (var item in ViewBag.TopLike)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="single-product">
-                        <div class="product-img">
-                            <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                <img class="img-fluid w-100" src="/@item.ImageDefault" alt="" />
-                            </a>
-                            <div class="p_icon">
-                                <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                    <i class="ti-eye"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="ti-heart"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="ti-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="product-btm">
-                            <a href="#" class="d-block">
-                                <h4>@item.Name</h4>
-                            </a>
-                            <div class="mt-3">
-                                <div>
-                                    <span class="mr-4">@item.CurrentPrice</span>
-                                </div>
-                                <div>
-                                    <del>@item.InitialPrice</del>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="main_title">
-                    <h2><span>Laptop được mua nhiều nhất</span></h2>
-                    <p>Mời bạn tham khảo</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            @foreach (var item in ViewBag.TopSold)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="single-product">
-                        <div class="product-img">
-                            <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                <img class="img-fluid w-100" src="/@item.ImageDefault" alt="" />
-                            </a>
-                            <div class="p_icon">
-                                <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                    <i class="ti-eye"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="ti-heart"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="ti-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="product-btm">
-                            <a href="#" class="d-block">
-                                <h4>@item.Name</h4>
-                            </a>
-                            <div class="mt-3">
-                                <div>
-                                    <span class="mr-4">@item.CurrentPrice</span>
-                                </div>
-                                <div>
-                                    <del>@item.InitialPrice</del>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
+<section class="inspired_product_area section_gap_bottom_custom" id="listProduct">
+    
 </section>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            GetListProduct();
+        });
+        function GetListProduct() {
+            $.ajax({
+                url: '/Home/ListProduct',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html"
+            }).done(function (result) {
+                $('#listProduct').html(result);
+            });
+        }
+    </script>   
+}

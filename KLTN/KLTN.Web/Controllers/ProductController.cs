@@ -57,6 +57,17 @@ namespace KLTN.Web.Controllers
         }
 
         [HttpPost]
+        public JsonResult LikeProduct(int productId)
+        {
+            var feedback = _feedbackService.LikeProduct(productId);
+            return Json(
+                new
+                {
+                    Feedback = feedback
+                });
+        }
+        
+        [HttpPost]
         public IActionResult FeedbackProduct(int id)
         {
             try
