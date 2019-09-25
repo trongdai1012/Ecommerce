@@ -50,8 +50,8 @@ namespace KLTN.Web.Controllers
             }
             else
             {
-                List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-                int index = IsExist(id);
+                var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+                var index = IsExist(id);
                 if (index != -1)
                 {
                     if (quantity == null)
@@ -65,15 +65,17 @@ namespace KLTN.Web.Controllers
                 }
                 else
                 {
-                    if (quantity == null)
-                    {
-                        cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = 1 });
-                    }
-                    else
-                    {
-                        cart.Add(new CartItem { Product = _productService.GetProductById(Convert.ToInt32(id)).Item1, Quantity = quantity.Value });
-                    }
-
+                    cart.Add(quantity == null
+                        ? new CartItem
+                        {
+                            Product = _productService.GetProductById(Convert.ToInt32(id)).Item1,
+                            Quantity = 1
+                        }
+                        : new CartItem
+                        {
+                            Product = _productService.GetProductById(Convert.ToInt32(id)).Item1,
+                            Quantity = quantity.Value
+                        });
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
@@ -83,8 +85,8 @@ namespace KLTN.Web.Controllers
         [Route("remove/{id}")]
         public IActionResult Remove(string id)
         {
-            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            int index = IsExist(id);
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            var index = IsExist(id);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
@@ -95,6 +97,7 @@ namespace KLTN.Web.Controllers
         [Route("Payment")]
         public IActionResult Payment()
         {
+            
             return View();
         }
 
@@ -102,12 +105,12 @@ namespace KLTN.Web.Controllers
         [Authorize]
         public IActionResult Payment(OrderViewModel orderView)
         {
-            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
             if (cart == null) return BadRequest();
-            var listOrdDT = new List<OrderDetailViewModel>();
+            var listOrdDt = new List<OrderDetailViewModel>();
             foreach (var item in cart)
             {
-                listOrdDT.Add(new OrderDetailViewModel
+                listOrdDt.Add(new OrderDetailViewModel
                 {
                     ProductId = item.Product.Id,
                     Quantity = item.Quantity,
@@ -116,7 +119,7 @@ namespace KLTN.Web.Controllers
                 });
             }
 
-            _orderService.Create(orderView,listOrdDT);
+            _orderService.Create(orderView,listOrdDt);
 
             return RedirectToAction("Index","Home");
         }
@@ -125,8 +128,8 @@ namespace KLTN.Web.Controllers
         [HttpPut]
         public JsonResult Update(string id, int? quantity)
         {
-            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            int index = IsExist(id);
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            var index = IsExist(id);
             var cartModel = cart.ElementAt(index);
             if (quantity == null || quantity < 1)
             {
@@ -157,8 +160,8 @@ namespace KLTN.Web.Controllers
 
         private int IsExist(string id)
         {
-            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            for (int i = 0; i < cart.Count; i++)
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            for (var i = 0; i < cart.Count; i++)
             {
                 if (cart[i].Product.Id.ToString().Equals(id))
                 {

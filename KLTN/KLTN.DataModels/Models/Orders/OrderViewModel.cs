@@ -13,6 +13,7 @@ namespace KLTN.DataModels.Models.Orders
         public string RecipientPhone { get; set; }
         public string RecipientFirstName { get; set; }
         public string RecipientLastName { get; set; }
+        public string RecipientEmail { get; set; }
         public DateTime CreateAt { get; set; }
         public int CreateBy { get; set; }
         public DateTime UpdateAt { get; set; }

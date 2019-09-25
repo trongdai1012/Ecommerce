@@ -9,7 +9,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace KLTN.Services
 {
@@ -34,8 +33,6 @@ namespace KLTN.Services
         /// </summary>
         /// <param name="mapper"></param>
         /// <param name="httpContext"></param>
-        /// <param name="genericRepository"></param>
-        /// <param name="genericRepositoryUser"></param>
         public BrandService(IMapper mapper, IHttpContextAccessor httpContext, IUnitOfWork unitOfWork)
         {
             _httpContext = httpContext.HttpContext;
@@ -97,10 +94,10 @@ namespace KLTN.Services
             if (!string.IsNullOrEmpty(searchBy))
             {
                 brandViewModels = brandViewModels.Where(r =>
-                        r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Address.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                        r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+                        searchBy != null && (r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                                             r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                                             r.Address.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                                             r.Status.ToString().ToUpper().Equals(searchBy.ToUpper())));
             }
 
             brandViewModels = orderAscendingDirection
