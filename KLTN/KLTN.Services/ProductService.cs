@@ -117,10 +117,9 @@ namespace KLTN.Services
                             select img).ToList(),
                         ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
                                 where img.ProductId == pro.Id
-                                orderby img.Order
                                 select img.Url
                             ).FirstOrDefault(),
-                        Amount = pro.Amount
+                        Amount = pro.Quantity
                     }).FirstOrDefault();
                 if (laptop == null) return new Tuple<LaptopViewModel, int>(null, 0);
                 var product = _unitOfWork.ProductRepository.GetById(id);
@@ -200,7 +199,6 @@ namespace KLTN.Services
                         select img).ToList(),
                     ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
                             where img.ProductId == pro.Id
-                            orderby img.Order
                             select img.Url
                         ).FirstOrDefault()
                 });
@@ -280,7 +278,6 @@ namespace KLTN.Services
                             select img).ToList(),
                         ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
                                 where img.ProductId == pro.Id
-                                orderby img.Order
                                 select img.Url
                             ).FirstOrDefault()
                     }).Take(8);
@@ -352,7 +349,6 @@ namespace KLTN.Services
                             select img).ToList(),
                         ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
                                 where img.ProductId == pro.Id
-                                orderby img.Order
                                 select img.Url
                             ).FirstOrDefault()
                     }).Take(8);
@@ -417,7 +413,6 @@ namespace KLTN.Services
                             select img).ToList(),
                         ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
                                 where img.ProductId == pro.Id
-                                orderby img.Order
                                 select img.Url
                             ).FirstOrDefault()
                     }).Take(8);
@@ -470,7 +465,7 @@ namespace KLTN.Services
                     ViewCount = 0,
                     LikeCount = 0,
                     TotalSold = 0,
-                    Amount = laptopModel.Amount,
+                    Quantity = laptopModel.Amount,
                     Status = true,
                     CreateAt = DateTime.UtcNow,
                     CreateBy = GetClaimUserId(),
@@ -703,7 +698,7 @@ namespace KLTN.Services
                     ViewCount = 0,
                     LikeCount = 0,
                     TotalSold = 0,
-                    Amount = mobileModel.Amount,
+                    Quantity = mobileModel.Amount,
                     Status = true
                 };
 

@@ -27,7 +27,6 @@ namespace KLTN.Services.Repositories
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Product> ProductRepository { get; }
         IGenericRepository<UserConfirm> UserConfirmRepository { get; }
-        IGenericRepository<Warranty> WarrantyRepository { get; }
 
         /// <summary>
         /// Save db

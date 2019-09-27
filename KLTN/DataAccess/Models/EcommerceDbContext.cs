@@ -13,7 +13,7 @@ namespace KLTN.DataAccess.Models
 
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Brand> Brands { get; set; }
-        public DbSet<CommentProduct> CommentProducts { get; set; }
+        public DbSet<CommentFeedback> CommentFeedbacks { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
@@ -180,10 +180,10 @@ namespace KLTN.DataAccess.Models
                     });
             });
 
-            modelBuilder.Entity<CommentProduct>(entity =>
+            modelBuilder.Entity<CommentFeedback>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.ProductId);
+                entity.HasIndex(x => x.FeedbackId);
             });
 
             modelBuilder.Entity<Contact>(entity =>
@@ -218,7 +218,6 @@ namespace KLTN.DataAccess.Models
                 entity.HasKey(x => x.OrderId);
                 entity.Property(x => x.ShipperName).HasColumnType(TypeOfSql.NVarChar + "(50)");
                 entity.Property(x => x.ShipperPhone).HasColumnType(TypeOfSql.VarChar + "(20)");
-                entity.Property(x => x.Status).HasColumnType(TypeOfSql.TinyInt);
                 entity
                 .HasOne(x => x.Order)
                 .WithOne(x => x.Delivery)
@@ -327,7 +326,7 @@ namespace KLTN.DataAccess.Models
                             ViewCount = new Random().Next(1,50000),
                             LikeCount = new Random().Next(1,10000),
                             TotalSold = new Random().Next(1,5000),
-                            Amount = new Random().Next(1,2000),
+                            Quantity = new Random().Next(1,2000),
                             Status = true,
                             CreateAt = DateTime.UtcNow,
                             CreateBy = 1,
@@ -343,7 +342,6 @@ namespace KLTN.DataAccess.Models
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => x.ProductId);
                 entity.Property(x => x.Url).HasColumnType(TypeOfSql.NVarChar + "(100)");
-                entity.Property(x => x.Order).HasColumnType("TinyInt");
                 entity
                 .HasOne(x => x.Product)
                 .WithMany(x => x.Images)
@@ -396,12 +394,6 @@ namespace KLTN.DataAccess.Models
                 .HasOne(x => x.User)
                 .WithOne(x => x.UserConfirm)
                 .HasForeignKey<UserConfirm>(x => x.UserId);
-            });
-
-            modelBuilder.Entity<Warranty>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.ProducId);
             });
         }
     }

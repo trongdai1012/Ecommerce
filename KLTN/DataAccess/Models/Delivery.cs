@@ -17,9 +17,11 @@ namespace KLTN.DataAccess.Models
         public string ShipperPhone { get; set; }
         public DateTime StartDeliveryAt { get; set; }
         public DateTime FinishDeliveryAt { get; set; }
-        public DateTime CancelDeliveryAt { get; set; }
-        public byte Status { get; set; }
+        public DateTime CancelOrderAt { get; set; }
+        public int CancelBy { get; set; }
+        public string CancelContent { get; set; }
 
         public virtual Order Order { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace KLTN.DataAccess.Models
         public int ViewCount { get; set; }
         public int LikeCount { set; get; }
         public int TotalSold { get; set; }
-        public int Amount { get; set; }
+        public int Quantity { get; set; }
 
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }

@@ -19,7 +19,7 @@ namespace KLTN.DataModels.Models.Products
         public string Description { get; set; }
         public List<Image> Images { get; set; }
         public byte Rate { get; set; }
-        public List<CommentProduct> Comment { get; set; }
+        public List<CommentFeedback> Comment { get; set; }
         public int ViewCount { get; set; }
         public int LikeCount { set; get; }
         public int TotalSold { get; set; }

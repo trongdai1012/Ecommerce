@@ -12,6 +12,7 @@ namespace KLTN.DataAccess.Models
         public string RecipientAddress { get; set; }
         public string RecipientPhone { get; set; }
         public string RecipientName { get; set; }
+        public byte StatusOrder { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Delivery Delivery { get; set; }

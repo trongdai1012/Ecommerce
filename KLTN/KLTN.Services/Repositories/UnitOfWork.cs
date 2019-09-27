@@ -36,8 +36,6 @@ namespace KLTN.Services.Repositories
 
         public IGenericRepository<UserConfirm> UserConfirmRepository { get; set; }
 
-        public IGenericRepository<Warranty> WarrantyRepository { get; set; }
-
         private EcommerceDbContext _ecommerceDbContext;
 
         /// <summary>
@@ -71,7 +69,6 @@ namespace KLTN.Services.Repositories
             OrderDetailRepository = new GenericRepository<OrderDetail>(_ecommerceDbContext);
             ProductRepository = new GenericRepository<Product>(_ecommerceDbContext);
             UserConfirmRepository = new GenericRepository<UserConfirm>(_ecommerceDbContext);
-            WarrantyRepository = new GenericRepository<Warranty>(_ecommerceDbContext);
         }
 
         /// <summary>

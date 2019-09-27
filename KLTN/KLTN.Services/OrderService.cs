@@ -67,7 +67,7 @@ namespace KLTN.Services
                         Price = item.Price,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        Image = item.Image
+                        ImageProduct = item.Image
                     };
                     _unitOfWork.OrderDetailRepository.Create(ordDetail);
                 }
@@ -113,7 +113,7 @@ namespace KLTN.Services
                     Price = orderDetail.Price,
                     ProductId = orderDetail.ProductId,
                     Quantity = orderDetail.Quantity,
-                    Image = orderDetail.Image
+                    ImageProduct = orderDetail.Image
                 };
                 _unitOfWork.OrderDetailRepository.Create(ordDetail);
                 _unitOfWork.Save();
@@ -139,7 +139,7 @@ namespace KLTN.Services
                                     OrderId = ordDT.OrderId,
                                     ProductId = ordDT.ProductId,
                                     Price = ordDT.Price,
-                                    Image = ordDT.Image,
+                                    Image = ordDT.ImageProduct,
                                     Quantity = ordDT.Quantity
                                 };
                 return new Tuple<IEnumerable<OrderDetailViewModel>, int>(ordDetail, 1);

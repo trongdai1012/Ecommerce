@@ -4,9 +4,9 @@ using System.Text;
 
 namespace KLTN.DataAccess.Models
 {
-    public class CommentProduct : BaseModel
+    public class CommentFeedback : BaseModel
     {
-        public int ProductId { get; set; }
+        public int FeedbackId { get; set; }
         public int Comment { get; set; }
     }
 }
