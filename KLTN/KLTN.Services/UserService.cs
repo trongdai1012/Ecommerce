@@ -44,6 +44,9 @@ namespace KLTN.Services
                     Gender = register.Gender,
                     BirthDay = register.BirthDay,
                     Phone = register.Phone,
+                    ProvinceId = register.ProvinceId,
+                    DistrictId = register.DistrictId,
+                    PrecinctId = register.PrecinctId,
                     Address = register.Address,
                     CreateAt = DateTime.UtcNow
                 };
@@ -91,6 +94,44 @@ namespace KLTN.Services
                 return -1;
             }
 
+        }
+
+        public int ForgotPassword(string email)
+        {
+            var forgot = new ConfirmForgot();
+            try
+            {
+                var user = _unitOfWork.UserRepository.Get(x => x.Email == email);
+                if (user == null) return 0;
+
+                var confirmString = InitConfirmString();
+
+                var confirmPas = new ConfirmForgot
+                {
+                    UserId = user.Id,
+                    ConfirmString = confirmString
+                };
+
+                forgot = _unitOfWork.ForgotRepository.Create(confirmPas);
+                _unitOfWork.Save();
+
+                var content =
+                    "Bạn đã gửi một yêu cầu lấy lại mật khẩu từ website "
+                    + _httpContext.Request.Scheme + @"://" + _httpContext.Request.Host
+                    + Environment.NewLine
+                    + "Vui lòng bấm vào link sau để thiết lập lại mật khẩu"
+                    + Environment.NewLine
+                    + _httpContext.Request.Scheme + @"://" + _httpContext.Request.Host + @"/Account/RetypePassword/" + user.Id + "=" + confirmPas.ConfirmString;
+
+                SendMailConfirmForgot(user.Email, user.FirstName + " " + user.LastName, content);
+                return 1;
+            }
+            catch(Exception e)
+            {
+                var result = _unitOfWork.ForgotRepository.GetById(forgot.Id);
+                if(result==null) _unitOfWork.ForgotRepository.Delete(_unitOfWork.ForgotRepository.GetById(forgot.Id));
+                return -1;
+            }
         }
 
         public int CreateEmployeeAccount(CreateEmployeeViewModel register)
@@ -308,6 +349,47 @@ namespace KLTN.Services
             }
         }
 
+        private static bool SendMailConfirmForgot(string Email, string Name,
+            string content)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(EmailConfig.NameMailSend, EmailConfig.MailSend));
+            message.To.Add(new MailboxAddress(Name,
+                Email));
+            message.Subject = "Lấy lại mật khẩu";
+
+            message.Body = new TextPart(Constants.Plain)
+            {
+                Text = content
+            };
+
+            using (var client = new SmtpClient())
+            {
+                try
+                {
+                    client.Connect(Constants.SmtpClient, 587);
+
+
+                    // Note: since we don't have an OAuth2 token, disable
+                    // the XOAUTH2 authentication mechanism.
+                    client.AuthenticationMechanisms.Remove(Constants.Xoauth2);
+
+                    // Note: only needed if the SMTP server requires authentication
+                    client.Authenticate(EmailConfig.MailSend, EmailConfig.PasswordMailSend);
+
+                    client.Send(message);
+                    client.Disconnect(true);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Have an error when send mail in UserService");
+                }
+
+                return false;
+            }
+        }
+
         private string InitConfirmString()
         {
             var confirmString = Guid.NewGuid();
@@ -326,6 +408,28 @@ namespace KLTN.Services
                 user.IsConfirm = true;
                 user.Status = true;
                 _unitOfWork.UserConfirmRepository.Delete(userConfirm.Id);
+                _unitOfWork.Save();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when ConfirmUser in UserServie", e);
+                return false;
+            }
+        }
+
+        public bool ConfirmForgotPassword(RetypePassword retypePassword)
+        {
+
+            try
+            {
+                var id = Convert.ToInt32(retypePassword.ConfirmString.Split("=")[0]);
+                var confirmStringTrue = retypePassword.ConfirmString.Split("=")[1];
+                var user = _unitOfWork.UserRepository.GetById(id);
+                var userConfirm = _unitOfWork.ForgotRepository.Get(x => x.UserId == id);
+                if (userConfirm.ConfirmString != confirmStringTrue) return false;
+                user.Password = retypePassword.Password;
+                _unitOfWork.ForgotRepository.Delete(userConfirm.Id);
                 _unitOfWork.Save();
                 return true;
             }

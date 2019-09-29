@@ -50,18 +50,10 @@
                                    name="name" />
                             <span class="placeholder" data-placeholder="Last name"></span>
                         </div>
-                        @* <div class="col-md-12 form-group"> *@
-                        @*     <input type="text" *@
-                        @*            class="form-control" *@
-                        @*            id="company" *@
-                        @*            name="company" *@
-                        @*            placeholder="Company name" /> *@
-                        @* </div> *@
                         <div class="col-md-6 form-group p_star">
                             <input type="text"
                                    class="form-control"
                                    asp-for="RecipientPhone"
-                                   value="@Model.RecipientPhone"
                                    id="number"
                                    name="number" />
                             <span class="placeholder"
@@ -78,9 +70,6 @@
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <select class="country_select">
-                                <option value="1">Country</option>
-                                <option value="2">Country</option>
-                                <option value="4">Country</option>
                             </select>
                         </div>
                         <div class="col-md-12 form-group p_star">
@@ -108,7 +97,7 @@
                             <span class="placeholder" data-placeholder="Town/City"></span>
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <select class="country_select">
+                            <select class="country_select" asp-for="RecipientProvinceCode" id="ddlProvince">
                                 <option value="1">District</option>
                                 <option value="2">District</option>
                                 <option value="4">District</option>
@@ -229,3 +218,95 @@
     </div>
 </section>
 <!--================End Checkout Area =================-->
+@section scripts{ 
+<script>
+    var proId = '';
+
+    $(function () {
+        loadProvince();
+        registerEvent();
+    });
+
+    function registerEvent() {
+        $('#ddlProvince').off('change').on('change', function () {
+            var id = $(this).val();
+            if (id != '') {
+                proId = id;
+                loadDistrict(parseInt(id));
+                $('#ddlPrecinct').html('');
+            }
+            else {
+                $('#ddlDistrict').html('');
+            }
+        });
+        $('#ddlDistrict').off('change').on('change', function () {
+            var id = $(this).val();
+            if (id != '') {
+                loadPrecinct(parseInt(id));
+            }
+            else {
+                $('#ddlPrecinct').html('');
+            }
+        });
+    }
+
+    function loadProvince() {
+        $.ajax({
+            url: '/Admin/User/LoadProvince',
+            type: "POST",
+            dataType: "json",
+            success: function (response) {
+                if (response.status == true) {
+                    console.log(response.data);
+                    var html = '<option value="">--Chọn tỉnh thành--</option>';
+                    var data = response.data;
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.id + '">' + item.name + '</option>'
+                    });
+                    $('#ddlProvince').html(html);
+                }
+            }
+        })
+    }
+
+    function loadDistrict(id) {
+        $.ajax({
+            url: '/Admin/User/LoadDistrict',
+            type: "POST",
+            data: { provinceID: id },
+            dataType: "json",
+            success: function (response) {
+                console.log(response.data);
+                if (response.status == true) {
+                    var html = '<option value="">--Chọn quận huyện--</option>';
+                    var data = response.data;
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.id + '">' + item.name + '</option>'
+                    });
+                    $('#ddlDistrict').html(html);
+                }
+            }
+        })
+    }
+
+    function loadPrecinct(id) {
+        $.ajax({
+            url: '/Admin/User/LoadPrecinct',
+            type: "POST",
+            data: { districtID: id },
+            dataType: "json",
+            success: function (response) {
+                console.log(response.data);
+                if (response.status == true) {
+                    var html = '<option value="">--Chọn xã phường--</option>';
+                    var data = response.data;
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.id + '">' + item.name + '</option>'
+                    });
+                    $('#ddlPrecinct').html(html);
+                }
+            }
+        })
+    }
+</script>
+}

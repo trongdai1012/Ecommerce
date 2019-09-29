@@ -59,6 +59,7 @@ namespace KLTN.Services
             }
             catch (Exception e)
             {
+                Log.Error("Have an error when get feedback by productId", e);
                 return null;
             }
         }

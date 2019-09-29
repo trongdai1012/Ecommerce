@@ -13,6 +13,9 @@ namespace KLTN.DataModels.Models.Users
         public string LastName { get; set; }
         public bool Gender { get; set; }
         public DateTime BirthDay { get; set; }
+        public int ProvinceId { get; set; }
+        public int DistrictId { get; set; }
+        public int PrecinctId { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
     }

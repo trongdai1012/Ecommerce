@@ -48,6 +48,7 @@ namespace KLTN.Web.Controllers
             }
             catch (Exception e)
             {
+                Log.Error("Have an error when Rating product in controller", e);
                 return Json(
                     new
                     {

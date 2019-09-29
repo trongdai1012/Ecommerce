@@ -172,5 +172,49 @@ namespace KLTN.Web.Controllers
                 status = true
             });
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgotPassword(EmailModel emailModel)
+        {
+            if (!ModelState.IsValid) return View(emailModel);
+            var result = _userService.ForgotPassword(emailModel.Email);
+            if(result == 0)
+            {
+                ModelState.AddModelError("", "Email không tồn tại");
+                return View(emailModel);
+            }
+            if(result==-1)
+            {
+                ModelState.AddModelError("", "Có lỗi xảy ra trong quá trình lấy lại mật khẩu. Vui lòng quay lại sau!");
+                return View(emailModel);
+            }
+
+            return RedirectToAction("ForgotOk","Notification");
+        }
+
+
+        public IActionResult RetypePassword(string confirmString)
+        {
+            var confirmStrings = HttpContext.Request.Path.ToString().Split("/")[3];
+            var retypePassword = new RetypePassword
+            {
+                ConfirmString = confirmStrings
+            };
+            return View(retypePassword);
+        }
+
+        [HttpPost]
+        public IActionResult RetypePassword(RetypePassword retypePassword)
+        {
+            if (!ModelState.IsValid) return View(retypePassword);
+            var result = _userService.ConfirmForgotPassword(retypePassword);
+            if (result) return RedirectToAction("RetypeSuccess","Notification");
+            return View();
+        }
     }
 }

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using KLTN.Common.Datatables;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Users;
 using KLTN.Services;
+using KLTN.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -15,17 +20,22 @@ namespace KLTN.Web.Areas.Admin.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public UserController(IUserService userService, IHostingEnvironment hostingEnvironment)
         {
             _userService = userService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Register(RegisterUserViewModel registerUser)
         {
@@ -66,12 +76,14 @@ namespace KLTN.Web.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult ConfirmUser(string confirmString)
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult ConfirmUser()
         {
@@ -234,6 +246,75 @@ namespace KLTN.Web.Areas.Admin.Controllers
                 Log.Error("Have an error when update admin in UserController", e);
                 return BadRequest();
             }
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult LoadProvince()
+        {
+            var xmlDoc = XDocument.Load(Path.Combine(_hostingEnvironment.WebRootPath, "Provinces_Data.xml"));
+
+            var xElements = xmlDoc.Element("Root").Elements("Item").Where(x => x.Attribute("type").Value == "province");
+            var list = xElements.Select(item => new ProvinceModel
+            {
+                ID = int.Parse(item.Attribute("id").Value),
+                Name = item.Attribute("value").Value
+            })
+                .ToList();
+            return Json(new
+            {
+                data = list,
+                status = true
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult LoadDistrict(int provinceID)
+        {
+            var xmlDoc = XDocument.Load(Path.Combine(_hostingEnvironment.WebRootPath, "Provinces_Data.xml"));
+
+            var xElement = xmlDoc.Element("Root").Elements("Item")
+                .Single(x => x.Attribute("type").Value == "province" && int.Parse(x.Attribute("id").Value) == provinceID);
+
+            var list = xElement.Elements("Item")
+                .Where(x => x.Attribute("type").Value == "district")
+                .Select(item => new DistrictModel
+                {
+                    ID = int.Parse(item.Attribute("id").Value),
+                    Name = item.Attribute("value").Value,
+                    ProvinceID = int.Parse(xElement.Attribute("id").Value)
+                })
+                .ToList();
+            return Json(new
+            {
+                data = list,
+                status = true
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult LoadPrecinct(int districtID)
+        {
+            var xmlDoc = XDocument.Load(Path.Combine(_hostingEnvironment.WebRootPath, "Provinces_Data.xml"));
+
+            var xElement = xmlDoc.Element("Root").Elements("Item").Elements("Item")
+                .Single(x => x.Attribute("type").Value == "district" && int.Parse(x.Attribute("id").Value) == districtID);
+
+            var list = xElement.Elements("Item")
+                .Where(x => x.Attribute("type").Value == "precinct")
+                .Select(item => new PrecinctModel
+                {
+                    Id = int.Parse(item.Attribute("id").Value),
+                    Name = item.Attribute("value").Value,
+                    DistrictId = int.Parse(xElement.Attribute("id").Value)
+                })
+                .ToList();
+            return Json(new
+            {
+                data = list,
+                status = true
+            });
         }
     }
 }

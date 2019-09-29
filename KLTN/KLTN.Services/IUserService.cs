@@ -58,5 +58,9 @@ namespace KLTN.Services
         Tuple<IEnumerable<EmployeeViewModel>, int, int> LoadEmployee(DTParameters dtParameters);
 
         int UpdateInfoUser(UpdateUserViewModel updateUser);
+
+        int ForgotPassword(string email);
+
+        bool ConfirmForgotPassword(RetypePassword retypePassword);
     }
 }

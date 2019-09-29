@@ -15,6 +15,7 @@ namespace KLTN.DataAccess.Models
         public DbSet<Brand> Brands { get; set; }
         public DbSet<CommentFeedback> CommentFeedbacks { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ConfirmForgot> ConfirmForgots { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Employee> Employees { get; set; }

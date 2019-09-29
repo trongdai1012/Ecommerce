@@ -97,7 +97,7 @@ namespace KLTN.Web.Controllers
         [Route("Payment")]
         public IActionResult Payment()
         {
-            
+
             return View();
         }
 

@@ -106,6 +106,39 @@
                         <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                     <div class="input-group mb-3">
+                        <select asp-for="ProvinceId" id="ddlProvince" class="form-control"></select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="ProvinceId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select asp-for="DistrictId" id="ddlDistrict" class="form-control"></select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="DistrictId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select asp-for="PrecinctId" id="ddlPrecinct" class="form-control"></select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="PrecinctId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
                         <input type="text" class="form-control" asp-for="Address" placeholder="Address">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -150,10 +183,100 @@
     </div>
     <!-- /.register-box -->
     <!-- jQuery -->
-    <script src="~/Admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Admin/plugins/jquery/jquery.min.js" type="text/javascript"></script>
+    <script>
+        var proId = '';
+
+        $(function () {
+            loadProvince();
+            registerEvent();
+        });
+
+        function registerEvent() {
+            $('#ddlProvince').off('change').on('change', function () {
+                var id = $(this).val();
+                if (id != '') {
+                    proId = id;
+                    loadDistrict(parseInt(id));
+                    $('#ddlPrecinct').html('');
+                }
+                else {
+                    $('#ddlDistrict').html('');
+                }
+            });
+            $('#ddlDistrict').off('change').on('change', function () {
+                var id = $(this).val();
+                if (id != '') {
+                    loadPrecinct(parseInt(id));
+                }
+                else {
+                    $('#ddlPrecinct').html('');
+                }
+            });
+        }
+
+        function loadProvince() {
+            $.ajax({
+                url: '/Admin/User/LoadProvince',
+                type: "POST",
+                dataType: "json",
+                success: function (response) {
+                    if (response.status == true) {
+                        console.log(response.data);
+                        var html = '<option value="">--Chọn tỉnh thành--</option>';
+                        var data = response.data;
+                        $.each(data, function (i, item) {
+                            html += '<option value="' + item.id + '">' + item.name + '</option>'
+                        });
+                        $('#ddlProvince').html(html);
+                    }
+                }
+            })
+        }
+
+        function loadDistrict(id) {
+            $.ajax({
+                url: '/Admin/User/LoadDistrict',
+                type: "POST",
+                data: { provinceID: id },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.data);
+                    if (response.status == true) {
+                        var html = '<option value="">--Chọn quận huyện--</option>';
+                        var data = response.data;
+                        $.each(data, function (i, item) {
+                            html += '<option value="' + item.id + '">' + item.name + '</option>'
+                        });
+                        $('#ddlDistrict').html(html);
+                    }
+                }
+            })
+        }
+
+        function loadPrecinct(id) {
+            $.ajax({
+                url: '/Admin/User/LoadPrecinct',
+                type: "POST",
+                data: { districtID: id },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.data);
+                    if (response.status == true) {
+                        var html = '<option value="">--Chọn xã phường--</option>';
+                        var data = response.data;
+                        $.each(data, function (i, item) {
+                            html += '<option value="' + item.id + '">' + item.name + '</option>'
+                        });
+                        $('#ddlPrecinct').html(html);
+                    }
+                }
+            })
+        }
+    </script>
     <!-- Bootstrap 4 -->
-    <script src="~/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
 </body>
 </html>

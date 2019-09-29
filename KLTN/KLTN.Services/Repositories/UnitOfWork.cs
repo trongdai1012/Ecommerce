@@ -14,6 +14,8 @@ namespace KLTN.Services.Repositories
 
         public IGenericRepository<Contact> ContactRepository { get; set; }
 
+        public IGenericRepository<ConfirmForgot> ForgotRepository { get; set; }
+
         public IGenericRepository<Customer> CustomerRepository { get; set; }
 
         public IGenericRepository<Delivery> DeliveryRepository { get; set; }
@@ -58,6 +60,7 @@ namespace KLTN.Services.Repositories
             BrandRepository = new GenericRepository<Brand>(_ecommerceDbContext);
             CategoryRepository = new GenericRepository<Category>(_ecommerceDbContext);
             ContactRepository = new GenericRepository<Contact>(_ecommerceDbContext);
+            ForgotRepository = new GenericRepository<ConfirmForgot>(_ecommerceDbContext);
             CustomerRepository = new GenericRepository<Customer>(_ecommerceDbContext);
             DeliveryRepository = new GenericRepository<Delivery>(_ecommerceDbContext);
             EmployeeRepository = new GenericRepository<Employee>(_ecommerceDbContext);
