@@ -47,6 +47,7 @@ namespace KLTN.Services
                     ProvinceId = register.ProvinceId,
                     DistrictId = register.DistrictId,
                     PrecinctId = register.PrecinctId,
+                    ProvinceName = register.ProvinceName,
                     Address = register.Address,
                     CreateAt = DateTime.UtcNow
                 };
