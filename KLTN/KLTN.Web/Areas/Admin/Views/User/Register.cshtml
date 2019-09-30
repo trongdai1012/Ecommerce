@@ -188,8 +188,6 @@
 <!-- jQuery -->
 <script src="~/Admin/plugins/jquery/jquery.min.js" type="text/javascript"></script>
 <script>
-    var proId = '';
-
     $(function() {
         loadProvince();
         registerEvent();
@@ -201,7 +199,6 @@
                 var id = $(this).val();
                 if (id != '') {
                     document.getElementById('province').value = $("#ddlProvince option:selected").text();
-                    proId = id;
                     loadDistrict(parseInt(id));
                     $('#ddlPrecinct').html('');
                 } else {

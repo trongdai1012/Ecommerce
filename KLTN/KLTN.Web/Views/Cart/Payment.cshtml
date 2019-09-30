@@ -107,14 +107,17 @@
                         @*     <span class="placeholder" data-placeholder="Town/City"></span> *@
                         @* </div> *@
                         <div class="col-md-12 form-group p_star">
+                            <input asp-for="RecipientProvinceName" type="hidden" id="province"/>
                             <select class="country_select form-control" asp-for="RecipientProvinceCode" id="ddlProvince">
                             </select>
                         </div>
                         <div class="col-md-12 form-group p_star">
+                            <input asp-for="RecipientDistrictName" type="hidden" id="district"/>
                             <select class="country_select form-control" asp-for="RecipientDistrictCode" id="ddlDistrict">
                             </select>
                         </div>
                         <div class="col-md-12 form-group p_star">
+                            <input asp-for="RecipientPrecinctName" type="hidden" id="precinct"/>
                             <select class="country_select form-control" asp-for="RecipientPrecinctCode" id="ddlPrecinct">
                             </select>
                         </div>
@@ -236,8 +239,6 @@
 
 @section scripts{
     <script>
-        var proId = '';
-
         $(function() {
             loadProvince();
             registerEvent();
@@ -248,6 +249,7 @@
                 function() {
                     var id = $(this).val();
                     if (id != '') {
+                        document.getElementById('province').value = $("#ddlProvince option:selected").text();
                         proId = id;
                         loadDistrict(parseInt(id));
                         $('#ddlPrecinct').html('');
@@ -259,6 +261,7 @@
                 function() {
                     var id = $(this).val();
                     if (id != '') {
+                        document.getElementById('district').value = $("#ddlDistrict option:selected").text();
                         loadPrecinct(parseInt(id));
                     } else {
                         $('#ddlPrecinct').html('');
@@ -268,6 +271,7 @@
                 function() {
                     var id = $(this).val();
                     if (id != '') {
+                        document.getElementById('precinct').value = $("#ddlPrecinct option:selected").text();
                         loadPrecinct(parseInt(id));
                     } else {
                         $('#ddlPrecinct').html('');
