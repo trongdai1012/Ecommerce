@@ -7,6 +7,8 @@ namespace KLTN.Services
 {
     public interface IUserService
     {
+        UserViewModel GetUserById(int id);
+
         int Register(RegisterUserViewModel register);
 
         int CreateEmployeeAccount(CreateEmployeeViewModel register);

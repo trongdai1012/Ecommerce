@@ -29,6 +29,13 @@ namespace KLTN.Services
             _mapper = mapper;
         }
 
+        public UserViewModel GetUserById(int id)
+        {
+            var user = _unitOfWork.UserRepository.GetById(id);
+            var userModel = _mapper.Map<UserViewModel>(user);
+            return userModel;
+        }
+
         public int Register(RegisterUserViewModel register)
         {
             try

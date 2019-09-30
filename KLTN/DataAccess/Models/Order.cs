@@ -9,9 +9,9 @@ namespace KLTN.DataAccess.Models
         public int RecipientProvinceCode { get; set; }
         public int RecipientDistrictCode { get; set; }
         public int RecipientPrecinctCode { get; set; }
-        public int RecipientProvinceName { get; set; }
-        public int RecipientDistrictName { get; set; }
-        public int RecipientPrecinctName { get; set; }
+        public string RecipientProvinceName { get; set; }
+        public string RecipientDistrictName { get; set; }
+        public string RecipientPrecinctName { get; set; }
         public string RecipientAddress { get; set; }
         public string RecipientPhone { get; set; }
         public string RecipientName { get; set; }

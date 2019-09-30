@@ -70,7 +70,8 @@ namespace KLTN.Services
                         Price = item.Price,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        ImageProduct = item.Image
+                        ImageProduct = item.Image,
+                        TotalPrice = item.TotalPrice
                     };
                     _unitOfWork.OrderDetailRepository.Create(ordDetail);
                 }
@@ -203,7 +204,7 @@ namespace KLTN.Services
 
         private int GetUserId()
         {
-            var userId = Convert.ToInt32(_httpContext.User.FindFirst(c => c.Type == "Id"));
+            var userId = Convert.ToInt32(_httpContext.User.FindFirst(c => c.Type == "Id").Value);
             return userId;
         }
     }

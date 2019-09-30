@@ -45,79 +45,71 @@
                                    asp-for="RecipientFirstName"
                                    class="form-control"
                                    id="first"
-                                   name="name"/>
-                            <span class="placeholder"
-                                  data-placeholder="First name">
-                            </span>
+                                   value="@Model.RecipientFirstName"
+                                   placeholder="Tên" />
                         </div>
                         <div class="col-md-6 form-group p_star">
                             <input type="text"
                                    asp-for="RecipientLastName"
                                    class="form-control"
                                    id="last"
-                                   name="name"/>
-                            <span class="placeholder" data-placeholder="Last name"></span>
+                                   value="@Model.RecipientLastName"
+                                   placeholder="Họ đệm" />
+
                         </div>
                         <div class="col-md-6 form-group p_star">
                             <input type="text"
                                    class="form-control"
                                    asp-for="RecipientPhone"
                                    id="number"
-                                   name="number"/>
-                            <span class="placeholder"
-                                  data-placeholder="Phone number">
-                            </span>
+                                   value="@Model.RecipientPhone"
+                                   placeholder="Số điện thoại" />
                         </div>
                         <div class="col-md-6 form-group p_star">
                             <input type="text"
                                    asp-for="RecipientEmail"
                                    class="form-control"
                                    id="email"
-                                   name="compemailany"/>
-                            <span class="placeholder"
-                                  data-placeholder="Email Address">
-                            </span>
+                                   value="@Model.RecipientEmail"
+                                   placeholder="Email" />
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input asp-for="RecipientProvinceName" type="hidden" id="province"/>
-                            <select class="country_select form-control" asp-for="RecipientProvinceCode" id="ddlProvince">
-                            </select>
+                            <input asp-for="RecipientProvinceName" type="hidden" id="province" />
+                            <select class="country_select form-control" asp-for="RecipientProvinceCode" id="ddlProvince"></select>
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input asp-for="RecipientDistrictName" type="hidden" id="district"/>
-                            <select class="country_select form-control" asp-for="RecipientDistrictCode" id="ddlDistrict">
-                            </select>
+                            <input asp-for="RecipientDistrictName" type="hidden" id="district" />
+                            <select class="country_select form-control" asp-for="RecipientDistrictCode" id="ddlDistrict"></select>
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input asp-for="RecipientPrecinctName" type="hidden" id="precinct"/>
-                            <select class="country_select form-control" asp-for="RecipientPrecinctCode" id="ddlPrecinct">
-                            </select>
+                            <input asp-for="RecipientPrecinctName" type="hidden" id="precinct" />
+                            <select class="country_select form-control" asp-for="RecipientPrecinctCode" id="ddlPrecinct"></select>
                         </div>
                         <div class="col-md-12 form-group">
                             <input type="text"
                                    class="form-control"
                                    id="zip"
                                    name="zip"
-                                   placeholder="Postcode/ZIP"/>
+                                   placeholder="Postcode/ZIP" />
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="creat_account">
-                                <input type="checkbox" id="f-option2" name="selector"/>
+                                <input type="checkbox" id="f-option2" name="selector" />
                                 <label for="f-option2">Create an account?</label>
                             </div>
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="creat_account">
                                 <h3>Shipping Details</h3>
-                                <input type="checkbox" id="f-option3" name="selector"/>
+                                <input type="checkbox" id="f-option3" name="selector" />
                                 <label for="f-option3">Ship to a different address?</label>
                             </div>
                             <textarea class="form-control"
-                                      name="message"
-                                      id="message"
+                                      asp-for="RecipientAddress"
                                       rows="1"
-                                      placeholder="Order Notes"></textarea>
+                                      placeholder="Số nhà/Đường"></textarea>
                         </div>
+                        <button class="main_btn" type="submit">Thanh toán</button>
                     </form>
                 </div>
                 <div class="col-lg-4">
@@ -200,7 +192,7 @@
                             <label for="f-option4">I’ve read and accept the </label>
                             <a href="#">terms & conditions*</a>
                         </div>
-                        <a class="main_btn" href="#">Proceed to Paypal</a>
+                        <a class="main_btn">Proceed to Paypal</a>
                     </div>
                 </div>
             </div>
@@ -244,7 +236,6 @@
                     var id = $(this).val();
                     if (id != '') {
                         document.getElementById('precinct').value = $("#ddlPrecinct option:selected").text();
-                        loadPrecinct(parseInt(id));
                     } else {
                         $('#ddlPrecinct').html('');
                     }

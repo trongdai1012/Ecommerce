@@ -14,6 +14,7 @@ namespace KLTN.DataModels.AutoMapper
                 .ForMember(vm => vm.Role, m => m.MapFrom(u => (EnumRole)u.Role));
             CreateMap<User, EmployeeViewModel>();
             CreateMap<User, CustomerViewModel>();
+            CreateMap<User, UserViewModel>();
         }
     }
 }
