@@ -180,7 +180,7 @@ namespace KLTN.Services
                 orderAscendingDirection = true;
             }
 
-            var listOrder = (from order in _unitOfWork.OrderRepository.ObjectContext
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
                             join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
                             select new OrderViewModel
                             {
@@ -202,7 +202,7 @@ namespace KLTN.Services
                                 UpdateAt = order.UpdateAt,
                                 UpdateBy = order.UpdateBy,
                                 StatusOrder = order.StatusOrder
-                            }) as IEnumerable<OrderViewModel>;
+                            };
 
             if (!string.IsNullOrEmpty(searchBy))
             {
