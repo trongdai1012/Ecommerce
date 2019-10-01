@@ -56,8 +56,10 @@ namespace KLTN.Services
                     RecipientProvinceName = orderView.RecipientProvinceName,
                     CreateBy = GetUserId(),
                     CreateAt = DateTime.UtcNow,
-                    RecipientName = orderView.RecipientFirstName + orderView.RecipientLastName,
+                    RecipientFirstName = orderView.RecipientFirstName,
+                    RecipientLastName = orderView.RecipientLastName,
                     RecipientPhone = orderView.RecipientPhone,
+                    RecipientEmail = orderView.RecipientEmail,
                     Status = true
                 };
                 var ord = _unitOfWork.OrderRepository.Create(order);
@@ -159,7 +161,7 @@ namespace KLTN.Services
         /// Get all list categories
         /// </summary>
         /// <returns></returns>
-        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadLaptop(DTParameters dtParameters)
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrder(DTParameters dtParameters)
         {
             var searchBy = dtParameters.Search?.Value;
             string orderCriteria;
@@ -178,25 +180,47 @@ namespace KLTN.Services
                 orderAscendingDirection = true;
             }
 
-            var listOrder = _unitOfWork.OrderRepository.GetAll();
+            var listOrder = (from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                UpdateAt = order.UpdateAt,
+                                UpdateBy = order.UpdateBy,
+                                StatusOrder = order.StatusOrder
+                            }) as IEnumerable<OrderViewModel>;
+
             if (!string.IsNullOrEmpty(searchBy))
             {
                 listOrder = listOrder.Where(r =>
                     r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
                     r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                    r.RecipientName.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                    r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.StatusOrder.ToString().ToUpper().Equals(searchBy.ToUpper()));
             }
 
             listOrder = orderAscendingDirection
                 ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
                 : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+            
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
 
-            var viewModels = _mapper.Map<IEnumerable<OrderViewModel>>(listOrder);
-            var filteredResultsCount = viewModels.ToArray().Count();
-            var totalResultsCount = viewModels.Count();
-
-            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(viewModels, filteredResultsCount,
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
                 totalResultsCount);
 
             return tuple;

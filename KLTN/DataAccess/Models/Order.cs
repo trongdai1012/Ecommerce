@@ -14,7 +14,9 @@ namespace KLTN.DataAccess.Models
         public string RecipientPrecinctName { get; set; }
         public string RecipientAddress { get; set; }
         public string RecipientPhone { get; set; }
-        public string RecipientName { get; set; }
+        public string RecipientFirstName { get; set; }
+        public string RecipientLastName { get; set; }
+        public string RecipientEmail { get; set; }
         public byte StatusOrder { get; set; }
 
         public virtual Customer Customer { get; set; }

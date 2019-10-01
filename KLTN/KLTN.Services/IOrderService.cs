@@ -10,7 +10,7 @@ namespace KLTN.Services
     {
         Tuple<OrderViewModel, int> GetOrderById(int? id);
 
-        Tuple<IEnumerable<OrderViewModel>, int, int> LoadLaptop(DTParameters dtParameters);
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrder(DTParameters dtParameters);
 
         bool Create(OrderViewModel orderView, IEnumerable<OrderDetailViewModel> orderDetails);
     }

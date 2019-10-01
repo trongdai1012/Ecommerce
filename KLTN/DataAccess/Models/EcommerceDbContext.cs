@@ -266,7 +266,8 @@ namespace KLTN.DataAccess.Models
                 entity.Property(x => x.UpdateAt).HasDefaultValue(DateTime.Now);
                 entity.Property(x => x.RecipientAddress).HasColumnType(TypeOfSql.NVarChar + "(100)");
                 entity.Property(x => x.RecipientPhone).HasColumnType(TypeOfSql.VarChar + "(20)");
-                entity.Property(x => x.RecipientName).HasColumnType(TypeOfSql.NVarChar + "(50)");
+                entity.Property(x => x.RecipientFirstName).HasColumnType(TypeOfSql.NVarChar + "(15)");
+                entity.Property(x => x.RecipientLastName).HasColumnType(TypeOfSql.NVarChar + "(30)");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>

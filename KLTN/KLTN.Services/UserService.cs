@@ -138,6 +138,7 @@ namespace KLTN.Services
             {
                 var result = _unitOfWork.ForgotRepository.GetById(forgot.Id);
                 if(result==null) _unitOfWork.ForgotRepository.Delete(_unitOfWork.ForgotRepository.GetById(forgot.Id));
+                Log.Error("Have an error when ForgotPassword in UserService", e);
                 return -1;
             }
         }
