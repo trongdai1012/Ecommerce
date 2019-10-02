@@ -104,6 +104,26 @@ namespace KLTN.Web.Controllers
         [Route("Payment")]
         public IActionResult Payment()
         {
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            if (cart == null) return BadRequest();
+            var listOrdDt = new List<OrderDetailViewModel>();
+            decimal subTotal = 0;
+            foreach (var item in cart)
+            {
+                listOrdDt.Add(new OrderDetailViewModel
+                {
+                    ProductId = item.Product.Id,
+                    ProductName = item.Product.Name,
+                    Quantity = item.Quantity,
+                    Image = item.Product.Image,
+                    Price = item.Product.CurrentPrice,
+                    TotalPrice = item.Product.CurrentPrice * item.Quantity
+                });
+                subTotal += item.Product.CurrentPrice * item.Quantity;
+            }
+
+            ViewBag.ListOrdDT = listOrdDt;
+
             var user = _userService.GetUserById(Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == "Id").Value));
             var order = new OrderViewModel
             {
@@ -117,8 +137,10 @@ namespace KLTN.Web.Controllers
                 RecipientDistrictCode = user.DistrictId,
                 RecipientPrecinctCode = user.PrecinctId,
                 RecipientProvinceCode = user.ProvinceId,
-                RecipientPhone = user.Phone
+                RecipientPhone = user.Phone,
+                TotalPrice = subTotal
             };
+
             return View(order);
         }
 
@@ -145,9 +167,13 @@ namespace KLTN.Web.Controllers
             }
 
             orderView.TotalPrice = subTotal;
-            _orderService.Create(orderView,listOrdDt);
-
-            return RedirectToAction("Index","Home");
+            var result = _orderService.Create(orderView,listOrdDt);
+            if (result)
+            {
+                cart.Clear();
+                return RedirectToAction("PaymentSuccess", "Notification");
+            }
+            return RedirectToAction("PaymentFailed", "Notification");
         }
 
         [Route("update")]

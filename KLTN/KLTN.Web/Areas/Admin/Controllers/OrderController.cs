@@ -22,6 +22,15 @@ namespace KLTN.Web.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult OrderDetail(int? id)
+        {
+            if (id == null) return BadRequest();
+            var order = _orderService.GetOrderDetailById(id.Value);
+            if (order.Item3 == -1) return BadRequest();
+            return View(order);
+        }
+
         [HttpPost]
         public IActionResult LoadOrder([FromBody] DTParameters dtParameters)
         {

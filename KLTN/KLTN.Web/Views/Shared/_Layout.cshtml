@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/responsive.css" />
 </head>
-
+@RenderSection("banner",false);
 <body>
     <!--================Header Menu Area =================-->
     <header class="header_area">
@@ -45,23 +45,20 @@
                             <div class="col-lg-7 pr-0">
                                 <ul class="nav navbar-nav center_nav pull-right">
                                     <li class="nav-item active">
-                                        <a class="nav-link" href="index.html">Home</a>
+                                        <a class="nav-link" asp-controller="Home" asp-action="Index">Trang chủ</a>
                                     </li>
                                     <li class="nav-item submenu dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                           aria-expanded="false">Shop</a>
+                                           aria-expanded="false">Thể loại</a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="category.html">Shop Category</a>
+                                                <a class="nav-link" href="#" />Laptop</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="single-product.html">Product Details</a>
+                                                <a class="nav-link" href="#">Điện thoại</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="checkout.html">Product Checkout</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="cart.html">Shopping Cart</a>
+                                                <a class="nav-link" href="#">Khác</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -70,27 +67,18 @@
                                            aria-expanded="false">Blog</a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="blog.html">Blog</a>
+                                                <a class="nav-link" href="#">Blog</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="single-blog.html">Blog Details</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item submenu dropdown">
-                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                           aria-expanded="false">Pages</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="tracking.html">Tracking</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="elements.html">Elements</a>
+                                                <a class="nav-link" href="#">Blog Details</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="contact.html">Contact</a>
+                                        <a class="nav-link" asp-controller="Contact" asp-action="Index">Liên hệ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">Quản trị</a>
                                     </li>
                                 </ul>
                             </div>
@@ -158,7 +146,7 @@
                                                     <!-- Message End -->
                                                 </a>
                                                 <div class="dropdown-divider"></div>
-                                                <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                                                <a asp-controller="Cart" asp-action="Index" class="dropdown-item dropdown-footer">Xem tất cả</a>
                                             </div>
 </li>
                                     @*<li class="nav-item">
@@ -278,7 +266,6 @@
     <script src="~/vendors/counter-up/jquery.waypoints.min.js"></script>
     <script src="~/vendors/counter-up/jquery.counterup.js"></script>
     <script src="~/js/mail-script.js"></script>
-    <script src="~/js/theme.js"></script>
     <script src="~/vendors/jquery-ui/jquery-ui.js"></script>
     @RenderSection("scripts", false)
 </body>

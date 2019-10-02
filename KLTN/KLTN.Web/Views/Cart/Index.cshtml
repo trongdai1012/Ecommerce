@@ -82,20 +82,6 @@
                                 </td>
                             </tr>
                         }
-                        <tr class="bottom_button">
-                            <td>
-                                <a class="gray_btn" href="#">Update Cart</a>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <div class="cupon_text">
-                                    <input type="text" placeholder="Coupon Code" />
-                                    <a class="main_btn" href="#">Apply</a>
-                                    <a class="gray_btn" href="#">Close Coupon</a>
-                                </div>
-                            </td>
-                        </tr>
                         <tr>
                             <td></td>
                             <td></td>
@@ -106,55 +92,14 @@
                                 <h5 id="subtotal" style="width:100%">@string.Format(info, "{0:C0}", ViewBag.total)</h5>
                             </td>
                         </tr>
-                        <tr class="shipping_area">
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <h5>Shipping</h5>
-                            </td>
-                            <td>
-                                <div class="shipping_box">
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#">Flat Rate: $5.00</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Free Shipping</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Flat Rate: $10.00</a>
-                                        </li>
-                                        <li class="active">
-                                            <a href="#">Local Delivery: $2.00</a>
-                                        </li>
-                                    </ul>
-                                    <h6>
-                                        Calculate Shipping
-                                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                    </h6>
-                                    <select class="shipping_select">
-                                        <option value="1">Bangladesh</option>
-                                        <option value="2">India</option>
-                                        <option value="4">Pakistan</option>
-                                    </select>
-                                    <select class="shipping_select">
-                                        <option value="1">Select a State</option>
-                                        <option value="2">Select a State</option>
-                                        <option value="4">Select a State</option>
-                                    </select>
-                                    <input type="text" placeholder="Postcode/Zipcode" />
-                                    <a class="gray_btn" href="#">Update Details</a>
-                                </div>
-                            </td>
-                        </tr>
                         <tr class="out_button_area">
                             <td></td>
                             <td></td>
                             <td></td>
                             <td>
                                 <div class="checkout_btn_inner">
-                                    <a class="gray_btn" asp-controller="Home" asp-action="index">Continue Shopping</a>
-                                    <a class="main_btn" href="#">Proceed to checkout</a>
+                                    <a class="gray_btn" asp-controller="Home" asp-action="index">Chọn thêm sản phẩm</a>
+                                    <a class="main_btn" asp-controller="Cart" asp-action="Payment">Thanh toán</a>
                                 </div>
                             </td>
                         </tr>
@@ -165,48 +110,6 @@
     </div>
 </section>
 <!--================End Cart Area =================-->
-
-<div class="container" style="margin:auto">
-    <h3>Cart Page</h3>
-    @if (ViewBag.cart.Count > 0)
-    {
-        <table cellpadding="2" cellspacing="2" border="1">
-            <tr>
-                <th>Option</th>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Photo</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Sub Total</th>
-            </tr>
-            @foreach (var item in ViewBag.cart)
-            {
-                <tr>
-                    <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Remove</a></td>
-                    <td>@item.Product.Id</td>
-                    <td>@item.Product.Name</td>
-                    <td><img src="/@item.Product.Image" width="60" /> </td>
-                    <td>@item.Product.CurrentPrice</td>
-                    <td>@item.Quantity</td>
-                    <td>@(item.Product.CurrentPrice * item.Quantity)</td>
-                </tr>
-            }
-            <tr>
-                <td align="right" colspan="6">Sum</td>
-                <td>
-                    @ViewBag.total
-                </td>
-            </tr>
-        </table>
-        <br>
-    }
-    else
-    {
-        <p>Giỏ hàng trống!</p>
-    }
-    <a asp-controller="Home" asp-action="index">Continue Shopping</a>
-</div>
 @section scripts
     {
     <script src="~/js/cartjs/cart.js"></script>

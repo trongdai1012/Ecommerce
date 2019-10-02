@@ -17,5 +17,15 @@ namespace KLTN.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult PaymentSuccess()
+        {
+            return View();
+        }
+
+        public IActionResult PaymentFailed()
+        {
+            return View();
+        }
     }
 }

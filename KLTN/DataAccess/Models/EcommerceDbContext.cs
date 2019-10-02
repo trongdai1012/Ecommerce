@@ -272,7 +272,7 @@ namespace KLTN.DataAccess.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasKey(x => x.OrderId);
+                entity.HasKey(x => x.Id);
                 entity.Property(x => x.Price).HasColumnType(TypeOfSql.Decimal).HasDefaultValue(0);
                 entity
                 .HasOne(x => x.Order)
@@ -308,7 +308,7 @@ namespace KLTN.DataAccess.Models
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
-                for (int i = 1; i <= 1000; i++)
+                for (int i = 1; i <= 100; i++)
                 {
                     entity.HasData(
                         new Product
@@ -349,7 +349,7 @@ namespace KLTN.DataAccess.Models
                 .WithMany(x => x.Images)
                 .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
-                for (int i = 1; i <= 1000; i++)
+                for (int i = 1; i <= 100; i++)
                 {
                     entity.HasData(
                         new Image
@@ -364,7 +364,7 @@ namespace KLTN.DataAccess.Models
             modelBuilder.Entity<Laptop>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                for (int i = 1; i <= 1000; i++)
+                for (int i = 1; i <= 100; i++)
                 {
                     entity.HasData(
                         new Laptop

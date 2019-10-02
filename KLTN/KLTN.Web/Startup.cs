@@ -45,6 +45,7 @@ namespace KLTN.Web
                 mc.AddProfile(new MappingProfile());
                 mc.AddProfile(new BrandProfiles());
                 mc.AddProfile(new ProductProfiles());
+                mc.AddProfile(new OrderProfiles());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

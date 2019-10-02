@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentFailed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-danger">
+    <div class="container">
+        <div class="alert-icon">
+            <i class="material-icons">Thông báo</i>
+        </div>
+        <a asp-controller="Cart" asp-action="Index" class="close" aria-label="Close">
+            <i class="material-icons">
+                Đến giỏ hàng
+            </i>
+        </a>
+        <b>Thanh toán thất bại. </b>Hãy kiểm tra lại giỏ hàng của bạn.
+    </div>
+</div>
+@section scripts{
+    <script src="~/js/alert.js"></script>
+}

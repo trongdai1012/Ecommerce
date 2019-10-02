@@ -95,9 +95,10 @@ namespace KLTN.Services
         /// <returns></returns>
         public Tuple<OrderViewModel, int> GetOrderById(int? id)
         {
+            if (id == null) return new Tuple<OrderViewModel, int>(null, -1);
             try
             {
-                var order = _unitOfWork.OrderRepository.GetById(id);
+                var order = _unitOfWork.OrderRepository.GetById(id.Value);
                 if (order == null) return new Tuple<OrderViewModel, int>(null, 0);
                 var orderModel = _mapper.Map<OrderViewModel>(order);
                 return new Tuple<OrderViewModel, int>(orderModel, 1);
@@ -161,6 +162,41 @@ namespace KLTN.Services
         /// Get all list categories
         /// </summary>
         /// <returns></returns>
+        public Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int> GetOrderDetailById(int id)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.GetById(id);
+                var orderModel = _mapper.Map<OrderViewModel>(order);
+
+                var ordDetail = from ordDT in _unitOfWork.OrderDetailRepository.ObjectContext
+                                join pro in _unitOfWork.ProductRepository.ObjectContext on ordDT.ProductId equals pro.Id
+                                where ordDT.OrderId == id
+                                select new OrderDetailViewModel
+                                {
+                                    OrderId = ordDT.OrderId,
+                                    ProductId = ordDT.ProductId,
+                                    Price = ordDT.Price,
+                                    Image = ordDT.ImageProduct,
+                                    Quantity = ordDT.Quantity,
+                                    ProductName = pro.Name,
+                                    TotalPrice = ordDT.TotalPrice
+                                };
+
+                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int>(orderModel, ordDetail, 1);
+
+                return tuple;
+            }catch(Exception e)
+            {
+                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int>(null, null, -1);
+                return tuple;
+            }
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
         public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrder(DTParameters dtParameters)
         {
             var searchBy = dtParameters.Search?.Value;
@@ -216,7 +252,7 @@ namespace KLTN.Services
             listOrder = orderAscendingDirection
                 ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
                 : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
-            
+
             var filteredResultsCount = listOrder.ToArray().Count();
             var totalResultsCount = listOrder.Count();
 

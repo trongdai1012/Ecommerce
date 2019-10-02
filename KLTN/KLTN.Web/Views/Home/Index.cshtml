@@ -3,18 +3,116 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<section class="inspired_product_area section_gap_bottom_custom" id="listProduct">
-    
+<link rel="stylesheet" href="~/css/owl.carousel.min.css" />
+<link rel="stylesheet" href="~/css/style1.css" />
+<!-- Hero section -->
+<section class="hero-section" style="align-content:center">
+    <div class="hero-slider owl-carousel">
+        <div class="hs-item set-bg" data-setbg="/iphone-11-pro.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-7 text-white">
+                        <span>New Arrivals</span>
+                        <h2>denim jackets</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                        <a href="#" class="site-btn sb-line">DISCOVER</a>
+                        <a href="#" class="site-btn sb-white">ADD TO CART</a>
+                    </div>
+                </div>
+                <div class="offer-card text-white">
+                    <span>from</span>
+                    <h2>$29</h2>
+                    <p>SHOP NOW</p>
+                </div>
+            </div>
+        </div>
+        <div class="hs-item set-bg" data-setbg="/laptop_hp.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-7 text-white">
+                        <span>New Arrivals</span>
+                        <h2>denim jackets</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                        <a href="#" class="site-btn sb-line">DISCOVER</a>
+                        <a href="#" class="site-btn sb-white">ADD TO CART</a>
+                    </div>
+                </div>
+                <div class="offer-card text-white">
+                    <span>from</span>
+                    <h2>$29</h2>
+                    <p>SHOP NOW</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="slide-num-holder" id="snh-1"></div>
+    </div>
 </section>
+<!-- Hero section end -->
+
+<!-- Start feature Area -->
+<section class="feature-area section_gap_bottom_custom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="single-feature">
+                    <a href="#" class="title">
+                        <i class="flaticon-money"></i>
+                        <h3>Money back gurantee</h3>
+                    </a>
+                    <p>Shall open divide a one</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="single-feature">
+                    <a href="#" class="title">
+                        <i class="flaticon-truck"></i>
+                        <h3>Free Delivery</h3>
+                    </a>
+                    <p>Shall open divide a one</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="single-feature">
+                    <a href="#" class="title">
+                        <i class="flaticon-support"></i>
+                        <h3>Alway support</h3>
+                    </a>
+                    <p>Shall open divide a one</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="single-feature">
+                    <a href="#" class="title">
+                        <i class="flaticon-blockchain"></i>
+                        <h3>Secure payment</h3>
+                    </a>
+                    <p>Shall open divide a one</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End feature Area -->
+
+<section class="inspired_product_area section_gap_bottom_custom" id="listProduct"></section>
 
 @section scripts
-{
+    {
+    <!--====== Javascripts & Jquery ======-->
+    <script src="~/js/jquery.slicknav.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.nicescroll.min.js"></script>
+    <script src="~/js/main.js"></script>
     <script>
-//        $(function () {
-//            GetListProduct();
-//        });
-        window.onload = function() {
+        //        $(function () {
+        //            GetListProduct();
+        //        });
+        window.onload = function () {
             GetListProduct();
         }
         function GetListProduct() {
@@ -37,8 +135,8 @@
                 cache: false,
                 async: true,
                 dataType: "html",
-                data: {productId : id},
-                success: function() {
+                data: { productId: id },
+                success: function () {
                     GetListProduct();
                 }
             });

@@ -216,11 +216,10 @@ namespace KLTN.Services
                 ? listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
                 : listLaptop.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
 
-            var viewModels = listLaptop.OrderBy(x => x.Id).ToArray();
-            var filteredResultsCount = viewModels.ToArray().Length;
-            var totalResultsCount = viewModels.Count();
+            var filteredResultsCount = listLaptop.Count();
+            var totalResultsCount = listLaptop.Count();
 
-            var tuple = new Tuple<IEnumerable<LaptopViewModel>, int, int>(viewModels, filteredResultsCount,
+            var tuple = new Tuple<IEnumerable<LaptopViewModel>, int, int>(listLaptop, filteredResultsCount,
                 totalResultsCount);
 
             return tuple;

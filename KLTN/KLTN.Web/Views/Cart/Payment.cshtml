@@ -85,18 +85,17 @@
                             <input asp-for="RecipientPrecinctName" type="hidden" id="precinct" />
                             <select class="country_select form-control" asp-for="RecipientPrecinctCode" id="ddlPrecinct"></select>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <div class="creat_account">
-                                <h3>Shipping Details</h3>
-                                <input type="checkbox" id="f-option3" name="selector" />
-                                <label for="f-option3">Ship to a different address?</label>
-                            </div>
-                            <textarea class="form-control"
-                                      asp-for="RecipientAddress"
-                                      rows="1"
-                                      placeholder="Số nhà/Đường"></textarea>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text"
+                                   asp-for="RecipientAddress"
+                                   class="form-control"
+                                   value=""
+                                   placeholder="Nhập địa chỉ cụ thể" />
+
                         </div>
-                        <button class="main_btn" type="submit">Thanh toán</button>
+                        <div class="col-md-12 form-group p_star">
+                            <button class="main_btn" type="submit">Thanh toán</button>
+                        </div>
                     </form>
                 </div>
                 <div class="col-lg-4">
@@ -105,63 +104,29 @@
                         <ul class="list">
                             <li>
                                 <a href="#">
-                                    Product
-                                    <span>Total</span>
+                                    Sản phẩm
+                                    <span>Giá</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
-                                    Fresh Blackberry
-                                    <span class="middle">x 02</span>
-                                    <span class="last">$720.00</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Fresh Tomatoes
-                                    <span class="middle">x 02</span>
-                                    <span class="last">$720.00</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Fresh Brocoli
-                                    <span class="middle">x 02</span>
-                                    <span class="last">$720.00</span>
-                                </a>
-                            </li>
+                            @foreach (var item in ViewBag.ListOrdDT)
+                            {
+                                <li>
+                                    <a href="#">
+                                        @item.ProductName
+                                        <span class="middle">x @item.Quantity</span>
+                                        <span class="last">@item.TotalPrice</span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                         <ul class="list list_2">
                             <li>
                                 <a href="#">
-                                    Subtotal
-                                    <span>$2160.00</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Shipping
-                                    <span>Flat rate: $50.00</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Total
-                                    <span>$2210.00</span>
+                                    Tổng tiền
+                                    <span>@Model.TotalPrice</span>
                                 </a>
                             </li>
                         </ul>
-                        <div class="payment_item">
-                            <div class="radion_btn">
-                                <input type="radio" id="f-option5" name="selector"/>
-                                <label for="f-option5">Check payments</label>
-                                <div class="check"></div>
-                            </div>
-                            <p>
-                                Please send a check to Store Name, Store Street, Store Town,
-                                Store State / County, Store Postcode.
-                            </p>
-                        </div>
                         <div class="payment_item active">
                             <div class="radion_btn">
                                 <input type="radio" id="f-option6" name="selector"/>
