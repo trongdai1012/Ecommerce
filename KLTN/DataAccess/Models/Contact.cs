@@ -5,7 +5,7 @@ namespace KLTN.DataAccess.Models
     public class Contact
     {
         public int Id { get; set; }
-        public int CustomerId { get; set; }
+        public int CreateBy { get; set; }
         public int HandlerId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
@@ -14,6 +14,6 @@ namespace KLTN.DataAccess.Models
         public DateTime ReplyContactAt { get; set; }
         public bool Status { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public virtual User User { get; set; }
     }
 }

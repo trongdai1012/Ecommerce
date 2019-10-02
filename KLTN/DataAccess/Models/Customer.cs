@@ -9,6 +9,5 @@ namespace KLTN.DataAccess.Models
         public byte Rank { get; set; }
 
         public User User { get; set; }
-        public virtual List<Contact> Contacts { get; set; }
     }
 }

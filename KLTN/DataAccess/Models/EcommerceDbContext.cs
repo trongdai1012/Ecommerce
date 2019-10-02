@@ -195,9 +195,9 @@ namespace KLTN.DataAccess.Models
                 entity.Property(x => x.Content).HasColumnType(TypeOfSql.NText);
                 entity.Property(x => x.ContentReply).HasColumnType(TypeOfSql.NText);
                 entity
-                .HasOne(x => x.Customer)
+                .HasOne(x => x.User)
                 .WithMany(x => x.Contacts)
-                .HasForeignKey(x => x.CustomerId)
+                .HasForeignKey(x => x.CreateBy)
                 .OnDelete(DeleteBehavior.Cascade);
             });
 

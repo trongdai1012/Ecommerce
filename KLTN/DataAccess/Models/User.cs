@@ -25,6 +25,7 @@ namespace KLTN.DataAccess.Models
         public virtual List<Brand> Brands { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual List<Contact> Contacts { get; set; }
         public virtual Admin Admin { get; set; }
         public virtual UserConfirm UserConfirm { get; set; }
         public virtual List<Feedback> Feedbacks { get; set; }
