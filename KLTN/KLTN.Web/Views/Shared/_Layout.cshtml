@@ -52,7 +52,7 @@
                                            aria-expanded="false">Thể loại</a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="#" />Laptop</a>
+                                                <a class="nav-link" asp-action="Laptop" asp-controller="Product" />Laptop</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="#">Điện thoại</a>
@@ -155,8 +155,8 @@
                                             <span class="badge badge-danger navbar-badge">3</span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                                <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Đăng nhập</a>
-                                                <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Đăng ký</a>
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Đăng nhập</a>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Register">Đăng ký</a>
                                         </div>
                                     </li>
 
@@ -254,6 +254,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/vendors/jquery-ui/jquery-ui.js"></script>
     <script src="~/js/popper.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/stellar.js"></script>

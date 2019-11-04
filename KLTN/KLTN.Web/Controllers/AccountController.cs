@@ -90,7 +90,6 @@ namespace KLTN.Web.Controllers
                     default:
                         var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.NameIdentifier, account.Item1.Id.ToString()),
                             new Claim(Constants.Id, account.Item1.Id.ToString()),
                             new Claim(Constants.Email, account.Item1.Email),
                             new Claim(Constants.Role, account.Item1.Role.ToString())

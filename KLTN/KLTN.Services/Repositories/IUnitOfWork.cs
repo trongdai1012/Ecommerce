@@ -18,6 +18,8 @@ namespace KLTN.Services.Repositories
         IGenericRepository<Contact> ContactRepository { get; }
         IGenericRepository<ConfirmForgot> ForgotRepository { get; }
         IGenericRepository<Customer> CustomerRepository { get; }
+        IGenericRepository<DataTest> DataTestRepository { get; }
+        IGenericRepository<DataTrain> DataTrainRepository { get; }
         IGenericRepository<Delivery> DeliveryRepository { get; }
         IGenericRepository<Employee> EmployeeRepository { get; }
         IGenericRepository<Feedback> FeedbackRepository { get; }

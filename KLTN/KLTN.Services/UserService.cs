@@ -13,6 +13,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KLTN.Services
 {
@@ -36,7 +37,7 @@ namespace KLTN.Services
             return userModel;
         }
 
-        public int Register(RegisterUserViewModel register)
+        public async Task<int> Register(RegisterUserViewModel register)
         {
             try
             {
@@ -82,14 +83,14 @@ namespace KLTN.Services
                 var userConfirmRegister = _unitOfWork.UserConfirmRepository.Create(userConfirm);
 
                 var contentMail =
-                    "Cảm ơn bạn đã đăng ký tài khoản trên website của chúng tôi!"
-                    + @"http://"+_httpContext.Request.Host
+                    "Cảm ơn bạn đã đăng ký tài khoản trên website của chúng tôi! "
+                    + _httpContext.Request.Scheme + "://" + _httpContext.Request.Host
                     + Environment.NewLine
                     + Environment.NewLine
                     + "Vui lòng click vào link bên dưới để kích hoạt tài khoản của bạn"
                     + Environment.NewLine
-                    + @"https://"+_httpContext.Request.Host + @"/Admin/User/ConfirmUser/" + userRegister.Id + "=" + userConfirm.ConfirmString;
-                SendMailConfirm(register.Email, register.FirstName, contentMail);
+                    + _httpContext.Request.Scheme + "://" +_httpContext.Request.Host + @"/Admin/User/ConfirmUser/" + userRegister.Id + "=" + userConfirm.ConfirmString;
+                await SendMailConfirm(register.Email, register.FirstName, contentMail);
 
                 _unitOfWork.Save();
 
@@ -317,7 +318,7 @@ namespace KLTN.Services
         /// <param name="emailConfigModel"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        private static bool SendMailConfirm(string Email, string Name,
+        private async static  Task<bool> SendMailConfirm(string Email, string Name,
             string content)
         {
             var message = new MimeMessage();
@@ -335,7 +336,7 @@ namespace KLTN.Services
             {
                 try
                 {
-                    client.Connect(Constants.SmtpClient, 587);
+                    await client.ConnectAsync(Constants.SmtpClient, 587);
 
 
                     // Note: since we don't have an OAuth2 token, disable
@@ -343,10 +344,10 @@ namespace KLTN.Services
                     client.AuthenticationMechanisms.Remove(Constants.Xoauth2);
 
                     // Note: only needed if the SMTP server requires authentication
-                    client.Authenticate(EmailConfig.MailSend, EmailConfig.PasswordMailSend);
+                    await client.AuthenticateAsync(EmailConfig.MailSend, EmailConfig.PasswordMailSend);
 
-                    client.Send(message);
-                    client.Disconnect(true);
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
                     return true;
                 }
                 catch (Exception e)

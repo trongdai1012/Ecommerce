@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KLTN.Services
 {
@@ -63,6 +65,108 @@ namespace KLTN.Services
                 Log.Error("Have an error when get product by id in product service", e);
                 return new Tuple<ProductViewModel, int>(null, -1);
             }
+        }
+
+        public IEnumerable<LaptopViewModel> GetAllLaptop(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                var listAllLap = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                                  join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                                  join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                                  join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                                  join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                                  where pro.CategoryId == (int)EnumCategory.Laptop
+                                  select new LaptopViewModel
+                                  {
+                                      Id = pro.Id,
+                                      Name = pro.Name,
+                                      ProductCode = pro.ProductCode,
+                                      Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                      Brand = bra.Name,
+                                      InitialPrice = pro.InitialPrice,
+                                      CurrentPrice = pro.CurrentPrice,
+                                      Description = pro.Description,
+                                      Screen = lap.Screen,
+                                      OperatingSystem = lap.OperatingSystem,
+                                      Camera = lap.Camera,
+                                      CPU = lap.CPU,
+                                      RAM = lap.RAM,
+                                      ROM = lap.ROM,
+                                      Card = lap.Card,
+                                      Design = lap.Design,
+                                      Size = lap.Size,
+                                      PortSupport = lap.PortSupport,
+                                      Pin = lap.Pin,
+                                      Color = lap.Color,
+                                      Weight = lap.Weight,
+                                      CreateAt = pro.CreateAt,
+                                      CreateBy = usc.Email,
+                                      UpdateAt = pro.UpdateAt,
+                                      UpdateBy = usu.Email,
+                                      ViewCount = pro.ViewCount,
+                                      LikeCount = pro.LikeCount,
+                                      TotalSold = pro.TotalSold,
+                                      Status = pro.Status,
+                                      Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                where img.ProductId == pro.Id
+                                                select img).ToList(),
+                                      ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                      where img.ProductId == pro.Id
+                                                      select img.Url
+                                          ).FirstOrDefault()
+                                  }).ToList();
+
+                return listAllLap;
+            }
+
+            var listLaptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                              where pro.CategoryId == (int)EnumCategory.Laptop && pro.Name == key
+                              select new LaptopViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  ProductCode = pro.ProductCode,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  Description = pro.Description,
+                                  Screen = lap.Screen,
+                                  OperatingSystem = lap.OperatingSystem,
+                                  Camera = lap.Camera,
+                                  CPU = lap.CPU,
+                                  RAM = lap.RAM,
+                                  ROM = lap.ROM,
+                                  Card = lap.Card,
+                                  Design = lap.Design,
+                                  Size = lap.Size,
+                                  PortSupport = lap.PortSupport,
+                                  Pin = lap.Pin,
+                                  Color = lap.Color,
+                                  Weight = lap.Weight,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  select img.Url
+                                      ).FirstOrDefault()
+                              }).ToList();
+
+            return listLaptop;
         }
 
         /// <summary>
@@ -442,10 +546,22 @@ namespace KLTN.Services
             }
         }
 
-        public int CreateLaptop(CreateLaptopViewModel laptopModel)
+        public async Task<int> CreateLaptop(CreateLaptopViewModel laptopModel, IFormFile path)
         {
             try
             {
+                using (var stream = new FileStream(checkFile(path), FileMode.Create))
+                {
+                    await path.CopyToAsync(stream);
+                }
+
+                var checkImage = Path.GetExtension(path.FileName).ToUpper();
+                if (checkImage != ".JPEG" && checkImage != ".JPG" && checkImage != ".PNG" && checkImage != ".GIF" && checkImage != ".TIFF" &&
+                    checkImage != ".PSD" && checkImage != ".PDF" && checkImage != ".EPS" && checkImage != ".AI" && checkImage != ".INDD" && checkImage != ".RAW")
+                {
+                    return 0;
+                }
+
                 if (CheckNameExisted(laptopModel.Name)) return 2;
                 if (CheckProductCodeExisted(laptopModel.ProductCode)) return 3;
                 var product = new Product
@@ -765,6 +881,30 @@ namespace KLTN.Services
                 Log.Error("Have an error when update laptop in service", e);
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// check file exist
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string checkFile(IFormFile path)
+        {
+            var fileName = Path.Combine(Directory.GetCurrentDirectory(), RedirectConfig.DataImages,
+                Path.GetFileName(path.FileName));
+            if (Directory.Exists(fileName)) return fileName;
+            if (!File.Exists(fileName))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            }
+            else
+            {
+                fileName += Guid.NewGuid().ToString().Substring(0, 6);
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                return fileName;
+            }
+
+            return fileName;
         }
 
         public string GetClaimUserMail()

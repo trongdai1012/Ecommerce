@@ -17,6 +17,8 @@ namespace KLTN.DataAccess.Models
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ConfirmForgot> ConfirmForgots { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<DataTest> DataTests { get; set; }
+        public DbSet<DataTrain> DataTrains { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -154,7 +156,7 @@ namespace KLTN.DataAccess.Models
                     });
             });
 
-            modelBuilder.Entity<Category>(entity=>
+            modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(x => x.Id);
                 entity.HasData(
@@ -214,6 +216,38 @@ namespace KLTN.DataAccess.Models
                 .HasForeignKey<Customer>(x => x.UserId);
             });
 
+            modelBuilder.Entity<DataTest>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                for (int i = 0; i < 200000; i++)
+                {
+                    entity.HasData(
+                        new DataTest
+                        {
+                            Id = i + 1,
+                            UserId = new Random().Next(1, 100),
+                            ProductId = new Random().Next(1, 10000),
+                            Rating = (byte)new Random().Next(1, 6)
+                        });
+                }
+            });
+
+            modelBuilder.Entity<DataTrain>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                for (int i = 0; i < 800000; i++)
+                {
+                    entity.HasData(
+                        new DataTrain
+                        {
+                            Id = i + 1,
+                            UserId = new Random().Next(1, 100),
+                            ProductId = new Random().Next(1, 10000),
+                            Rating = (byte)new Random().Next(1, 6)
+                        });
+                }
+            });
+
             modelBuilder.Entity<Delivery>(entity =>
             {
                 entity.HasKey(x => x.OrderId);
@@ -236,7 +270,7 @@ namespace KLTN.DataAccess.Models
                 .HasForeignKey<Employee>(x => x.UserId);
             });
 
-            modelBuilder.Entity<Feedback>(entity=>
+            modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.Rate).HasColumnType(TypeOfSql.TinyInt);
@@ -318,17 +352,17 @@ namespace KLTN.DataAccess.Models
                             Name = "Laptop Xiaomi " + i,
                             BrandId = 1,
                             CategoryId = (int)EnumCategory.Laptop,
-                            InitialPrice = new Random().Next(50,5000) * 10000,
+                            InitialPrice = new Random().Next(50, 5000) * 10000,
                             CurrentPrice = new Random().Next(50, 5000) * 10000,
                             PromotionPrice = new Random().Next(5, 500) * 10000,
                             DurationWarranty = 12,
                             MetaTitle = "lap-top-xiaomi" + i,
                             Description = "Laptop thuong hieu Xiaomi",
                             Rate = (byte)(new Random().Next(1, 5)),
-                            ViewCount = new Random().Next(1,50000),
-                            LikeCount = new Random().Next(1,10000),
-                            TotalSold = new Random().Next(1,5000),
-                            Quantity = new Random().Next(1,2000),
+                            ViewCount = new Random().Next(1, 50000),
+                            LikeCount = new Random().Next(1, 10000),
+                            TotalSold = new Random().Next(1, 5000),
+                            Quantity = new Random().Next(1, 2000),
                             Status = true,
                             CreateAt = DateTime.UtcNow,
                             CreateBy = 1,
@@ -337,7 +371,6 @@ namespace KLTN.DataAccess.Models
                         });
                 }
             });
-
 
             modelBuilder.Entity<Image>(entity =>
             {

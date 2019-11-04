@@ -10,8 +10,11 @@ namespace KLTN.Web.Controllers
     {
         private readonly IProductService _productService;
 
-        public HomeController(IProductService productService)
+        private readonly IRecommenderService _recommenderService;
+
+        public HomeController(IProductService productService, IRecommenderService recommenderService)
         {
+            _recommenderService = recommenderService;
             _productService = productService;
         }
 
@@ -20,7 +23,7 @@ namespace KLTN.Web.Controllers
         [Route("~/")]
         public IActionResult Index()
         {
-
+            var a = _recommenderService.GetAllLaptop();
             return View();
         }
 

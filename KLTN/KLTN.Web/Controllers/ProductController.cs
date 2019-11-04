@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using KLTN.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using X.PagedList;
 
 namespace KLTN.Web.Controllers
 {
@@ -81,6 +83,13 @@ namespace KLTN.Web.Controllers
                 Log.Error("Have an error at FeedbackProduct in ProductController", e);
                 return BadRequest();
             }
+        }
+
+        public IActionResult LapTop(string searchKey, int pageIndex = 1, int pageSize = 12)
+        {
+            var listLap = _productService.GetAllLaptop(searchKey);
+
+            return View(listLap.OrderBy(x=>x.InitialPrice).ToPagedList(pageIndex, pageSize));
         }
     }
 }

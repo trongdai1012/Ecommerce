@@ -2,6 +2,7 @@
 using KLTN.DataModels.Models.Users;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KLTN.Services
 {
@@ -9,7 +10,7 @@ namespace KLTN.Services
     {
         UserViewModel GetUserById(int id);
 
-        int Register(RegisterUserViewModel register);
+        Task<int> Register(RegisterUserViewModel register);
 
         int CreateEmployeeAccount(CreateEmployeeViewModel register);
 
