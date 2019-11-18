@@ -7,6 +7,6 @@ namespace KLTN.DataAccess.Models
     public class CommentFeedback : BaseModel
     {
         public int FeedbackId { get; set; }
-        public int Comment { get; set; }
+        public string Comment { get; set; }
     }
 }

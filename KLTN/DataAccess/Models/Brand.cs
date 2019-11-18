@@ -11,6 +11,5 @@ namespace KLTN.DataAccess.Models
 
         public virtual User User { get; set; }
         public virtual List<Product> Products { get; set; }
-        public virtual List<BrandCategory> BrandCategories { get; set; }
     }
 }

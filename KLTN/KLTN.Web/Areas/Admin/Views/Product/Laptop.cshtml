@@ -33,7 +33,7 @@
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
             <p class="text-right">
-                <a asp-area="Admin" asp-controller="Product" class="btn btn-primary">Thêm mới sản phẩm</a>
+                <a asp-area="Admin" asp-controller="Product" asp-action="CreateLaptop" class="btn btn-primary">Thêm mới sản phẩm</a>
             </p>
             <table id="product-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
@@ -97,7 +97,7 @@
                 {
                     data: "imageDefault",
                     "mRender": function (data) {
-                        var url = "<img src=" +"/" + data + " style = \"width: 100px; height: 70px\" </img> ";
+                        var url = "<img src=" +"/DataImage/" + data + " style = \"width: 100px; height: 70px\" </img> ";
                         return url;
                     }
                 },
@@ -127,7 +127,7 @@
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a title=\"Sửa\" href=\"AdminUpdate\\" +
+                                "<a title=\"Sửa\" href=\"UpdateLaptop\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +
@@ -139,7 +139,7 @@
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a href=\"AdminUpdate\\" +
+                                "<a href=\"UpdateLaptop\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +

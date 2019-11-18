@@ -21,7 +21,11 @@ namespace KLTN.Services
         Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, int>
             GetProductRecommender();
 
-        Task<int> CreateLaptop(CreateLaptopViewModel laptopModel, IFormFile path);
+        Task<int> CreateLaptop(CreateLaptopViewModel laptopModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
+
+        UpdateLaptopViewModel GetLaptopUpdateById(int id);
+
+        Task<int> UpdateLaptop(UpdateLaptopViewModel laptopModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
 
         //int CreateCategory(CreateCategoryModel model);
 

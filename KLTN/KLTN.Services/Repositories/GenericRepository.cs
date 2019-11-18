@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KLTN.Services.Repositories
 {
@@ -106,6 +107,16 @@ namespace KLTN.Services.Repositories
         }
 
         /// <summary>
+        /// Create T entity
+        /// </summary>
+        /// <param name="entity"></param>
+        public async Task<T> CreateAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            return entity;
+        }
+
+        /// <summary>
         /// Update T entity
         /// </summary>
         /// <param name="entity"></param>
@@ -137,6 +148,11 @@ namespace KLTN.Services.Repositories
         public void Save()
         {
             _ecommerceDbContext.SaveChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _ecommerceDbContext.SaveChangesAsync();
         }
         #endregion
     }

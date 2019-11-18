@@ -108,9 +108,19 @@ namespace KLTN.Services
                     UserId = GetUserId(),
                     IsLike = true
                 };
+
+                var product = _unitOfWork.ProductRepository.GetById(productId);
+                product.LikeCount += 1;
+
                 _unitOfWork.FeedbackRepository.Create(newFeedback);
                 _unitOfWork.Save();
                 return true;
+            }
+
+            if (!feedback.IsLike)
+            {
+                var product = _unitOfWork.ProductRepository.GetById(productId);
+                product.LikeCount += 1;
             }
 
             feedback.IsLike = true;

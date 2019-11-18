@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KLTN.Services.Repositories
 {
@@ -35,5 +36,7 @@ namespace KLTN.Services.Repositories
         /// Save db
         /// </summary>
         void Save();
+
+        Task SaveAsync();
     }
 }

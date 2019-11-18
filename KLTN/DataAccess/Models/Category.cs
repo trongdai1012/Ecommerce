@@ -9,6 +9,5 @@ namespace KLTN.DataAccess.Models
         public string Name { get; set; }
 
         public virtual List<Product> Products { get; set; }
-        public virtual List<BrandCategory> BrandCategories { get; set; }
     }
 }

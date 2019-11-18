@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace KLTN.DataAccess.Models
 {
-    public class Order : BaseModel
+    public class Order
     {
+        public int Id { get; set; }
         public decimal TotalPrice { get; set; }
         public int RecipientProvinceCode { get; set; }
         public int RecipientDistrictCode { get; set; }
@@ -18,6 +19,8 @@ namespace KLTN.DataAccess.Models
         public string RecipientLastName { get; set; }
         public string RecipientEmail { get; set; }
         public byte StatusOrder { get; set; }
+        public DateTime CreateAt { get; set; }
+        public int CreateBy { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Delivery Delivery { get; set; }

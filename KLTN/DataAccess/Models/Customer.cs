@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace KLTN.DataAccess.Models
 {
-    public class Customer : BaseModel
+    public class Customer
     {
+        public int Id { get; set; }
         public int UserId { get; set; }
         public byte Rank { get; set; }
 

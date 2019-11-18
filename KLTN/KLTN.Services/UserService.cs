@@ -65,9 +65,7 @@ namespace KLTN.Services
                 var customer = new Customer
                 {
                     UserId = userRegister.Id,
-                    Rank = 0,
-                    CreateAt = DateTime.UtcNow,
-                    Status = false
+                    Rank = 0
                 };
 
                 var customerRegister = _unitOfWork.CustomerRepository.Create(customer);

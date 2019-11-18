@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KLTN.Services.Repositories
 {
@@ -49,6 +50,8 @@ namespace KLTN.Services.Repositories
         /// <param name="entity"></param>
         T Create(T entity);
 
+        Task<T> CreateAsync(T entity);
+
         /// <summary>
         /// Marks an entity as modified
         /// </summary>
@@ -71,5 +74,7 @@ namespace KLTN.Services.Repositories
         /// Save change
         /// </summary>
         void Save();
+
+        Task SaveAsync();
     }
 }

@@ -14,7 +14,7 @@ namespace KLTN.DataAccess.Models
         public int DurationWarranty { get; set; }
         public string MetaTitle { get; set; }
         public string Description { get; set; }
-        public byte Rate { get; set; }
+        public float Rate { get; set; }
         public int ViewCount { get; set; }
         public int LikeCount { set; get; }
         public int TotalSold { get; set; }

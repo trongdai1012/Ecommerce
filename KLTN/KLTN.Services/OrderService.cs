@@ -59,8 +59,7 @@ namespace KLTN.Services
                     RecipientFirstName = orderView.RecipientFirstName,
                     RecipientLastName = orderView.RecipientLastName,
                     RecipientPhone = orderView.RecipientPhone,
-                    RecipientEmail = orderView.RecipientEmail,
-                    Status = true
+                    RecipientEmail = orderView.RecipientEmail
                 };
                 var ord = _unitOfWork.OrderRepository.Create(order);
 
@@ -235,8 +234,6 @@ namespace KLTN.Services
                                 RecipientEmail = order.RecipientEmail,
                                 CreateAt = order.CreateAt,
                                 CreateBy = order.CreateBy,
-                                UpdateAt = order.UpdateAt,
-                                UpdateBy = order.UpdateBy,
                                 StatusOrder = order.StatusOrder
                             };
 

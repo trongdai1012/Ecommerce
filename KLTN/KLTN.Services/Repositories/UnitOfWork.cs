@@ -1,4 +1,5 @@
 ﻿using KLTN.DataAccess.Models;
+using System.Threading.Tasks;
 
 namespace KLTN.Services.Repositories
 {
@@ -86,6 +87,14 @@ namespace KLTN.Services.Repositories
         public void Save()
         {
             _ecommerceDbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// This method save db
+        /// </summary>
+        public async Task SaveAsync()
+        {
+            await _ecommerceDbContext.SaveChangesAsync();
         }
     }
 }
