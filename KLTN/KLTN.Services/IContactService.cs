@@ -11,7 +11,7 @@ namespace KLTN.Services
 
         Tuple<ContactModel, int> GetContactById(int? id);
 
-//        int CreateContact(CreateBrandModel model);
+        bool SendContact(string title, string content);
 //
 //        IEnumerable<BrandViewModel> ReplyContact();
     }

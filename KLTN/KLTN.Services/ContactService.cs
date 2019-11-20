@@ -4,9 +4,11 @@ using System.Linq;
 using AutoMapper;
 using KLTN.Common;
 using KLTN.Common.Datatables;
+using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Contact;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 
 namespace KLTN.Services
 {
@@ -89,6 +91,35 @@ namespace KLTN.Services
         public Tuple<ContactModel, int> GetContactById(int? id)
         {
             throw new NotImplementedException();
+        }
+
+        public bool SendContact(string title, string content)
+        {
+            try
+            {
+                var contact = new Contact
+                {
+                    Title = title,
+                    Content = content,
+                    ContactAt = DateTime.UtcNow,
+                    CreateBy = GetClaimUserId(),
+                    Status = true
+                };
+
+                _unitOfWork.ContactRepository.Create(contact);
+                _unitOfWork.Save();
+                return true;
+            }catch(Exception e)
+            {
+                Log.Error("Have an error when send Contact by Customer", e);
+                return false;
+            }
+        }
+
+        public int GetClaimUserId()
+        {
+            var claimId = Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == "Id").Value);
+            return claimId;
         }
     }
 }

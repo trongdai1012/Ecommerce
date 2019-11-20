@@ -27,5 +27,15 @@ namespace KLTN.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult SendContactSuccess()
+        {
+            return View();
+        }
+
+        public IActionResult SendContactFail()
+        {
+            return View();
+        }
     }
 }

@@ -72,13 +72,17 @@ namespace KLTN.Services
 
                 _unitOfWork.Save();
 
+                var stringConfirm = InitConfirmString();
+
                 var userConfirm = new UserConfirm
                 {
                     UserId = userRegister.Id,
-                    ConfirmString = InitConfirmString()
+                    ConfirmString = stringConfirm
                 };
 
                 var userConfirmRegister = _unitOfWork.UserConfirmRepository.Create(userConfirm);
+
+                _unitOfWork.Save();
 
                 var contentMail =
                     "Cảm ơn bạn đã đăng ký tài khoản trên website của chúng tôi! "
@@ -87,10 +91,8 @@ namespace KLTN.Services
                     + Environment.NewLine
                     + "Vui lòng click vào link bên dưới để kích hoạt tài khoản của bạn"
                     + Environment.NewLine
-                    + _httpContext.Request.Scheme + "://" +_httpContext.Request.Host + @"/Admin/User/ConfirmUser/" + userRegister.Id + "=" + userConfirm.ConfirmString;
+                    + _httpContext.Request.Scheme + "://" +_httpContext.Request.Host + @"/Admin/User/ConfirmUser/" + userRegister.Id + "=" + stringConfirm;
                 await SendMailConfirm(register.Email, register.FirstName, contentMail);
-
-                _unitOfWork.Save();
 
                 if (userRegister != null && customerRegister != null && userConfirmRegister != null) return 1;
                 return 0;

@@ -34,6 +34,5 @@
   <ItemGroup>
     <Folder Include="Data" />
     <Folder Include="wwwroot\img\blog\latest-post\" />
-    <Folder Include="wwwroot\js\userjs\" />
   </ItemGroup>
 </Project>

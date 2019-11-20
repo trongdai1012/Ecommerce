@@ -46,8 +46,9 @@ namespace KLTN.Web.Controllers
             //Transmission ViewBag to View
             try
             {
-                ViewBag.RequestPath = requestPath ?? Signs.Slash;
-                return View();
+                var model = new AuthenticationViewModel();
+                model.RedirectUrl = requestPath ?? Signs.Slash;
+                return View(model);
             }
             catch (Exception e)
             {

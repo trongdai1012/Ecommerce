@@ -143,33 +143,6 @@ namespace KLTN.DataAccess.Models
                     });
             });
 
-            modelBuilder.Entity<Category>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.HasData(
-                    new Category
-                    {
-                        Id = 1,
-                        Name = "Laptop",
-                        CreateAt = DateTime.UtcNow,
-                        CreateBy = 1,
-                        UpdateAt = DateTime.UtcNow,
-                        UpdateBy = 1,
-                        Status = true
-                    });
-                entity.HasData(
-                    new Category
-                    {
-                        Id = 2,
-                        Name = "Điện thoại",
-                        CreateAt = DateTime.UtcNow,
-                        CreateBy = 1,
-                        UpdateAt = DateTime.UtcNow,
-                        UpdateBy = 1,
-                        Status = true
-                    });
-            });
-
             modelBuilder.Entity<CommentFeedback>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -320,11 +293,6 @@ namespace KLTN.DataAccess.Models
                 .HasOne(x => x.Brand)
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.BrandId)
-                .OnDelete(DeleteBehavior.Cascade);
-                entity
-                .HasOne(x => x.Category)
-                .WithMany(x => x.Products)
-                .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
                 //for (int i = 1; i <= 100; i++)
                 //{

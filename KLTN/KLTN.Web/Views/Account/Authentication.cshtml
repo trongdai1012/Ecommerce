@@ -23,6 +23,7 @@
         <div class="card-body login-card-body">
             <p class="login-box-msg">Nhập tài khoản của bạn tại đây</p>
             <form asp-action="Authentication" method="post">
+                <input asp-for="RedirectUrl" type="hidden" />
                 <div class="input-group mb-3">
                     <input asp-for="Email" type="email" class="form-control" placeholder="Email">
                     <div class="input-group-append">

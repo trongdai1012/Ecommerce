@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "SendContactFail";
+    Layout = "~/Views/Notification/ForgotOk.cshtml";
+}
+
+<div class="alert alert-danger">
+    <div class="container">
+        <div class="alert-icon">
+            <i class="material-icons">Thông báo</i>
+        </div>
+        <a asp-controller="Home" asp-action="Index" class="close" aria-label="Close">
+            <i class="material-icons">
+                Về trang chủ
+            </i>
+        </a>
+        <b>Gửi liên hệ thất bại. </b>Rất xin lỗi!...<br />Có một lỗi không xác định xảy ra trong quá trình gửi liên hệ tới chúng tôi. Chúng tôi sẽ khắc phục sự cố này trong thời gian sớm nhất.
+    </div>
+</div>
+@section scripts{
+    <script src="~/js/alert.js"></script>
+}
+
