@@ -26,6 +26,7 @@ namespace KLTN.Services.Repositories
         IGenericRepository<Image> ImageRepository { get; }
         IGenericRepository<Laptop> LaptopRepository { get; }
         IGenericRepository<Mobile> MobileRepository { get; }
+        IGenericRepository<News> NewsRepository { get; }
         IGenericRepository<Order> OrderRepository { get; }
         IGenericRepository<OrderDetail> OrderDetailRepository { get; }
         IGenericRepository<Product> ProductRepository { get; }

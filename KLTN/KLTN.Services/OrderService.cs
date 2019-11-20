@@ -187,6 +187,7 @@ namespace KLTN.Services
                 return tuple;
             }catch(Exception e)
             {
+                Log.Error("Have an error when get order detail in service", e);
                 var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int>(null, null, -1);
                 return tuple;
             }

@@ -33,6 +33,8 @@ namespace KLTN.Services.Repositories
 
         public IGenericRepository<Mobile> MobileRepository { get; set; }
 
+        public IGenericRepository<News> NewsRepository { get; set; }
+
         public IGenericRepository<Order> OrderRepository { get; set; }
 
         public IGenericRepository<OrderDetail> OrderDetailRepository { get; set; }
@@ -72,6 +74,7 @@ namespace KLTN.Services.Repositories
             ImageRepository = new GenericRepository<Image>(_ecommerceDbContext);
             LaptopRepository = new GenericRepository<Laptop>(_ecommerceDbContext);
             MobileRepository = new GenericRepository<Mobile>(_ecommerceDbContext);
+            NewsRepository = new GenericRepository<News>(_ecommerceDbContext);
             OrderRepository = new GenericRepository<Order>(_ecommerceDbContext);
             OrderDetailRepository = new GenericRepository<OrderDetail>(_ecommerceDbContext);
             ProductRepository = new GenericRepository<Product>(_ecommerceDbContext);

@@ -25,6 +25,7 @@ namespace KLTN.DataAccess.Models
         public DbSet<Image> Images { get; set; }
         public DbSet<Laptop> Laptops { get; set; }
         public DbSet<Mobile> Mobiles { get; set; }
+        public DbSet<News> News { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -248,6 +249,13 @@ namespace KLTN.DataAccess.Models
             modelBuilder.Entity<Mobile>(entity =>
             {
                 entity.HasKey(x => x.Id);
+            });
+
+            modelBuilder.Entity<News>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Title).HasMaxLength(100);
+                entity.Property(x => x.Content).HasColumnType(TypeOfSql.NText);
             });
 
             modelBuilder.Entity<Order>(entity =>
