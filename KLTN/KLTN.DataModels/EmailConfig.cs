@@ -6,7 +6,7 @@ namespace KLTN.DataModels
 {
     public static class EmailConfig
     {
-        public static string NameMailSend = "ecomercesendmail@gmail.com";
+        public static string NameMailSend = "BigConst Ecommerce";
         public static string MailSend = "ecomercesendmail@gmail.com";
         public static string PasswordMailSend = "matkhau123";
         public static string MailReceive = "ecomercereceivemail@gmail.com";

@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using KLTN.Common.Datatables;
 using KLTN.DataModels.Models.Brands;
 using KLTN.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
@@ -69,6 +71,47 @@ namespace KLTN.Web.Areas.Admin.Controllers
                 default:
                     ModelState.AddModelError("", "Có lỗi không xác định khi tạo thể loại sản phẩm, vui lòng liên hệ người quản trị");
                     return View(brandModel);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Detail(int id)
+        {
+            var model = _brandService.GetBrandById(id);
+
+            return View(model.Item1);
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            try
+            {
+                var model = _brandService.GetBrandById(id);
+                return model.Item1 == null ? BadRequest() : (IActionResult)View(model.Item1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when update News in Controller", e);
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Update(BrandViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            try
+            {
+                var result = _brandService.Update(model);
+
+                return result ? (IActionResult)RedirectToAction("Index", "News") : BadRequest();
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when update News in Controller", e);
+                return BadRequest();
             }
         }
     }

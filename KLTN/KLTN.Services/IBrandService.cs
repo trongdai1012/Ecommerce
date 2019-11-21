@@ -15,5 +15,7 @@ namespace KLTN.Services
         int CreateBrand(CreateBrandModel model);
 
         IEnumerable<BrandViewModel> GetAll();
+
+        bool Update(BrandViewModel model);
     }
 }

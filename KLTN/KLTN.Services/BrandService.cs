@@ -51,7 +51,7 @@ namespace KLTN.Services
             return listBrandModel;
         }
 
-        /// <summary>
+        /// <summary>f
         /// Get all list categories
         /// </summary>
         /// <returns></returns>
@@ -123,7 +123,22 @@ namespace KLTN.Services
         {
             try
             {
-                var brand = _unitOfWork.BrandRepository.GetById(id);
+                var brand = (from bra in _unitOfWork.BrandRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on bra.CreateBy equals usc.Id
+                            join usu in _unitOfWork.UserRepository.ObjectContext on bra.CreateBy equals usu.Id
+                            where bra.Id == id
+                            select new BrandViewModel
+                            {
+                                Id = bra.Id,
+                                Name = bra.Name,
+                                Address = bra.Address,
+                                CreateAt = bra.CreateAt,
+                                CreateBy = usc.Email,
+                                UpdateAt = bra.UpdateAt,
+                                UpdateBy = usu.Email,
+                                Status = bra.Status
+                            }).FirstOrDefault();
+
                 if (brand == null)
                 {
                     return new Tuple<BrandViewModel,int>(null,0);
@@ -178,23 +193,23 @@ namespace KLTN.Services
         /// Update category
         /// </summary>
         /// <param name="model"></param>
-        public int UpdateBrand(BrandViewModel model)
+        public bool Update(BrandViewModel model)
         {
             try
             {
                 var brand = _unitOfWork.BrandRepository.GetById(model.Id);
-                if (brand == null) return 0;
+                if (brand == null) return false;
                 brand.Name = model.Name;
                 brand.Address = model.Address;
                 brand.UpdateAt = DateTime.Now;
                 brand.UpdateBy = GetUserId();
                 _unitOfWork.BrandRepository.Save();
-                return 1;
+                return true;
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when update category in categoryService", e);
-                return -1;
+                return false;
             }
         }
 

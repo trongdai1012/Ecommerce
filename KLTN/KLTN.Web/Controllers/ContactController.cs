@@ -25,7 +25,7 @@ namespace KLTN.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(ContactModel contactModel)
+        public IActionResult Index(ContactViewModel contactModel)
         {
             if (!ModelState.IsValid) return View(contactModel);
 

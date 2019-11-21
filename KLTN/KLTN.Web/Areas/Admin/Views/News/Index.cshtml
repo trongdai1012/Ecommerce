@@ -13,8 +13,10 @@
                     <li class="breadcrumb-item">
                         <a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="breadcrumb-item active">Quản lý tin tức</li>
-
+                    <li class="breadcrumb-item active" style="align-content:center">
+                        <a asp-area="Admin" asp-controller="News" asp-action="Index">Quản lý tin tức</a>
+                    </li>
+                    <li class="breadcrumb-item active" style="align-content:center">Danh sách bài viết</li>
                 </ol>
             </div>
         </div>
@@ -27,8 +29,8 @@
             {
                 <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
             }*@
-        <div class="card-header">
-            <h3 class="card-title">Quản lý tin tức</h3>
+        <div class="card-header" style="margin:auto">
+            <h3 class="card-title"><b>Danh sách bài viết</b></h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">

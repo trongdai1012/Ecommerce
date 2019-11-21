@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using KLTN.Common;
 using KLTN.Common.Datatables;
 using KLTN.DataAccess.Models;
+using KLTN.DataModels;
 using KLTN.DataModels.Models.Contact;
 using KLTN.Services.Repositories;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Http;
+using MimeKit;
 using Serilog;
 
 namespace KLTN.Services
@@ -37,7 +41,7 @@ namespace KLTN.Services
             _mapper = mapper;
         }
         
-        public Tuple<IEnumerable<ContactModel>, int, int> LoadContact(DTParameters dtParameters)
+        public Tuple<IEnumerable<ContactViewModel>, int, int> LoadContact(DTParameters dtParameters)
         {
             var searchBy = dtParameters.Search?.Value;
             string orderCriteria;
@@ -58,7 +62,7 @@ namespace KLTN.Services
 
             var listContact = (from contact in _unitOfWork.ContactRepository.ObjectContext
                                 join usc in _unitOfWork.UserRepository.ObjectContext on contact.CreateBy equals usc.Id
-                                select new ContactModel
+                                select new ContactViewModel
                                 {
                                     Id = contact.Id,
                                     Title = contact.Title,
@@ -82,15 +86,41 @@ namespace KLTN.Services
             var filteredResultsCount = viewModels.ToArray().Length;
             var totalResultsCount = viewModels.Length;
 
-            var tuple = new Tuple<IEnumerable<ContactModel>, int, int>(viewModels, filteredResultsCount,
+            var tuple = new Tuple<IEnumerable<ContactViewModel>, int, int>(viewModels, filteredResultsCount,
                 totalResultsCount);
 
             return tuple;
         }
 
-        public Tuple<ContactModel, int> GetContactById(int? id)
+        public Tuple<ContactViewModel, int> GetContactById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var contact = (from cont in _unitOfWork.ContactRepository.ObjectContext
+                               join usc in _unitOfWork.UserRepository.ObjectContext on cont.CreateBy equals usc.Id
+                               where cont.CreateBy == id
+                               select new ContactViewModel
+                               {
+                                   Id = cont.Id,
+                                   Title = cont.Title,
+                                   Content = cont.Content,
+                                   ContactAt = cont.ContactAt,
+                                   CreateBy = usc.Email,
+                                   ContentReply = cont.ContentReply,
+                                   HandlerBy = usc.Email,
+                                   ReplyContactAt = cont.ReplyContactAt,
+                                   Status = cont.Status
+                               }).FirstOrDefault();
+
+                if (contact == null) return new Tuple<ContactViewModel, int>(null, 0);
+
+                return new Tuple<ContactViewModel, int>(contact, 1);
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error when get contact in service", e);
+                return new Tuple<ContactViewModel, int>(null, -1);
+            }
         }
 
         public bool SendContact(string title, string content)
@@ -112,6 +142,83 @@ namespace KLTN.Services
             }catch(Exception e)
             {
                 Log.Error("Have an error when send Contact by Customer", e);
+                return false;
+            }
+        }
+
+        public async Task<bool> ReplyContact(ContactViewModel contactModel)
+        {
+            try
+            {
+                var contact = _unitOfWork.ContactRepository.GetById(contactModel.Id);
+
+                contact.ContentReply = contactModel.ContentReply;
+                contact.HandlerId = GetClaimUserId();
+                contact.ReplyContactAt = DateTime.UtcNow;
+
+                var user = _unitOfWork.UserRepository.GetById(contact.CreateBy);
+
+                var result = await SendMail(user.Email, user.LastName + " " + user.LastName, contact.ContentReply);
+
+                if (result)
+                {
+                    _unitOfWork.Save();
+                    return true;
+                }
+
+                return false;
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error when reply contact in service", e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Method send mail from Customer to Admin, config with method SMTP by MaiKit
+        /// </summary>
+        /// <param name="contactViewModel"></param>
+        /// <param name="emailConfigModel"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        private async static Task<bool> SendMail(string Email, string Name,
+            string content)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(EmailConfig.NameMailSend, EmailConfig.MailSend));
+            message.To.Add(new MailboxAddress(Name,
+                Email));
+            message.Subject = "Trả lời liên hệ khách hàng";
+
+            message.Body = new TextPart(Constants.Plain)
+            {
+                Text = content
+            };
+
+            using (var client = new SmtpClient())
+            {
+                try
+                {
+                    await client.ConnectAsync(Constants.SmtpClient, 587);
+
+
+                    // Note: since we don't have an OAuth2 token, disable
+                    // the XOAUTH2 authentication mechanism.
+                    client.AuthenticationMechanisms.Remove(Constants.Xoauth2);
+
+                    // Note: only needed if the SMTP server requires authentication
+                    await client.AuthenticateAsync(EmailConfig.MailSend, EmailConfig.PasswordMailSend);
+
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Have an error when send mail in contactService");
+                }
+
                 return false;
             }
         }

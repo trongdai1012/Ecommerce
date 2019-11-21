@@ -141,11 +141,11 @@
                     "mRender": function (data, type, row) {
                         var url;
                         if (row["status"].toString() === "true") {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a title=\"Sửa\" href=\"AdminUpdate\\" +
+                                "<a title=\"Sửa\" href=\"Update\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +
@@ -153,11 +153,11 @@
                                 row["id"] +
                                 "\"></a>";
                         } else {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a href=\"AdminUpdate\\" +
+                                "<a href=\"Update\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +
