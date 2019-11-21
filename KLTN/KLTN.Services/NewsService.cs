@@ -8,7 +8,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace KLTN.Services
 {
@@ -132,14 +131,16 @@ namespace KLTN.Services
             if (checkName) return 0;
             try
             {
-                var news = new News();
-                news.Title = model.Title;
-                news.Content = model.Content;
-                news.CreateAt = DateTime.UtcNow;
-                news.CreateBy = GetUserId();
-                news.UpdateAt = DateTime.UtcNow;
-                news.UpdateBy = GetUserId();
-                news.Status = true;
+                var news = new News
+                {
+                    Title = model.Title,
+                    Content = model.Content,
+                    CreateAt = DateTime.UtcNow,
+                    CreateBy = GetUserId(),
+                    UpdateAt = DateTime.UtcNow,
+                    UpdateBy = GetUserId(),
+                    Status = true
+                };
                 _unitOfWork.NewsRepository.Create(news);
                 _unitOfWork.Save();
                 return 1;
@@ -154,6 +155,33 @@ namespace KLTN.Services
         private bool CheckTitleExisted(string title)
         {
             var result = _unitOfWork.NewsRepository.ObjectContext.Any(x => x.Title == title);
+            return result;
+        }
+
+        public bool Update(NewsViewModel viewModel)
+        {
+            try
+            {
+                if (CheckTitleExisted(viewModel.Title, viewModel.Id)) return false;
+
+                var model = _unitOfWork.NewsRepository.GetById(viewModel.Id);
+                model.Title = viewModel.Title;
+                model.Content = viewModel.Content;
+
+                _unitOfWork.Save();
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error when update News in Service", e);
+                return false;
+            }
+        }
+
+        private bool CheckTitleExisted(string title, int id)
+        {
+            var result = _unitOfWork.NewsRepository.ObjectContext.Any(x => x.Title == title && x.Id == id);
             return result;
         }
 

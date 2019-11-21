@@ -7,6 +7,7 @@ using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.News;
 using KLTN.Services;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
@@ -69,6 +70,39 @@ namespace KLTN.Web.Areas.Admin.Controllers
             var model = _newsService.GetNewsById(id);
 
             return View(model.Item1);
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            try
+            {
+                var model = _newsService.GetNewsById(id);
+                return model.Item1 == null ? BadRequest() : (IActionResult)View(model.Item1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when update News in Controller", e);
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Update(NewsViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            try
+            {
+                var result = _newsService.Update(model);
+
+                return result ? (IActionResult)RedirectToAction("Index", "News") : BadRequest();
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when update News in Controller", e);
+                return BadRequest();
+            }
         }
     }
 }

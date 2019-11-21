@@ -14,5 +14,7 @@ namespace KLTN.Services
         Tuple<NewsViewModel, int> GetNewsById(int? id);
 
         int Create(NewsViewModel model);
+
+        bool Update(NewsViewModel viewModel);
     }
 }
