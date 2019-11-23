@@ -27,7 +27,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
         {
             if (id == null) return BadRequest();
             var order = _orderService.GetOrderDetailById(id.Value);
-            if (order.Item3 == -1) return BadRequest();
+            if (order.Item4 == -1) return BadRequest();
             return View(order);
         }
 

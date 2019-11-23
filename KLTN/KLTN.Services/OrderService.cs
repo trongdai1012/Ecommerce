@@ -79,6 +79,13 @@ namespace KLTN.Services
                     _unitOfWork.OrderDetailRepository.Create(ordDetail);
                 }
 
+                var delivery = new Delivery
+                {
+                    OrderId = ord.Id
+                };
+
+                _unitOfWork.DeliveryRepository.Create(delivery);
+
                 _unitOfWork.Save();
                 return true;
             }
@@ -111,30 +118,6 @@ namespace KLTN.Services
             }
         }
 
-        public bool CreateOrderDetail(OrderDetailViewModel orderDetail)
-        {
-            try
-            {
-                var ordDetail = new OrderDetail
-                {
-                    OrderId = orderDetail.OrderId,
-                    Price = orderDetail.Price,
-                    ProductId = orderDetail.ProductId,
-                    Quantity = orderDetail.Quantity,
-                    ImageProduct = orderDetail.Image
-                };
-                _unitOfWork.OrderDetailRepository.Create(ordDetail);
-                _unitOfWork.Save();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log.Error("Have an error when create OrderDetail in OrderService", e);
-                return false;
-            }
-
-        }
-
         public Tuple<IEnumerable<OrderDetailViewModel>, int> GetOrdDetailByOrderId(int id)
         {
             try
@@ -163,7 +146,7 @@ namespace KLTN.Services
         /// Get all list categories
         /// </summary>
         /// <returns></returns>
-        public Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int> GetOrderDetailById(int id)
+        public Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int> GetOrderDetailById(int id)
         {
             try
             {
@@ -184,13 +167,36 @@ namespace KLTN.Services
                                     TotalPrice = ordDT.TotalPrice
                                 };
 
-                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int>(orderModel, ordDetail, 1);
+                var delivery = (from deli in _unitOfWork.DeliveryRepository.ObjectContext
+                               where deli.OrderId == id
+                               select new DeliveryViewModel
+                               {
+                                   Id = deli.Id,
+                                   OrderId = id,
+                                   ConfirmAt = deli.ConfirmAt,
+                                   PreparingOrderAt = deli.PreparingOrderAt,
+                                   FinishPreparingOrderAt = deli.FinishPreparingOrderAt,
+                                   StartDeliveryAt = deli.StartDeliveryAt,
+                                   FinishDeliveryAt = deli.FinishDeliveryAt,
+                                   CancelOrderAt = deli.CancelOrderAt,
+                                   CancelContent = deli.CancelContent
+                               }).FirstOrDefault();
+
+                var deliveryModel = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+
+                delivery.UserConfirmEmail = GetEmailById(deliveryModel.UserConfirmId);
+                delivery.UserPreparingOrderEmail = GetEmailById(deliveryModel.UserPreparingOrderId);
+                delivery.ShipperEmail = GetEmailById(deliveryModel.ShipperId);
+                delivery.CancelByEmail = GetEmailById(deliveryModel.CancelBy);
+
+                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int>(orderModel, ordDetail, delivery, 1);
 
                 return tuple;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.Error("Have an error when get order detail in service", e);
-                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int>(null, null, -1);
+                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int>(null, null, null, -1);
                 return tuple;
             }
         }
@@ -264,7 +270,7 @@ namespace KLTN.Services
 
         public IEnumerable<User> GetAllShipper()
         {
-            var listShipper = _unitOfWork.UserRepository.GetMany(x=>x.Role == (int)EnumRole.Shipper && x.Status==true);
+            var listShipper = _unitOfWork.UserRepository.GetMany(x => x.Role == (int)EnumRole.Shipper && x.Status == true);
 
             return listShipper;
         }
@@ -292,6 +298,12 @@ namespace KLTN.Services
         {
             var userId = Convert.ToInt32(_httpContext.User.FindFirst(c => c.Type == "Id").Value);
             return userId;
+        }
+
+        private string GetEmailById(int id)
+        {
+            var user = _unitOfWork.UserRepository.GetById(id);
+            return user != null ? user.Email : "";
         }
     }
 }

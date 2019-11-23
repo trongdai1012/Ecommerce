@@ -7,23 +7,17 @@ namespace KLTN.Services.Repositories
     {
         public IGenericRepository<User> UserRepository { get; set; }
 
-        public IGenericRepository<Admin> AdminRepository { get; set; }
-
         public IGenericRepository<Brand> BrandRepository { get; set; }
 
         public IGenericRepository<Contact> ContactRepository { get; set; }
 
         public IGenericRepository<ConfirmForgot> ForgotRepository { get; set; }
 
-        public IGenericRepository<Customer> CustomerRepository { get; set; }
-
         public IGenericRepository<DataTest> DataTestRepository { get; set; }
 
         public IGenericRepository<DataTrain> DataTrainRepository { get; set; }
 
         public IGenericRepository<Delivery> DeliveryRepository { get; set; }
-
-        public IGenericRepository<Employee> EmployeeRepository { get; set; }
 
         public IGenericRepository<Feedback> FeedbackRepository { get; set; }
 
@@ -61,15 +55,12 @@ namespace KLTN.Services.Repositories
         private void InitRepositories()
         {
             UserRepository = new GenericRepository<User>(_ecommerceDbContext);
-            AdminRepository = new GenericRepository<Admin>(_ecommerceDbContext);
             BrandRepository = new GenericRepository<Brand>(_ecommerceDbContext);
             ContactRepository = new GenericRepository<Contact>(_ecommerceDbContext);
             ForgotRepository = new GenericRepository<ConfirmForgot>(_ecommerceDbContext);
-            CustomerRepository = new GenericRepository<Customer>(_ecommerceDbContext);
             DataTestRepository = new GenericRepository<DataTest>(_ecommerceDbContext);
             DataTrainRepository = new GenericRepository<DataTrain>(_ecommerceDbContext);
             DeliveryRepository = new GenericRepository<Delivery>(_ecommerceDbContext);
-            EmployeeRepository = new GenericRepository<Employee>(_ecommerceDbContext);
             FeedbackRepository = new GenericRepository<Feedback>(_ecommerceDbContext);
             ImageRepository = new GenericRepository<Image>(_ecommerceDbContext);
             LaptopRepository = new GenericRepository<Laptop>(_ecommerceDbContext);

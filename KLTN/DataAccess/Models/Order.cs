@@ -22,7 +22,6 @@ namespace KLTN.DataAccess.Models
         public DateTime CreateAt { get; set; }
         public int CreateBy { get; set; }
 
-        public virtual Customer Customer { get; set; }
         public virtual Delivery Delivery { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
     }

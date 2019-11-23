@@ -13,10 +13,6 @@ namespace KLTN.Services
 
         Task<int> Register(RegisterUserViewModel register);
 
-        int CreateEmployeeAccount(CreateEmployeeViewModel register);
-
-        int CreateAdminAccount(CreateAdminViewModel register);
-
         Tuple<AuthenticationViewModel, int> Authentication(AuthenticationViewModel authenticationViewModel);
 
         /// <summary>

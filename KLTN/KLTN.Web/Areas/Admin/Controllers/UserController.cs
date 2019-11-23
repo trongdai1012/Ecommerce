@@ -44,38 +44,6 @@ namespace KLTN.Web.Areas.Admin.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        [HttpGet]
-        public IActionResult RegisterEmployee()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult RegisterEmployee(CreateEmployeeViewModel registerUser)
-        {
-            if (!ModelState.IsValid) return View(registerUser);
-            _userService.CreateEmployeeAccount(registerUser);
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult RegisterAdmin()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult RegisterAdmin(CreateAdminViewModel registerUser)
-        {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "Co loi gi do ko xac dinh");
-                return View(registerUser);
-            }
-            _userService.CreateAdminAccount(registerUser);
-            return RedirectToAction("Index", "Home");
-        }
-
         [AllowAnonymous]
         [HttpGet]
         public IActionResult ConfirmUser(string confirmString)

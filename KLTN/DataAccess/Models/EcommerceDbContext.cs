@@ -10,17 +10,14 @@ namespace KLTN.DataAccess.Models
         public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options) : base(options)
         {
         }
-
-        public DbSet<Admin> Admins { get; set; }
+        
         public DbSet<Brand> Brands { get; set; }
         public DbSet<CommentFeedback> CommentFeedbacks { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ConfirmForgot> ConfirmForgots { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<DataTest> DataTests { get; set; }
         public DbSet<DataTrain> DataTrains { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
-        public DbSet<Employee> Employees { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Laptop> Laptops { get; set; }
@@ -98,26 +95,6 @@ namespace KLTN.DataAccess.Models
                 .HasForeignKey<UserConfirm>(x => x.UserId);
             });
 
-            modelBuilder.Entity<Admin>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.UserId).IsUnique();
-                entity.Property(x => x.PassEmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
-                entity
-                .HasOne(x => x.User)
-                .WithOne(x => x.Admin)
-                .HasForeignKey<Admin>(x => x.UserId);
-                entity.HasData
-                (
-                    new Admin
-                    {
-                        Id = 1,
-                        PassEmail = "123456",
-                        UserId = 1
-                    }
-                );
-            });
-
             modelBuilder.Entity<Brand>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -164,17 +141,6 @@ namespace KLTN.DataAccess.Models
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<Customer>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.UserId).IsUnique();
-                entity.Property(x => x.Rank).HasColumnType(TypeOfSql.TinyInt).HasDefaultValue(0);
-                entity
-                .HasOne(x => x.User)
-                .WithOne(x => x.Customer)
-                .HasForeignKey<Customer>(x => x.UserId);
-            });
-
             modelBuilder.Entity<DataTest>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -209,24 +175,11 @@ namespace KLTN.DataAccess.Models
 
             modelBuilder.Entity<Delivery>(entity =>
             {
-                entity.HasKey(x => x.OrderId);
-                entity.Property(x => x.ShipperName).HasColumnType(TypeOfSql.NVarChar + "(50)");
-                entity.Property(x => x.ShipperPhone).HasColumnType(TypeOfSql.VarChar + "(20)");
+                entity.HasKey(x => x.Id);
                 entity
                 .HasOne(x => x.Order)
                 .WithOne(x => x.Delivery)
                 .HasForeignKey<Delivery>(x => x.OrderId);
-            });
-
-            modelBuilder.Entity<Employee>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.UserId).IsUnique();
-                entity.Property(x => x.PassEmail).HasColumnType(TypeOfSql.NVarChar + "(200)");
-                entity
-                .HasOne(x => x.User)
-                .WithOne(x => x.Employee)
-                .HasForeignKey<Employee>(x => x.UserId);
             });
 
             modelBuilder.Entity<Feedback>(entity =>

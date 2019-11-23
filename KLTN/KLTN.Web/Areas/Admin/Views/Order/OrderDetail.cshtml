@@ -1,4 +1,4 @@
-﻿@model Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, int>
+﻿@model Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int>
 @{
     ViewData["Title"] = "OrderDetail";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -29,9 +29,11 @@
             }*@
         <div class="card-header">
             <div class="col-md-12 row">
-                <div class="col-md-4"></div>
+                <div class="col-md-12 row">
+                    <h3 style="margin:auto; align-content:center; text-align:center"><b>Chi tiết đơn hàng</b></h3>
+                </div>
                 <div class="col-md-4">
-                    <p><strong>Chi tiết đơn hàng @Model.Item1.Id</strong></p>
+                    <p><strong>Mã đơn hàng: @Model.Item1.Id</strong></p>
                     <p><strong>ID người mua: @Model.Item1.CreateBy</strong></p>
                     <p><strong>Thời gian mua: @Model.Item1.CreateAt</strong></p>
                     <p><strong>Tổng tiền: @Model.Item1.TotalPrice</strong></p>
@@ -61,7 +63,7 @@
                         <tr>
                             <td>@item.OrderId</td>
                             <td>@item.ProductName</td>
-                            <td><img src="/DataImage/@item.Image "style="width:100px; height:70px"/></td>
+                            <td><img src="/DataImage/@item.Image " style="width:100px; height:70px" /></td>
                             <td>@item.Price</td>
                             <td>@item.Quantity</td>
                             <td>@item.TotalPrice</td>
@@ -72,6 +74,129 @@
             </table>
         </div>
     </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header" style="margin:auto">
+                    <h3><b>Chi tiết giao hàng</b></h3>
+                    <div class="card-tools">
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nhiệm vụ</th>
+                                <th>Người thực hiện</th>
+                                <th>Thời gian bắt đầu</th>
+                                <th>Thời gian hoàn thành</th>
+                                <th>Trạng thái</th>
+                                <th>Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Xác thực đơn hàng</td>
+                                <td>@Model.Item3.UserConfirmEmail</td>
+                                <td>@Model.Item3.ConfirmAt</td>
+                                <td>@Model.Item3.ConfirmAt</td>
+                                @if (Model.Item1.StatusOrder >= 1)
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Đã hoàn thành
+                                        </span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Chưa hoàn thành
+                                        </span>
+                                    </td>
+                                }
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Chuẩn bị đơn hàng</td>
+                                <td>@Model.Item3.UserPreparingOrderEmail</td>
+                                <td>@Model.Item3.PreparingOrderAt</td>
+                                <td>@Model.Item3.FinishPreparingOrderAt</td>
+                                @if (Model.Item1.StatusOrder >= 2)
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Đã hoàn thành
+                                        </span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Chưa hoàn thành
+                                        </span>
+                                    </td>
+                                }
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Giao hàng</td>
+                                <td>@Model.Item3.ShipperEmail</td>
+                                <td>@Model.Item3.StartDeliveryAt</td>
+                                <td>@Model.Item3.FinishDeliveryAt</td>
+                                @if (Model.Item1.StatusOrder >= 3)
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Đã hoàn thành
+                                        </span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Chưa hoàn thành
+                                        </span>
+                                    </td>
+                                }
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Huỷ đơn hàng</td>
+                                <td>@Model.Item3.CancelByEmail</td>
+                                <td>@Model.Item3.CancelOrderAt</td>
+                                <td>@Model.Item3.CancelOrderAt</td>
+                                @if (Model.Item1.StatusOrder >= 4)
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Đã huỷ
+                                        </span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                        </span>
+                                    </td>
+                                }
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    <!-- /.row -->
 </div>
 <!-- /.box -->
 

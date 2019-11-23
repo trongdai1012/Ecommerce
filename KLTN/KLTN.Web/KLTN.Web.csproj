@@ -6,6 +6,12 @@
     <UserSecretsId>f675ba33-930a-494b-a2d2-6b016f22f593</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
@@ -32,7 +38,6 @@
     <ProjectReference Include="..\KLTN.Services\KLTN.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data" />
     <Folder Include="wwwroot\img\blog\latest-post\" />
   </ItemGroup>
 </Project>

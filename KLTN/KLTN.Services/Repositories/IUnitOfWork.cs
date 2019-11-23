@@ -13,15 +13,12 @@ namespace KLTN.Services.Repositories
     {
         //declare entities Repository
         IGenericRepository<User> UserRepository { get; }
-        IGenericRepository<Admin> AdminRepository { get; }
         IGenericRepository<Brand> BrandRepository { get; }
         IGenericRepository<Contact> ContactRepository { get; }
         IGenericRepository<ConfirmForgot> ForgotRepository { get; }
-        IGenericRepository<Customer> CustomerRepository { get; }
         IGenericRepository<DataTest> DataTestRepository { get; }
         IGenericRepository<DataTrain> DataTrainRepository { get; }
         IGenericRepository<Delivery> DeliveryRepository { get; }
-        IGenericRepository<Employee> EmployeeRepository { get; }
         IGenericRepository<Feedback> FeedbackRepository { get; }
         IGenericRepository<Image> ImageRepository { get; }
         IGenericRepository<Laptop> LaptopRepository { get; }
