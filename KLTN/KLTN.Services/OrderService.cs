@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using KLTN.Common;
 using KLTN.Common.Datatables;
+using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Orders;
+using KLTN.DataModels.Models.Users;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Http;
 using Serilog;
@@ -258,6 +260,32 @@ namespace KLTN.Services
                 totalResultsCount);
 
             return tuple;
+        }
+
+        public IEnumerable<User> GetAllShipper()
+        {
+            var listShipper = _unitOfWork.UserRepository.GetMany(x=>x.Role == (int)EnumRole.Shipper && x.Status==true);
+
+            return listShipper;
+        }
+
+        public IEnumerable<User> GetAllClerk()
+        {
+            var listClerk = _unitOfWork.UserRepository.GetMany(x => x.Role == (int)EnumRole.Clerk && x.Status == true);
+
+            return listClerk;
+        }
+
+        public IEnumerable<User> GetAllWareHouseStaff()
+        {
+            var listWareHouseStaff = _unitOfWork.UserRepository.GetMany(x => x.Role == (int)EnumRole.WareHouseStaff && x.Status == true);
+
+            return listWareHouseStaff;
+        }
+
+        public bool Update(int id, int status, int userId)
+        {
+            return true;
         }
 
         private int GetUserId()

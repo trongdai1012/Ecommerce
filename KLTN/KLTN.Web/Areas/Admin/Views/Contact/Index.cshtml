@@ -13,7 +13,7 @@
                     <li class="breadcrumb-item">
                         <a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="breadcrumb-item active">Quản lý thể loại sản phẩm</li>
+                    <li class="breadcrumb-item active">Quản lý liên hệ</li>
 
                 </ol>
             </div>
@@ -28,13 +28,10 @@
                 <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
             }*@
         <div class="card-header">
-            <h3 class="card-title">Quản lý liên hệ</h3>
+            <h3 class="card-title">danh sách liên hệ</h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
-            <p class="text-right">
-                <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="btn btn-primary">Thêm mới thương hiệu</a>
-            </p>
             <table id="contact-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
                     <tr>
@@ -122,11 +119,11 @@
                     "mRender": function (data, type, row) {
                         var url;
                         if (row["status"].toString() === "true") {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a title=\"Sửa\" href=\"AdminUpdate\\" +
+                                "<a title=\"Sửa\" href=\"Update\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +
@@ -134,11 +131,11 @@
                                 row["id"] +
                                 "\"></a>";
                         } else {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a href=\"AdminUpdate\\" +
+                                "<a href=\"Update\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +

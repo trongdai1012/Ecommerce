@@ -7,10 +7,10 @@ namespace KLTN.Common.Infrastructure
     public enum EnumRole
     {
         Admin = 0,
-        Mod,
+        Manager,
         Clerk,
         WareHouseStaff,
-        Deliver,
+        Shipper,
         Customer
     }
 }

@@ -1,4 +1,5 @@
 ﻿using KLTN.Common.Datatables;
+using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Orders;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,11 @@ namespace KLTN.Services
         bool Create(OrderViewModel orderView, IEnumerable<OrderDetailViewModel> orderDetails);
 
         Tuple<OrderViewModel,IEnumerable<OrderDetailViewModel>, int> GetOrderDetailById(int id);
+
+        IEnumerable<User> GetAllShipper();
+
+        IEnumerable<User> GetAllClerk();
+
+        IEnumerable<User> GetAllWareHouseStaff();
     }
 }

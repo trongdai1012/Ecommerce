@@ -1,4 +1,5 @@
 ﻿using KLTN.Common.Datatables;
+using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Users;
 using System;
 using System.Collections.Generic;

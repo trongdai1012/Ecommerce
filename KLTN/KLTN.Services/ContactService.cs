@@ -98,7 +98,7 @@ namespace KLTN.Services
             {
                 var contact = (from cont in _unitOfWork.ContactRepository.ObjectContext
                                join usc in _unitOfWork.UserRepository.ObjectContext on cont.CreateBy equals usc.Id
-                               where cont.CreateBy == id
+                               where cont.Id == id
                                select new ContactViewModel
                                {
                                    Id = cont.Id,
@@ -132,8 +132,7 @@ namespace KLTN.Services
                     Title = title,
                     Content = content,
                     ContactAt = DateTime.UtcNow,
-                    CreateBy = GetClaimUserId(),
-                    Status = true
+                    CreateBy = GetClaimUserId()
                 };
 
                 _unitOfWork.ContactRepository.Create(contact);

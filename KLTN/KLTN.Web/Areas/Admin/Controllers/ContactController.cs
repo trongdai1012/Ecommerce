@@ -55,7 +55,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             {
                 if (id == null) return BadRequest();
                 var contact = _contactService.GetContactById(id.Value);
-                return View(contact);
+                return View(contact.Item1);
             }
             catch(Exception e)
             {

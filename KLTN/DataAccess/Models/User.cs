@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace KLTN.DataAccess.Models
 {
@@ -11,6 +12,7 @@ namespace KLTN.DataAccess.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool Gender { get; set; }
+        [DataType(DataType.Date)]
         public DateTime BirthDay { get; set; }
         public int ProvinceId { get; set; }
         public int DistrictId { get; set; }
