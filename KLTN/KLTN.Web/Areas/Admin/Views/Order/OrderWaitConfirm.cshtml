@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "OrderWaitConfirm";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -17,7 +17,7 @@
                         <a asp-area="Admin" asp-controller="Order" asp-action="Index">Quản lý đơn hàng</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a>Danh sách đơn hàng</a>
+                        <a>Danh sách đơn hàng chờ xác thực</a>
                     </li>
                 </ol>
             </div>
@@ -32,7 +32,7 @@
                 <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
             }*@
         <div class="card-header" style="margin:auto">
-            <h3 class="card-title" style="text-align:center">Danh sách đơn hàng</h3>
+            <h3 class="card-title" style="text-align:center">Danh sách đơn hàng chờ xác thực</h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
@@ -80,11 +80,11 @@
             searching: { regex: true },
             // Ajax Filter
             ajax: {
-                url: "/Admin/Order/LoadOrder",
+                url: "/Admin/Order/LoadOrderWaitConfirm",
                 type: "POST",
                 contentType: "application/json",
                 dataType: "json",
-                data: function (d) {
+                data: function(d) {
                     return JSON.stringify(d);
                 }
             },
@@ -94,7 +94,7 @@
                 { data: "recipientEmail" },
                 {
                     data: "createAt",
-                    render: function (data, type) {
+                    render: function(data, type) {
                         // If display or filter data is requested, format the date
                         if (type === "display" || type === "filter") {
                             return moment(data).format("DD/MM/YYYY");
@@ -110,7 +110,7 @@
                 { data: "statusOrder" },
                 {
                     "mData": "id",
-                    "mRender": function (data, type, row) {
+                    "mRender": function(data, type, row) {
                         var url;
                         url = "<a title=\"Chi tiết\" href=\"OrderDetail\\" +
                             data +
@@ -123,3 +123,4 @@
         });
     </script>
 }
+

@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿
+@{
+    ViewData["Title"] = "OrderWaitDelivery";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -17,7 +18,7 @@
                         <a asp-area="Admin" asp-controller="Order" asp-action="Index">Quản lý đơn hàng</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a>Danh sách đơn hàng</a>
+                        <a>Danh sách chờ giao hàng</a>
                     </li>
                 </ol>
             </div>
@@ -32,7 +33,7 @@
                 <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
             }*@
         <div class="card-header" style="margin:auto">
-            <h3 class="card-title" style="text-align:center">Danh sách đơn hàng</h3>
+            <h3 class="card-title" style="text-align:center">Danh sách chờ giao hàng</h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
@@ -80,7 +81,7 @@
             searching: { regex: true },
             // Ajax Filter
             ajax: {
-                url: "/Admin/Order/LoadOrder",
+                url: "/Admin/Order/LoadOrderWaitDelivery",
                 type: "POST",
                 contentType: "application/json",
                 dataType: "json",
@@ -123,3 +124,4 @@
         });
     </script>
 }
+

@@ -1,0 +1,19 @@
+﻿@model Tuple<IEnumerable<OrderViewModel>, int>
+
+<a class="nav-link" data-toggle="dropdown" href="#">
+    <i class="far fa-bell"></i>
+    <span class="badge badge-warning navbar-badge">@Model.Item2</span>
+</a>
+<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+    <span class="dropdown-item dropdown-header">@Model.Item2 nhiệm vụ</span>
+    @foreach (var item in Model.Item1)
+    {
+        <div class="dropdown-divider"></div>
+        <a href="/Admin/Order/OrderDetail/@item.Id" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> Mã đơn hàng: 
+            <span class="float-right text-muted text-sm">@item.Id</span>
+        </a>
+    }
+    <div class="dropdown-divider"></div>
+    <a href="/Admin/Order/TaskByUserId" class="dropdown-item dropdown-footer">Xem tất cả</a>
+</div>

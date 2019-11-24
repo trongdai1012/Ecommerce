@@ -286,7 +286,7 @@ namespace KLTN.Services
                 var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
 
                 order.StatusOrder = 4;
-                delivery.PreparingOrderAt = DateTime.UtcNow;
+                delivery.StartDeliveryAt = DateTime.UtcNow;
                 delivery.ShipperId = GetUserId();
 
                 _unitOfWork.Save();
@@ -314,7 +314,7 @@ namespace KLTN.Services
                 if (delivery.UserPreparingOrderId != GetUserId()) return 4;
 
                 order.StatusOrder = 5;
-                delivery.PreparingOrderAt = DateTime.UtcNow;
+                delivery.FinishDeliveryAt = DateTime.UtcNow;
 
                 _unitOfWork.Save();
                 return 1;
@@ -424,6 +424,571 @@ namespace KLTN.Services
                 totalResultsCount);
 
             return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderWaitConfirm(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.StatusOrder == 0
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderWaitPrepare(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.StatusOrder == 1
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderPreparing(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.StatusOrder == 2
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderWaitDelivery(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.StatusOrder == 3
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderDelivering(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.StatusOrder == 4
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderFinish(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.StatusOrder == 5
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderCancel(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.StatusOrder == 6
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadTaskByUserId(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            join deli in _unitOfWork.DeliveryRepository.ObjectContext on order.Id equals deli.OrderId
+                            where deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 2 ||
+                            deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 4
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        public Tuple<IEnumerable<OrderViewModel>, int> GetMission()
+        {
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            join deli in _unitOfWork.DeliveryRepository.ObjectContext on order.Id equals deli.OrderId
+                            where deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 2 ||
+                            deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 4
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+            listOrder = listOrder.OrderBy(x => x.Id).Take(3);
+            var totalMission = listOrder.Count();
+            return new Tuple<IEnumerable<OrderViewModel>, int>(listOrder, totalMission);
         }
 
         public IEnumerable<User> GetAllShipper()

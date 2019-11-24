@@ -3,7 +3,6 @@ using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Orders;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace KLTN.Services
 {
@@ -34,5 +33,23 @@ namespace KLTN.Services
         int FinishDeliveryOrder(int id);
 
         int CancelOrder(int id, string content);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderWaitConfirm(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderWaitPrepare(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderPreparing(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderWaitDelivery(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderDelivering(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderFinish(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderCancel(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadTaskByUserId(DTParameters dtParameters);
+
+        Tuple<IEnumerable<OrderViewModel>, int> GetMission();
     }
 }

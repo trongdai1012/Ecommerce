@@ -85,6 +85,9 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
+                    <div>
+                        <h4 class="text-danger" style="padding-left:25px">Lời nhắc: @ViewBag.ErrorMessage</h4>
+                    </div>
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -101,13 +104,31 @@
                             <tr>
                                 <td>Xác thực đơn hàng</td>
                                 <td>@Model.Item3.UserConfirmEmail</td>
-                                <td>@Model.Item3.ConfirmAt</td>
-                                <td>@Model.Item3.ConfirmAt</td>
-                                @if (Model.Item1.StatusOrder >= 1)
+                                @if (Model.Item3.ConfirmAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.ConfirmAt
+                                    </td>
+                                }
+                                @if (Model.Item3.ConfirmAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.ConfirmAt
+                                    </td>
+                                }
+                                @if (Model.Item1.StatusOrder >= 1 && Model.Item1.StatusOrder < 6)
                                 {
                                     <td>
                                         <span class="tag tag-success">
-                                            Đã hoàn thành
+                                            Đã xác thực
                                         </span>
                                     </td>
                                 }
@@ -115,7 +136,7 @@
                                 {
                                     <td>
                                         <span class="tag tag-success">
-                                            Chưa hoàn thành
+                                            Chưa xác thực
                                         </span>
                                     </td>
                                 }
@@ -126,7 +147,9 @@
                                     <td>
                                         <a href="/Admin/Order/ConfirmOrder/@Model.Item1.Id">Xác nhận đơn hàng</a>`
                                     </td>
-                                }else{
+                                }
+                                else
+                                {
                                     <td></td>
                                 }
 
@@ -134,9 +157,35 @@
                             <tr>
                                 <td>Chuẩn bị đơn hàng</td>
                                 <td>@Model.Item3.UserPreparingOrderEmail</td>
-                                <td>@Model.Item3.PreparingOrderAt</td>
-                                <td>@Model.Item3.FinishPreparingOrderAt</td>
-                                @if (Model.Item1.StatusOrder >= 2)
+                                @if (Model.Item3.PreparingOrderAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.PreparingOrderAt
+                                    </td>
+                                }
+                                @if (Model.Item3.FinishPreparingOrderAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.FinishPreparingOrderAt
+                                    </td>
+                                }
+                                @if (Model.Item1.StatusOrder == 2)
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Đang chuẩn bị
+                                        </span>
+                                    </td>
+                                }
+                                else if (Model.Item1.StatusOrder >= 3 && Model.Item1.StatusOrder < 6)
                                 {
                                     <td>
                                         <span class="tag tag-success">
@@ -148,15 +197,21 @@
                                 {
                                     <td>
                                         <span class="tag tag-success">
-                                            Chưa hoàn thành
+                                            Chưa xử lý
                                         </span>
                                     </td>
                                 }
                                 <td></td>
-                                @if (Model.Item1.StatusOrder == 0)
+                                @if (Model.Item1.StatusOrder == 1)
                                 {
                                     <td>
-                                        <a asp-action="ConfirmOrder" asp-controller="OrderController" asp-route-id="@Model.Item1.Id">Xác nhận đơn hàng</a>
+                                        <a asp-action="StartPrepareOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Chuẩn bị đơn hàng</a>
+                                    </td>
+                                }
+                                else if (Model.Item1.StatusOrder == 2)
+                                {
+                                    <td>
+                                        <a asp-action="FinishPrepareOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Chuẩn bị hoàn tất</a>
                                     </td>
                                 }
                                 else
@@ -167,9 +222,35 @@
                             <tr>
                                 <td>Giao hàng</td>
                                 <td>@Model.Item3.ShipperEmail</td>
-                                <td>@Model.Item3.StartDeliveryAt</td>
-                                <td>@Model.Item3.FinishDeliveryAt</td>
-                                @if (Model.Item1.StatusOrder >= 3)
+                                @if (Model.Item3.StartDeliveryAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.StartDeliveryAt
+                                    </td>
+                                }
+                                @if (Model.Item3.FinishDeliveryAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.FinishDeliveryAt
+                                    </td>
+                                }
+                                @if (Model.Item1.StatusOrder == 4)
+                                {
+                                    <td>
+                                        <span class="tag tag-success">
+                                            Đang chuẩn bị
+                                        </span>
+                                    </td>
+                                }
+                                else if (Model.Item1.StatusOrder == 5)
                                 {
                                     <td>
                                         <span class="tag tag-success">
@@ -181,15 +262,21 @@
                                 {
                                     <td>
                                         <span class="tag tag-success">
-                                            Chưa hoàn thành
+                                            Chưa xử lý
                                         </span>
                                     </td>
                                 }
                                 <td></td>
-                                @if (Model.Item1.StatusOrder == 0)
+                                @if (Model.Item1.StatusOrder == 3)
                                 {
                                     <td>
-                                        <a asp-action="ConfirmOrder" asp-controller="OrderController" asp-route-id="@Model.Item1.Id">Xác nhận đơn hàng</a>
+                                        <a asp-action="StartDeliveryOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Nhận giao hàng</a>
+                                    </td>
+                                }
+                                else if (Model.Item1.StatusOrder == 4)
+                                {
+                                    <td>
+                                        <a asp-action="FinishDeliveryOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Đã hoàn thành</a>
                                     </td>
                                 }
                                 else
@@ -200,8 +287,26 @@
                             <tr>
                                 <td>Huỷ đơn hàng</td>
                                 <td>@Model.Item3.CancelByEmail</td>
-                                <td>@Model.Item3.CancelOrderAt</td>
-                                <td>@Model.Item3.CancelOrderAt</td>
+                                @if (Model.Item3.CancelOrderAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.CancelOrderAt
+                                    </td>
+                                }
+                                @if (Model.Item3.CancelOrderAt.Year <= DateTime.MinValue.Year)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Model.Item3.CancelOrderAt
+                                    </td>
+                                }
                                 @if (Model.Item1.StatusOrder >= 4)
                                 {
                                     <td>
@@ -217,15 +322,15 @@
                                         </span>
                                     </td>
                                 }
-                                <td></td>
-                                @if (Model.Item1.StatusOrder == 6)
+                                <td>@Model.Item3.CancelContent</td>
+                                @if (Model.Item1.StatusOrder >= 5)
                                 {
                                     <td></td>
                                 }
                                 else
                                 {
                                     <td>
-                                        <a asp-action="CancelOrder" asp-controller="OrderController" asp-route-id="@Model.Item1.Id">Huỷ đơn hàng</a>
+                                        <a href="#myDiv" onclick="OnClickToShow()">Huỷ đơn hàng</a>
                                     </td>
                                 }
                             </tr>
@@ -233,6 +338,10 @@
                     </table>
                 </div>
                 <!-- /.card-body -->
+            </div>
+            <div id="myDiv" style="display:none">
+                <textarea id="contentCancel" placeholder="Vui lòng nhập lý do huỷ đơn hàng tại đây." style="width:100%" onkeyup="myFunction()"></textarea>
+                <div id="submit-btn"></div>
             </div>
             <!-- /.card -->
         </div>
@@ -250,6 +359,23 @@
         $.fn.dataTable.moment("DD/MM/YYYY");
 
         $("#order-detail").DataTable();
+    </script>
+    <script>
+        function OnClickToShow() {
+            var x = document.getElementById("myDiv");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        function myFunction() {
+            var id = @Model.Item1.Id;
+            var content = document.getElementById("contentCancel").value;
+            var html = '<a href="/Admin/Order/CancelOrder/?id=' + id + '&content=' + content + '"> Gửi</a>';
+            document.getElementById('submit-btn').innerHTML = html;
+        }
     </script>
 }
 
