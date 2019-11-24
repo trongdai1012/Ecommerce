@@ -94,6 +94,7 @@
                                 <th>Thời gian hoàn thành</th>
                                 <th>Trạng thái</th>
                                 <th>Ghi chú</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -119,6 +120,16 @@
                                     </td>
                                 }
                                 <td></td>
+
+                                @if (Model.Item1.StatusOrder == 0)
+                                {
+                                    <td>
+                                        <a href="/Admin/Order/ConfirmOrder/@Model.Item1.Id">Xác nhận đơn hàng</a>`
+                                    </td>
+                                }else{
+                                    <td></td>
+                                }
+
                             </tr>
                             <tr>
                                 <td>Chuẩn bị đơn hàng</td>
@@ -142,6 +153,16 @@
                                     </td>
                                 }
                                 <td></td>
+                                @if (Model.Item1.StatusOrder == 0)
+                                {
+                                    <td>
+                                        <a asp-action="ConfirmOrder" asp-controller="OrderController" asp-route-id="@Model.Item1.Id">Xác nhận đơn hàng</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                             </tr>
                             <tr>
                                 <td>Giao hàng</td>
@@ -165,6 +186,16 @@
                                     </td>
                                 }
                                 <td></td>
+                                @if (Model.Item1.StatusOrder == 0)
+                                {
+                                    <td>
+                                        <a asp-action="ConfirmOrder" asp-controller="OrderController" asp-route-id="@Model.Item1.Id">Xác nhận đơn hàng</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                             </tr>
                             <tr>
                                 <td>Huỷ đơn hàng</td>
@@ -187,6 +218,16 @@
                                     </td>
                                 }
                                 <td></td>
+                                @if (Model.Item1.StatusOrder == 6)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a asp-action="CancelOrder" asp-controller="OrderController" asp-route-id="@Model.Item1.Id">Huỷ đơn hàng</a>
+                                    </td>
+                                }
                             </tr>
                         </tbody>
                     </table>

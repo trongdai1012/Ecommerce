@@ -168,19 +168,19 @@ namespace KLTN.Services
                                 };
 
                 var delivery = (from deli in _unitOfWork.DeliveryRepository.ObjectContext
-                               where deli.OrderId == id
-                               select new DeliveryViewModel
-                               {
-                                   Id = deli.Id,
-                                   OrderId = id,
-                                   ConfirmAt = deli.ConfirmAt,
-                                   PreparingOrderAt = deli.PreparingOrderAt,
-                                   FinishPreparingOrderAt = deli.FinishPreparingOrderAt,
-                                   StartDeliveryAt = deli.StartDeliveryAt,
-                                   FinishDeliveryAt = deli.FinishDeliveryAt,
-                                   CancelOrderAt = deli.CancelOrderAt,
-                                   CancelContent = deli.CancelContent
-                               }).FirstOrDefault();
+                                where deli.OrderId == id
+                                select new DeliveryViewModel
+                                {
+                                    Id = deli.Id,
+                                    OrderId = id,
+                                    ConfirmAt = deli.ConfirmAt,
+                                    PreparingOrderAt = deli.PreparingOrderAt,
+                                    FinishPreparingOrderAt = deli.FinishPreparingOrderAt,
+                                    StartDeliveryAt = deli.StartDeliveryAt,
+                                    FinishDeliveryAt = deli.FinishDeliveryAt,
+                                    CancelOrderAt = deli.CancelOrderAt,
+                                    CancelContent = deli.CancelContent
+                                }).FirstOrDefault();
 
                 var deliveryModel = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
 
@@ -198,6 +198,164 @@ namespace KLTN.Services
                 Log.Error("Have an error when get order detail in service", e);
                 var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int>(null, null, null, -1);
                 return tuple;
+            }
+        }
+
+        public int OrderConfirm(int id)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.GetById(id);
+
+                if (order.StatusOrder > 0) return 0;
+
+                var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+                order.StatusOrder = 1;
+                delivery.ConfirmAt = DateTime.UtcNow;
+                delivery.UserConfirmId = GetUserId();
+
+                _unitOfWork.Save();
+                return 1;
+
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when confirm order in service", e.Message);
+                return -1;
+            }
+        }
+
+        public int StartPrepareOrder(int id)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.GetById(id);
+                if (order.StatusOrder < 1) return 2;
+                if (order.StatusOrder > 1) return 3;
+                var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+
+                order.StatusOrder = 2;
+                delivery.PreparingOrderAt = DateTime.UtcNow;
+                delivery.UserPreparingOrderId = GetUserId();
+
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when confirm order in service", e.Message);
+                return -1;
+            }
+        }
+
+        public int FinishPrepareOrder(int id)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.GetById(id);
+
+                if (order.StatusOrder < 2) return 2;
+
+                if (order.StatusOrder > 2) return 3;
+
+                var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+
+                if (delivery.UserPreparingOrderId != GetUserId()) return 4;
+
+                order.StatusOrder = 3;
+                delivery.FinishPreparingOrderAt = DateTime.UtcNow;
+
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when confirm order in service", e.Message);
+                return -1;
+            }
+        }
+
+        public int StartDeliveryOrder(int id)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.GetById(id);
+                if (order.StatusOrder < 3) return 2;
+                if (order.StatusOrder > 3) return 3;
+
+                var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+
+                order.StatusOrder = 4;
+                delivery.PreparingOrderAt = DateTime.UtcNow;
+                delivery.ShipperId = GetUserId();
+
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when confirm order in service", e.Message);
+                return -1;
+            }
+        }
+
+        public int FinishDeliveryOrder(int id)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.GetById(id);
+
+                if (order.StatusOrder < 4) return 2;
+
+                if (order.StatusOrder > 4) return 3;
+
+                var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+
+                if (delivery.UserPreparingOrderId != GetUserId()) return 4;
+
+                order.StatusOrder = 5;
+                delivery.PreparingOrderAt = DateTime.UtcNow;
+
+                _unitOfWork.Save();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when confirm order in service", e.Message);
+                return -1;
+            }
+        }
+
+        public int CancelOrder(int id, string content)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.GetById(id);
+
+                if (order.StatusOrder == 5) return 2;
+                if (order.StatusOrder == 6) return 3;
+
+                var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+
+                var userId = GetUserId();
+
+                if (order.StatusOrder < 1 || order.StatusOrder == 2 && delivery.UserPreparingOrderId == userId || order.StatusOrder == 4 && delivery.ShipperId == userId)
+                {
+                    order.StatusOrder = 6;
+                    delivery.CancelOrderAt = DateTime.UtcNow;
+                    delivery.CancelContent = content;
+                    delivery.CancelBy = userId;
+
+                    _unitOfWork.Save();
+                    return 1;
+                }
+
+                return 4;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when confirm order in service", e.Message);
+                return -1;
             }
         }
 

@@ -22,5 +22,17 @@ namespace KLTN.Services
         IEnumerable<User> GetAllClerk();
 
         IEnumerable<User> GetAllWareHouseStaff();
+
+        int OrderConfirm(int id);
+
+        int StartPrepareOrder(int id);
+
+        int FinishPrepareOrder(int id);
+
+        int StartDeliveryOrder(int id);
+
+        int FinishDeliveryOrder(int id);
+
+        int CancelOrder(int id, string content);
     }
 }
