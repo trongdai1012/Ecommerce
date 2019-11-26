@@ -1,0 +1,27 @@
+﻿@model Tuple<List<CartItem>, int>
+
+<a href="#" class="icons" data-toggle="dropdown">
+    <i class="ti-shopping-cart"></i>
+    <span class="badge badge-danger navbar-badge">@Model.Item2</span>
+</a>
+<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+
+    @foreach (var item in Model.Item1)
+    {
+        <a href="#" class="dropdown-item" style="height:77px; width:278px">
+            <!-- Message Start -->
+            <div class="media">
+                <img src="~/DataImage/@item.Product.Image" alt="@item.Product.Name" style="border-radius:50%" class="img-size-50 mr-3 img-circle" height="70" width="70">
+                <div class="media-body">
+                    <h3 class="dropdown-item-title">
+                        @item.Product.Name
+                    </h3>
+                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>Số lượng: @item.Quantity</p>
+                </div>
+            </div>
+            <!-- Message End -->
+        </a>
+        <div class="dropdown-divider"></div>
+    }
+    <a asp-controller="Cart" asp-action="Index" class="dropdown-item dropdown-footer">Xem tất cả</a>
+</div>

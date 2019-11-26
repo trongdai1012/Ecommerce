@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KLTN.Web.Controllers
 {
-    [Route("cart")]
+    //[Route("cart")]
     public class CartController : Controller
     {
         private readonly IProductService _productService;
@@ -30,7 +30,7 @@ namespace KLTN.Web.Controllers
             _httpContext = contextAccessor.HttpContext;
         }
 
-        [Route("index")]
+        //[Route("index")]
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
@@ -39,7 +39,7 @@ namespace KLTN.Web.Controllers
             return View();
         }
 
-        [Route("buy/{id}")]
+        //[Route("buy/{id}")]
         public IActionResult Buy(string id, int? quantity)
         {
             if (SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") == null)
@@ -89,7 +89,7 @@ namespace KLTN.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        [Route("remove/{id}")]
+        //[Route("remove/{id}")]
         public IActionResult Remove(string id)
         {
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
@@ -101,7 +101,7 @@ namespace KLTN.Web.Controllers
         
         [Authorize]
         [HttpGet]
-        [Route("Payment")]
+        //[Route("Payment")]
         public IActionResult Payment()
         {
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
@@ -146,7 +146,7 @@ namespace KLTN.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("Payment")]
+        //[Route("Payment")]
         public IActionResult Payment(OrderViewModel orderView)
         {
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
@@ -176,7 +176,7 @@ namespace KLTN.Web.Controllers
             return RedirectToAction("PaymentFailed", "Notification");
         }
 
-        [Route("update")]
+        //[Route("update")]
         [HttpPut]
         public JsonResult Update(string id, int? quantity)
         {
@@ -208,6 +208,29 @@ namespace KLTN.Web.Controllers
                     total = totalPrice,
                     subTotal = subTotalPrice
                 });
+        }
+
+        //[Route("GetCart")]
+        [HttpPost]
+        public IActionResult GetCart()
+        {
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+
+            var model = new List<CartItem>();
+
+            if (cart != null)
+            {
+                foreach (var item in cart)
+                {
+                    model.Add(item);
+                }
+            }
+
+            var totalItem = model.Count();
+
+            var result = new Tuple<List<CartItem>, int>(model, totalItem);
+
+            return PartialView("_GetCart",result);
         }
 
         private int IsExist(string id)

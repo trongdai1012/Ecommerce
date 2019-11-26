@@ -201,6 +201,65 @@ namespace KLTN.Services
             }
         }
 
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int> GetOrderDetailUserId(int id)
+        {
+            try
+            {
+                var order = _unitOfWork.OrderRepository.Get(x=>x.Id == id && x.CreateBy == GetUserId());
+                var orderModel = _mapper.Map<OrderViewModel>(order);
+
+                var ordDetail = from ordDT in _unitOfWork.OrderDetailRepository.ObjectContext
+                                join pro in _unitOfWork.ProductRepository.ObjectContext on ordDT.ProductId equals pro.Id
+                                where ordDT.OrderId == id
+                                select new OrderDetailViewModel
+                                {
+                                    OrderId = ordDT.OrderId,
+                                    ProductId = ordDT.ProductId,
+                                    Price = ordDT.Price,
+                                    Image = ordDT.ImageProduct,
+                                    Quantity = ordDT.Quantity,
+                                    ProductName = pro.Name,
+                                    TotalPrice = ordDT.TotalPrice
+                                };
+
+                var delivery = (from deli in _unitOfWork.DeliveryRepository.ObjectContext
+                                where deli.OrderId == id
+                                select new DeliveryViewModel
+                                {
+                                    Id = deli.Id,
+                                    OrderId = id,
+                                    ConfirmAt = deli.ConfirmAt,
+                                    PreparingOrderAt = deli.PreparingOrderAt,
+                                    FinishPreparingOrderAt = deli.FinishPreparingOrderAt,
+                                    StartDeliveryAt = deli.StartDeliveryAt,
+                                    FinishDeliveryAt = deli.FinishDeliveryAt,
+                                    CancelOrderAt = deli.CancelOrderAt,
+                                    CancelContent = deli.CancelContent
+                                }).FirstOrDefault();
+
+                var deliveryModel = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
+
+                delivery.UserConfirmEmail = GetEmailById(deliveryModel.UserConfirmId);
+                delivery.UserPreparingOrderEmail = GetEmailById(deliveryModel.UserPreparingOrderId);
+                delivery.ShipperEmail = GetEmailById(deliveryModel.ShipperId);
+                delivery.CancelByEmail = GetEmailById(deliveryModel.CancelBy);
+
+                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int>(orderModel, ordDetail, delivery, 1);
+
+                return tuple;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get order detail in service", e);
+                var tuple = new Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int>(null, null, null, -1);
+                return tuple;
+            }
+        }
+
         public int OrderConfirm(int id)
         {
             try
@@ -424,6 +483,106 @@ namespace KLTN.Services
                 totalResultsCount);
 
             return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderByUser(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listOrder = listOrder.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.CreateBy.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.RecipientFirstName.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.StatusOrder.ToString().ToUpper().Equals(searchBy.ToUpper()));
+            }
+
+            listOrder = orderAscendingDirection
+                ? listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listOrder.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var filteredResultsCount = listOrder.ToArray().Count();
+            var totalResultsCount = listOrder.Count();
+
+            var tuple = new Tuple<IEnumerable<OrderViewModel>, int, int>(listOrder, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<OrderViewModel> GetListOrderByUser()
+        {
+            var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.CreateBy == GetUserId()
+                            select new OrderViewModel
+                            {
+                                Id = order.Id,
+                                TotalPrice = order.TotalPrice,
+                                RecipientPhone = order.RecipientPhone,
+                                RecipientFirstName = order.RecipientFirstName,
+                                RecipientLastName = order.RecipientLastName,
+                                RecipientProvinceCode = order.RecipientProvinceCode,
+                                RecipientProvinceName = order.RecipientProvinceName,
+                                RecipientDistrictCode = order.RecipientDistrictCode,
+                                RecipientDistrictName = order.RecipientDistrictName,
+                                RecipientPrecinctCode = order.RecipientPrecinctCode,
+                                RecipientPrecinctName = order.RecipientPrecinctName,
+                                RecipientAddress = order.RecipientAddress,
+                                RecipientEmail = order.RecipientEmail,
+                                CreateAt = order.CreateAt,
+                                CreateBy = order.CreateBy,
+                                StatusOrder = order.StatusOrder
+                            };
+            listOrder = listOrder.OrderBy(x=>x.CreateAt);
+
+            return listOrder;
         }
 
         /// <summary>
@@ -959,6 +1118,8 @@ namespace KLTN.Services
 
             return tuple;
         }
+
+        //public IEnumerable<OrderDetailViewModel> GetOrderDe
 
         public Tuple<IEnumerable<OrderViewModel>, int> GetMission()
         {

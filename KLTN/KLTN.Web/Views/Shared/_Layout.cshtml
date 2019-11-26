@@ -8,6 +8,11 @@
     <link rel="icon" href="img/favicon.png" type="image/png" />
     <title>Eiser ecommerce</title>
     <!-- Bootstrap CSS -->
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/Admin/plugins/datatables/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="~/Admin/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="~/css/bootstrap.css" />
     <link rel="stylesheet" href="~/vendors/linericon/style.css" />
     <link rel="stylesheet" href="~/css/font-awesome.min.css" />
@@ -22,7 +27,7 @@
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/responsive.css" />
 </head>
-@RenderSection("banner",false);
+@RenderSection("banner", false);
 <body>
     <!--================Header Menu Area =================-->
     <header class="header_area">
@@ -86,68 +91,15 @@
                             <div class="col-lg-5 pr-0">
                                 <ul class="nav navbar-nav navbar-right right_nav pull-right">
                                     <li class="nav-item">
+                                        <input class="form-control" style="height:34px; width:150px; margin-top:23px; margin-bottom:15px; float:right" placeholder="Nhập từ khoá..." />
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="#" class="icons">
                                             <i class="ti-search" aria-hidden="true"></i>
                                         </a>
                                     </li>
-
                                     <!-- Messages Dropdown Menu -->
-                                    <li class="nav-item">
-                                        <a href="#" class="icons" data-toggle="dropdown">
-                                            <i class="ti-shopping-cart"></i>
-                                            <span class="badge badge-danger navbar-badge">3</span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                            <a href="#" class="dropdown-item">
-                                                <!-- Message Start -->
-                                                <div class="media">
-                                                    <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                                    <div class="media-body">
-                                                        <h3 class="dropdown-item-title">
-                                                            Brad Diesel
-                                                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                                        </h3>
-                                                        <p class="text-sm">Call me whenever you can...</p>
-                                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                                    </div>
-                                                </div>
-                                                <!-- Message End -->
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="#" class="dropdown-item">
-                                                <!-- Message Start -->
-                                                <div class="media">
-                                                    <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                                    <div class="media-body">
-                                                        <h3 class="dropdown-item-title">
-                                                            John Pierce
-                                                            <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                                        </h3>
-                                                        <p class="text-sm">I got your message bro</p>
-                                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                                    </div>
-                                                </div>
-                                                <!-- Message End -->
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="#" class="dropdown-item">
-                                                <!-- Message Start -->
-                                                <div class="media">
-                                                    <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                                    <div class="media-body">
-                                                        <h3 class="dropdown-item-title">
-                                                            Nora Silvester
-                                                            <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                                        </h3>
-                                                        <p class="text-sm">The subject goes here</p>
-                                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                                    </div>
-                                                </div>
-                                                <!-- Message End -->
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a asp-controller="Cart" asp-action="Index" class="dropdown-item dropdown-footer">Xem tất cả</a>
-                                        </div>
+                                    <li class="nav-item" id="list-cart">
                                     </li>
                                     <li class="nav-item">
                                         <a href="#" class="icons" data-toggle="dropdown">
@@ -155,11 +107,20 @@
                                             <span class="badge badge-danger navbar-badge">3</span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                            <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Đăng nhập</a>
-                                            <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Register">Đăng ký</a>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Thông tin cá nhân</a>
+                                                <a class="dropdown-item" asp-controller="Order" asp-action="Index">Lịch sử mua hàng</a>
+                                                <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Register">Đăng xuất</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Đăng nhập</a>
+                                                <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Register">Đăng ký</a>
+                                                <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Register">Quên mật khẩu</a>
+                                            }
                                         </div>
                                     </li>
-
                                     <li class="nav-item">
                                         <a href="#" class="icons">
                                             <i class="ti-heart" aria-hidden="true"></i>
@@ -267,6 +228,25 @@
     <script src="~/vendors/counter-up/jquery.counterup.js"></script>
     <script src="~/js/mail-script.js"></script>
     <script src="~/vendors/jquery-ui/jquery-ui.js"></script>
+    <!-- DataTables -->
+    <script src="~/Admin/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/Admin/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+        window.onload = function () {
+            GetListCart();
+        }
+        function GetListCart() {
+            $.ajax({
+                url: '/Cart/GetCart',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html"
+            }).done(function (result) {
+                $('#list-cart').html(result);
+            });
+        }
+    </script>
     @RenderSection("scripts", false)
 </body>
 </html>

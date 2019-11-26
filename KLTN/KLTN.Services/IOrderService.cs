@@ -10,6 +10,10 @@ namespace KLTN.Services
     {
         Tuple<OrderViewModel, int> GetOrderById(int? id);
 
+        IEnumerable<OrderViewModel> GetListOrderByUser();
+
+        Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrderByUser(DTParameters dtParameters);
+
         Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrder(DTParameters dtParameters);
 
         bool Create(OrderViewModel orderView, IEnumerable<OrderDetailViewModel> orderDetails);
@@ -51,5 +55,7 @@ namespace KLTN.Services
         Tuple<IEnumerable<OrderViewModel>, int, int> LoadTaskByUserId(DTParameters dtParameters);
 
         Tuple<IEnumerable<OrderViewModel>, int> GetMission();
+
+        Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int> GetOrderDetailUserId(int id);
     }
 }

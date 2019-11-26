@@ -50,7 +50,6 @@
     </div>
 </section>
 <!-- Hero section end -->
-
 <!-- Start feature Area -->
 <section class="feature-area section_gap_bottom_custom">
     <div class="container">
@@ -109,11 +108,25 @@
     <script src="~/js/jquery.nicescroll.min.js"></script>
     <script src="~/js/main.js"></script>
     <script>
+        function GetListCart() {
+            $.ajax({
+                url: '/Cart/GetCart',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html"
+            }).done(function (result) {
+                $('#list-cart').html(result);
+            });
+        }
+    </script>
+    <script>
         //        $(function () {
         //            GetListProduct();
         //        });
         window.onload = function () {
             GetListProduct();
+            GetListCart();
         }
         function GetListProduct() {
             $.ajax({
