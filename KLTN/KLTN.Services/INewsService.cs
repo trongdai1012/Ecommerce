@@ -16,5 +16,7 @@ namespace KLTN.Services
         int Create(NewsViewModel model);
 
         bool Update(NewsViewModel viewModel);
+
+        bool ChangeStatus(int id);
     }
 }

@@ -11,12 +11,12 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item">
-                        <a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a>
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang chủ</a>
                     </li>
                     <li class="breadcrumb-item active" style="align-content:center">
-                        <a asp-area="Admin" asp-controller="News" asp-action="Index">Quản lý tin tức</a>
+                        <a asp-area="Admin" asp-controller="Feedback" asp-action="Index">Quản lý phản hồi</a>
                     </li>
-                    <li class="breadcrumb-item active" style="align-content:center">Danh sách bài viết</li>
+                    <li class="breadcrumb-item active" style="align-content:center">Danh sách đánh giá sản phẩm</li>
                 </ol>
             </div>
         </div>
@@ -26,20 +26,19 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header" style="margin:auto">
-            <h3 class="card-title"><b>Danh sách bài viết</b></h3>
+            <h3 class="card-title"><b>Danh sách đánh giá</b></h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
-            <p class="text-right">
-                <a asp-area="Admin" asp-controller="News" asp-action="Create" class="btn btn-primary">Thêm mới bài viết</a>
-            </p>
-            <table id="news-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
+            <table id="feedback-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Tiêu đề</th>
-                        <th>Ngày tạo</th>
-                        <th>Người tạo</th>
+                        <th>Tên khách hàng</th>
+                        <th>Mã khách hàng</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Điểm đánh giá</th>
+                        <th>Thời gian</th>
                         <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
@@ -52,14 +51,14 @@
 
 @section scripts
     {
-    <script src="~/js/newsjs/news.js"></script>
+    <script src="~/js/feedbackjs/feedback.js"></script>
     <script src="~/lib/moment/moment.min.js" asp-append-version="true"></script>
     <script src="~/lib/datetime-moment/datetime-moment.js" asp-append-version="true"></script>
     <script>
         $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss");
         $.fn.dataTable.moment("DD/MM/YYYY");
 
-        $("#news-index").DataTable({
+        $("#feedback-index").DataTable({
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
             },
@@ -75,7 +74,7 @@
             searching: { regex: true },
             // Ajax Filter
             ajax: {
-                url: "/Admin/News/LoadNews",
+                url: "/Admin/Feedback/LoadFeedback",
                 type: "POST",
                 contentType: "application/json",
                 dataType: "json",
@@ -86,9 +85,12 @@
             // Columns Setups
             columns: [
                 { data: "id" },
-                { data: "title" },
+                { data: "customerName" },
+                { data: "customerId" },
+                { data: "productName" },
+                { data: "rate" },
                 {
-                    data: "createAt",
+                    data: "ratedAt",
                     render: function (data, type) {
                         // If display or filter data is requested, format the date
                         if (type === "display" || type === "filter") {
@@ -100,7 +102,6 @@
                         return data;
                     }
                 },
-                { data: "createBy" },
                 {
                     data: "status",
                     "mRender": function (data, type, row) {

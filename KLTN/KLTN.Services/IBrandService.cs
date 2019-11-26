@@ -17,5 +17,7 @@ namespace KLTN.Services
         IEnumerable<BrandViewModel> GetAll();
 
         bool Update(BrandViewModel model);
+
+        bool ChangeStatus(int id);
     }
 }

@@ -27,8 +27,6 @@ namespace KLTN.Services
 
         Task<int> UpdateLaptop(UpdateLaptopViewModel laptopModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
 
-        //int CreateCategory(CreateCategoryModel model);
-
-        //IEnumerable<CategoryViewModel> GetAll();
+        bool ChangeStatus(int id);
     }
 }

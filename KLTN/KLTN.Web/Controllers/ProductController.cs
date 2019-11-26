@@ -30,22 +30,14 @@ namespace KLTN.Web.Controllers
         [HttpPost]
         public JsonResult Rating(int productId, byte rate, string comment)
         {
-            if(rate<1 || rate > 5) return Json( new {status = false});
+            if(rate<1 || rate > 5) return Json( new {status = 3});
             try
             {
                 var myRating = _feedbackService.Rating(productId, comment, rate);
-                if (myRating)
-                {
-                    return Json(
-                        new
-                        {
-                            status = true
-                        });
-                }
                 return Json(
                     new
                     {
-                        status = false
+                        status = myRating
                     });
             }
             catch (Exception e)

@@ -35,7 +35,7 @@
             <p class="text-right">
                 <a asp-area="Admin" asp-controller="Product" asp-action="CreateLaptop" class="btn btn-primary">Thêm mới sản phẩm</a>
             </p>
-            <table id="product-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
+            <table id="laptop-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -58,14 +58,14 @@
 
 @section scripts
     {
-    <script src="~/js/userjs/user.js"></script>
+    <script src="~/js/productjs/product.js"></script>
     <script src="~/lib/moment/moment.min.js" asp-append-version="true"></script>
     <script src="~/lib/datetime-moment/datetime-moment.js" asp-append-version="true"></script>
     <script>
         $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss");
         $.fn.dataTable.moment("DD/MM/YYYY");
 
-        $("#product-index").DataTable({
+        $("#laptop-index").DataTable({
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json"
             },

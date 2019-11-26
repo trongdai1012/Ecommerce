@@ -77,6 +77,27 @@ namespace KLTN.Services
                         TotalPrice = item.TotalPrice
                     };
                     _unitOfWork.OrderDetailRepository.Create(ordDetail);
+                    var product = _unitOfWork.ProductRepository.GetById(ordDetail.ProductId);
+                    product.TotalSold += 1;
+                    var feedback = _unitOfWork.FeedbackRepository.Get(x =>
+                                    x.ProductId == ordDetail.ProductId && x.UserId == order.CreateBy);
+                    if (feedback == null)
+                    {
+                        var feed = new Feedback
+                        {
+                            ProductId = ordDetail.ProductId,
+                            UserId = order.CreateBy,
+                            IsBought = true,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow
+                        };
+
+                        _unitOfWork.FeedbackRepository.Create(feed);
+                    }
+                    else
+                    {
+                        feedback.IsBought = true;
+                    }
                 }
 
                 var delivery = new Delivery
@@ -85,6 +106,7 @@ namespace KLTN.Services
                 };
 
                 _unitOfWork.DeliveryRepository.Create(delivery);
+
 
                 _unitOfWork.Save();
                 return true;
@@ -209,7 +231,7 @@ namespace KLTN.Services
         {
             try
             {
-                var order = _unitOfWork.OrderRepository.Get(x=>x.Id == id && x.CreateBy == GetUserId());
+                var order = _unitOfWork.OrderRepository.Get(x => x.Id == id && x.CreateBy == GetUserId());
                 var orderModel = _mapper.Map<OrderViewModel>(order);
 
                 var ordDetail = from ordDT in _unitOfWork.OrderDetailRepository.ObjectContext
@@ -580,7 +602,7 @@ namespace KLTN.Services
                                 CreateBy = order.CreateBy,
                                 StatusOrder = order.StatusOrder
                             };
-            listOrder = listOrder.OrderBy(x=>x.CreateAt);
+            listOrder = listOrder.OrderBy(x => x.CreateAt);
 
             return listOrder;
         }

@@ -14,6 +14,7 @@ namespace KLTN.DataAccess.Models
         public bool IsLike { get; set; }
         public bool IsBought { get; set; }
         public DateTime RatedAt { get; set; }
+        public DateTime CreateAt { get; set; }
         public bool Status { get; set; }
 
         public virtual User User { get; set; }

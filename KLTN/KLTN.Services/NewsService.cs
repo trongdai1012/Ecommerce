@@ -194,5 +194,18 @@ namespace KLTN.Services
             var userId = Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == Constants.Id).Value);
             return userId;
         }
+
+        /// <summary>
+        /// Method ChangeStatus News
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool ChangeStatus(int id)
+        {
+            var news = _unitOfWork.NewsRepository.GetById(id);
+            news.Status = !news.Status;
+            _unitOfWork.Save();
+            return news.Status;
+        }
     }
 }

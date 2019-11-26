@@ -70,6 +70,7 @@ namespace KLTN.Services
                               join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                               join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
                               join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                              where pro.Status
                               select new LaptopViewModel
                               {
                                   Id = pro.Id,

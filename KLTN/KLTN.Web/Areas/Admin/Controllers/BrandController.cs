@@ -114,5 +114,21 @@ namespace KLTN.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
         }
+
+        /// <summary>
+        /// Action ChangeStatus return JsonResult to ajax
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var statusResult = _brandService.ChangeStatus(id);
+
+            return Json(new
+            {
+                status = statusResult
+            });
+        }
     }
 }

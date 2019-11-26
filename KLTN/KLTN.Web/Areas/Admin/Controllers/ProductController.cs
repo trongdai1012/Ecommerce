@@ -81,5 +81,21 @@ namespace KLTN.Web.Areas.Admin.Controllers
             await _productService.UpdateLaptop(model, imageFileMajor, imageFile);
             return RedirectToAction("Laptop", "Product");
         }
+
+        /// <summary>
+        /// Action ChangeStatus return JsonResult to ajax
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            var statusResult = _productService.ChangeStatus(id);
+
+            return Json(new
+            {
+                status = statusResult
+            });
+        }
     }
 }

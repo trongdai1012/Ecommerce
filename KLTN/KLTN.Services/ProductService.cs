@@ -1173,7 +1173,7 @@ namespace KLTN.Services
         }
 
         /// <summary>
-        /// Method ChangeStatus User
+        /// Method ChangeStatus Product
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

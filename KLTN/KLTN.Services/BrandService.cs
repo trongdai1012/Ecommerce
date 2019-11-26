@@ -46,7 +46,7 @@ namespace KLTN.Services
         /// <returns></returns>
         public IEnumerable<BrandViewModel> GetAll()
         {
-            var listBrand = _unitOfWork.BrandRepository.GetAll();
+            var listBrand = _unitOfWork.BrandRepository.GetMany(x=>x.Status);
             var listBrandModel = _mapper.Map<IEnumerable<BrandViewModel>>(listBrand);
             return listBrandModel;
         }
@@ -240,6 +240,19 @@ namespace KLTN.Services
         {
             var userId = Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == Constants.Id).Value);
             return userId;
+        }
+
+        /// <summary>
+        /// Method ChangeStatus Brand
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool ChangeStatus(int id)
+        {
+            var brand = _unitOfWork.BrandRepository.GetById(id);
+            brand.Status = !brand.Status;
+            _unitOfWork.Save();
+            return brand.Status;
         }
     }
 }
