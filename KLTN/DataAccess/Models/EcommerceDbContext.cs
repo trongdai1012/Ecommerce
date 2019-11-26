@@ -725,16 +725,188 @@ namespace KLTN.DataAccess.Models
                 .WithMany(x => x.Images)
                 .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
-                //for (int i = 1; i <= 100; i++)
-                //{
-                //    entity.HasData(
-                //        new Image
-                //        {
-                //            Id = i,
-                //            ProductId = i,
-                //            Url = "laptop-mi-01.jpg"
-                //        });
-                //}
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 1,
+                            ProductId = 1,
+                            Url = "1dot1.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 2,
+                            ProductId = 1,
+                            Url = "1dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 3,
+                            ProductId = 1,
+                            Url = "1dot3.jpeg"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 4,
+                           ProductId = 2,
+                           Url = "2dot1.jpeg"
+                       });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 5,
+                            ProductId = 2,
+                            Url = "2dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 6,
+                            ProductId = 2,
+                            Url = "2dot3.jpeg"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 7,
+                           ProductId = 3,
+                           Url = "3dot1.jpeg"
+                       });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 8,
+                            ProductId = 3,
+                            Url = "3dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 9,
+                            ProductId = 3,
+                            Url = "3dot3.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 10,
+                            ProductId = 3,
+                            Url = "3dot4.jpeg"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 11,
+                           ProductId = 4,
+                           Url = "4dot1.jpeg"
+                       });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 12,
+                            ProductId = 4,
+                            Url = "4dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 13,
+                            ProductId = 4,
+                            Url = "4dot3.jpeg"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 14,
+                           ProductId = 5,
+                           Url = "5dot1.jpeg"
+                       });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 15,
+                            ProductId = 5,
+                            Url = "5dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 16,
+                            ProductId = 5,
+                            Url = "5dot3.jpeg"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 17,
+                           ProductId = 6,
+                           Url = "6dot1.jpeg"
+                       });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 18,
+                            ProductId = 6,
+                            Url = "6dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 19,
+                            ProductId = 6,
+                            Url = "6dot3.jpeg"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 20,
+                           ProductId = 7,
+                           Url = "6dot1.jpeg"
+                       });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 21,
+                            ProductId = 7,
+                            Url = "7dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 22,
+                            ProductId = 7,
+                            Url = "7dot3.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 23,
+                            ProductId = 7,
+                            Url = "7dot4.jpeg"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 24,
+                           ProductId = 8,
+                           Url = "8dot1.jpeg"
+                       });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 25,
+                            ProductId = 8,
+                            Url = "8dot2.jpeg"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 26,
+                            ProductId = 8,
+                            Url = "8dot3.jpeg"
+                        });
             });
 
             modelBuilder.Entity<UserConfirm>(entity =>
