@@ -37,6 +37,13 @@ namespace KLTN.Services
             return userModel;
         }
 
+        public User GetUserUpdateRole(int id)
+        {
+            var user = _unitOfWork.UserRepository.GetById(id);
+
+            return user;
+        }
+
         public async Task<int> Register(RegisterUserViewModel register)
         {
             try
@@ -93,6 +100,28 @@ namespace KLTN.Services
             {
                 Log.Error("Have an error when register user in UserService", e);
                 return -1;
+            }
+        }
+
+        public User UpdateRole(int id, byte role)
+        {
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetById(id);
+                if (user == null) return null;
+
+                user.Role = role;
+                user.UpdateBy = GetClaimUserId();
+                user.UpdateAt = DateTime.UtcNow;
+
+                _unitOfWork.Save();
+
+                return user;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when update role user in service.", e);
+                return null;
             }
 
         }
@@ -652,16 +681,6 @@ namespace KLTN.Services
             }
         }
 
-        //        public UpdateAdminViewModel GetAdminUpdate(int id)
-        //        {
-        //            var user = _unitOfWork.UserRepository.GetById(id);
-        //            var adminView = new UpdateAdminViewModel
-        //            {
-        //                Email = user.Email
-        //            };
-        //            return adminView;
-        //        }
-
         public string GetClaimUserMail()
         {
             var claimEmail = _httpContext.User.FindFirst(c => c.Type == "Email").Value;
@@ -670,7 +689,7 @@ namespace KLTN.Services
 
         public int GetClaimUserId()
         {
-            var claimId = Convert.ToInt32(_httpContext.User.Identities);
+            var claimId = Convert.ToInt32(_httpContext.User.FindFirst(x=>x.Type=="Id").Value);
             return claimId;
         }
     }

@@ -11,6 +11,8 @@ namespace KLTN.Services
     {
         UserViewModel GetUserById(int id);
 
+        User GetUserUpdateRole(int id);
+
         Task<int> Register(RegisterUserViewModel register);
 
         Tuple<AuthenticationViewModel, int> Authentication(AuthenticationViewModel authenticationViewModel);
@@ -62,5 +64,7 @@ namespace KLTN.Services
         int ForgotPassword(string email);
 
         bool ConfirmForgotPassword(RetypePassword retypePassword);
+
+        User UpdateRole(int id, byte role);
     }
 }

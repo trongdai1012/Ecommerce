@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using KLTN.Common.Datatables;
+using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Users;
 using KLTN.Services;
@@ -12,6 +13,7 @@ using KLTN.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
@@ -41,7 +43,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View();
             _userService.Register(registerUser);
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
@@ -169,7 +171,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
                     case 1:
                         return View(admin.Item1);
                     default:
-                        return RedirectToAction("ListAdmin","User");
+                        return RedirectToAction("ListAdmin", "User");
                 }
             }
             catch (Exception e)
@@ -179,15 +181,15 @@ namespace KLTN.Web.Areas.Admin.Controllers
             }
         }
 
-//        public IActionResult EmployeeDetail(int id)
-//        {
-//            return View();
-//        }
-//
-//        public IActionResult CustomerDetail(int id)
-//        {
-//            return View();
-//        }
+        //        public IActionResult EmployeeDetail(int id)
+        //        {
+        //            return View();
+        //        }
+        //
+        //        public IActionResult CustomerDetail(int id)
+        //        {
+        //            return View();
+        //        }
 
         public IActionResult AdminUpdate(int id)
         {
@@ -201,15 +203,16 @@ namespace KLTN.Web.Areas.Admin.Controllers
             try
             {
                 var userResult = _userService.UpdateAdmin(adminView);
-                switch(userResult)
+                switch (userResult)
                 {
                     case 1:
-                        return RedirectToAction("ListAdmin","User");
+                        return RedirectToAction("ListAdmin", "User");
                     default:
                         return BadRequest();
                 }
 
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.Error("Have an error when update admin in UserController", e);
                 return BadRequest();
@@ -283,6 +286,54 @@ namespace KLTN.Web.Areas.Admin.Controllers
                 data = list,
                 status = true
             });
+        }
+
+        [HttpGet]
+        public IActionResult UpdateRole(int id)
+        {
+            var user = _userService.GetUserUpdateRole(id);
+            var roles = from EnumRole d in Enum.GetValues(typeof(EnumRole)) select new { Id = (int)d, Name = d.ToString() };
+
+            ViewBag.Roles = new SelectList(roles, "Id", "Name", user.Role);
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateRole(User userModel)
+        {
+            try
+            {
+                var result = _userService.UpdateRole(userModel.Id, userModel.Role);
+                if (result == null)
+                {
+                    var user = _userService.GetUserUpdateRole(userModel.Id);
+
+                    var roles = from EnumRole d in Enum.GetValues(typeof(EnumRole)) select new { Id = (int)d, Name = d.ToString() };
+
+                    ViewBag.Roles = new SelectList(roles, "Id", "Name", user.Role);
+
+                    ModelState.AddModelError("", "Cập nhật thất bại.");
+                    return View(userModel);
+                }
+
+                if (result.Role == 0)
+                {
+                    return RedirectToAction("ListAdmin", "User");
+                }
+
+                if (result.Role == 5)
+                {
+                    return RedirectToAction("ListCustomer", "User");
+                }
+
+                return RedirectToAction("ListEmployee", "User");
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when update role in controller", e);
+                return BadRequest();
+            }
         }
     }
 }

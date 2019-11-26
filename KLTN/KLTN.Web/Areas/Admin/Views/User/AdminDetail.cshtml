@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Câp nhật" />
+                <a asp-controller="User" asp-area="Admin" asp-action="UpdateRole" asp-route-id="@Model.Id" class="btn btn-warning">Câp nhật quyền</a>
             </div>
         </div>
         <div class="row">
