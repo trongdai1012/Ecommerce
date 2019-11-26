@@ -1,7 +1,4 @@
-﻿@model Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback>
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback, float>
 <div class="tab-pane fade"
      id="home"
      role="tabpanel"
@@ -243,7 +240,7 @@
                 <div class="col-6">
                     <div class="box_total">
                         <h5>Overall</h5>
-                        <h4>@Model.Item1.</h4>
+                        <h4>@Model.Item3</h4>
                         <h6>(03 Reviews)</h6>
                     </div>
                 </div>

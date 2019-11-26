@@ -28,7 +28,7 @@ namespace KLTN.Services
             _mapper = mapper;
         }
 
-        public Tuple<IEnumerable<FeedbackViewModel>,RateCountFeedback> GetFeedbackByProducId(int id)
+        public Tuple<IEnumerable<FeedbackViewModel>,RateCountFeedback, float> GetFeedbackByProducId(int id)
         {
             try
             {
@@ -58,7 +58,11 @@ namespace KLTN.Services
                     FiveStar = listFeedback.Count(x => x.Rate == 5),
                     Id = id
                 };
-                return new Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback>(listFeedback,rateCount);
+
+                var rateProduct = _unitOfWork.ProductRepository.GetById(id);
+
+
+                return new Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback, float>(listFeedback,rateCount, rateProduct.Rate);
             }
             catch (Exception e)
             {
