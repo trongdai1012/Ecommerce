@@ -23,7 +23,7 @@ namespace KLTN.Web.Controllers
         [Route("~/")]
         public IActionResult Index()
         {
-            var a = _recommenderService.GetAllLaptop();
+            var a = _recommenderService.GetAllLaptop(); 
             return View();
         }
 

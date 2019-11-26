@@ -76,12 +76,11 @@ namespace KLTN.Services
                                   join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                                   join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
                                   join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                                  where pro.CategoryId == (int)EnumCategory.Laptop
+                                  where pro.CategoryId == (int)EnumCategory.Laptop && pro.Status
                                   select new LaptopViewModel
                                   {
                                       Id = pro.Id,
                                       Name = pro.Name,
-                                      ProductCode = pro.ProductCode,
                                       Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                       Brand = bra.Name,
                                       InitialPrice = pro.InitialPrice,
@@ -130,7 +129,6 @@ namespace KLTN.Services
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
@@ -188,7 +186,6 @@ namespace KLTN.Services
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   Description = pro.Description,
@@ -271,7 +268,6 @@ namespace KLTN.Services
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
@@ -343,13 +339,12 @@ namespace KLTN.Services
                               join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                               join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
                               join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop
+                              where pro.CategoryId == (int)EnumCategory.Laptop && pro.Status
                               orderby pro.ViewCount descending
                               select new LaptopViewModel
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
@@ -414,13 +409,12 @@ namespace KLTN.Services
                               join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                               join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
                               join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop
+                              where pro.CategoryId == (int)EnumCategory.Laptop && pro.Status
                               orderby pro.LikeCount descending
                               select new LaptopViewModel
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
@@ -478,13 +472,12 @@ namespace KLTN.Services
                               join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                               join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
                               join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Laptop
+                              where pro.CategoryId == (int)EnumCategory.Laptop && pro.Status
                               orderby pro.TotalSold descending
                               select new LaptopViewModel
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
@@ -579,16 +572,13 @@ namespace KLTN.Services
                     var img = _unitOfWork.ImageRepository.Get(x => x.ProductId == laptopModel.Id);
 
                     var imgDel = img.Url;
-
-                    product.ProductCode = productCode;
+                    
                     product.Name = laptopModel.Name;
                     product.CategoryId = (int)EnumCategory.Laptop;
                     product.BrandId = laptopModel.BrandId;
                     product.InitialPrice = laptopModel.InitialPrice;
                     product.CurrentPrice = laptopModel.CurrentPrice;
-                    product.PromotionPrice = laptopModel.PromotionPrice;
                     product.DurationWarranty = laptopModel.DurationWarranty;
-                    product.MetaTitle = productCode;
                     product.Description = laptopModel.Description;
                     product.Quantity = laptopModel.Amount;
                     product.UpdateAt = DateTime.UtcNow;
@@ -625,16 +615,13 @@ namespace KLTN.Services
 
                 var product1 = _unitOfWork.ProductRepository.GetById(laptopModel.Id);
                 var laptop1 = _unitOfWork.LaptopRepository.Get(x => x.ProductId == laptopModel.Id);
-
-                product1.ProductCode = productCode1;
+                
                 product1.Name = laptopModel.Name;
                 product1.CategoryId = (int)EnumCategory.Laptop;
                 product1.BrandId = laptopModel.BrandId;
                 product1.InitialPrice = laptopModel.InitialPrice;
                 product1.CurrentPrice = laptopModel.CurrentPrice;
-                product1.PromotionPrice = laptopModel.PromotionPrice;
                 product1.DurationWarranty = laptopModel.DurationWarranty;
-                product1.MetaTitle = productCode1;
                 product1.Description = laptopModel.Description;
                 product1.Quantity = laptopModel.Amount;
                 product1.UpdateAt = DateTime.UtcNow;
@@ -738,15 +725,12 @@ namespace KLTN.Services
 
                 var product = new Product
                 {
-                    ProductCode = productCode,
                     Name = laptopModel.Name,
                     CategoryId = (int)EnumCategory.Laptop,
                     BrandId = laptopModel.BrandId,
                     InitialPrice = laptopModel.InitialPrice,
                     CurrentPrice = laptopModel.CurrentPrice,
-                    PromotionPrice = laptopModel.PromotionPrice,
                     DurationWarranty = laptopModel.DurationWarranty,
-                    MetaTitle = productCode,
                     Description = laptopModel.Description,
                     Rate = 0,
                     ViewCount = 0,
@@ -826,7 +810,6 @@ namespace KLTN.Services
             laptopModel.BrandId = product.BrandId;
             laptopModel.InitialPrice = product.InitialPrice;
             laptopModel.CurrentPrice = product.CurrentPrice;
-            laptopModel.PromotionPrice = product.PromotionPrice;
             laptopModel.DurationWarranty = product.DurationWarranty;
             laptopModel.Description = product.Description;
             laptopModel.Amount = product.Quantity;
@@ -912,7 +895,6 @@ namespace KLTN.Services
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
@@ -977,7 +959,6 @@ namespace KLTN.Services
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
@@ -1027,18 +1008,14 @@ namespace KLTN.Services
             try
             {
                 if (CheckNameExisted(mobileModel.Name)) return 2;
-                if (CheckProductCodeExisted(mobileModel.ProductCode)) return 3;
                 var product = new Product
                 {
-                    ProductCode = mobileModel.ProductCode,
                     Name = mobileModel.Name,
                     CategoryId = (int)EnumCategory.Laptop,
                     BrandId = mobileModel.BrandId,
                     InitialPrice = mobileModel.InitialPrice,
                     CurrentPrice = mobileModel.CurrentPrice,
-                    PromotionPrice = mobileModel.PromotionPrice,
                     DurationWarranty = mobileModel.DurationWarranty,
-                    MetaTitle = mobileModel.MetaTitle,
                     Description = mobileModel.Description,
                     Rate = 0,
                     ViewCount = 0,
@@ -1082,15 +1059,12 @@ namespace KLTN.Services
             {
                 var product = _unitOfWork.ProductRepository.GetById(mobileModel.Id);
                 var mobile = _unitOfWork.MobileRepository.Get(x => x.ProductId == mobileModel.Id);
-
-                product.ProductCode = mobileModel.ProductCode;
+                
                 product.Name = mobileModel.Name;
                 product.BrandId = mobileModel.BrandId;
                 product.InitialPrice = mobileModel.InitialPrice;
                 product.CurrentPrice = mobileModel.CurrentPrice;
-                product.PromotionPrice = mobileModel.PromotionPrice;
                 product.DurationWarranty = mobileModel.DurationWarranty;
-                product.MetaTitle = mobileModel.MetaTitle;
                 product.Description = mobileModel.Description;
 
                 mobile.Screen = mobileModel.Screen;
@@ -1163,12 +1137,6 @@ namespace KLTN.Services
         private bool CheckNameOtherExisted(string name, int id)
         {
             var result = _unitOfWork.ProductRepository.Get(x => x.Name == name && x.Id != id);
-            return result != null ? true : false;
-        }
-
-        private bool CheckProductCodeExisted(string code)
-        {
-            var result = _unitOfWork.ProductRepository.Get(x => x.ProductCode == code);
             return result != null ? true : false;
         }
 

@@ -111,8 +111,116 @@ namespace KLTN.DataAccess.Models
                     new Brand
                     {
                         Id = 1,
-                        Name = "IPhone",
+                        Name = "Apple",
                         Address = "US",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 2,
+                        Name = "Samsung",
+                        Address = "Korea",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 3,
+                        Name = "Sony",
+                        Address = "Japan",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 4,
+                        Name = "LG",
+                        Address = "Korea",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 5,
+                        Name = "Xiaomi",
+                        Address = "China",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 6,
+                        Name = "Asus",
+                        Address = "China",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 7,
+                        Name = "Lenovo",
+                        Address = "China",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 8,
+                        Name = "Dell",
+                        Address = "China",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 9,
+                        Name = "HP",
+                        Address = "US",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        Status = true
+                    });
+                entity.HasData(
+                    new Brand
+                    {
+                        Id = 10,
+                        Name = "Acer",
+                        Address = "Taiwan",
                         CreateAt = DateTime.UtcNow,
                         CreateBy = 1,
                         UpdateAt = DateTime.UtcNow,
@@ -242,12 +350,9 @@ namespace KLTN.DataAccess.Models
             {
                 entity.HasKey(x => x.Id);
                 entity.HasIndex(x => new { x.BrandId, x.CategoryId });
-                entity.Property(x => x.ProductCode).HasColumnType(TypeOfSql.VarChar + "(30)");
-                entity.Property(x => x.Name).HasColumnType(TypeOfSql.NVarChar + "(30)");
+                entity.Property(x => x.Name).HasColumnType(TypeOfSql.NVarChar + "(100)");
                 entity.Property(x => x.InitialPrice).HasColumnType(TypeOfSql.Decimal);
                 entity.Property(x => x.CurrentPrice).HasColumnType(TypeOfSql.Decimal);
-                entity.Property(x => x.PromotionPrice).HasColumnType(TypeOfSql.Decimal);
-                entity.Property(x => x.MetaTitle).HasColumnType(TypeOfSql.VarChar + "(30)");
                 entity.Property(x => x.Description).HasColumnType(TypeOfSql.NText);
                 entity.Property(x => x.Rate).HasColumnType(TypeOfSql.TinyInt);
                 entity
@@ -255,34 +360,359 @@ namespace KLTN.DataAccess.Models
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.BrandId)
                 .OnDelete(DeleteBehavior.Cascade);
-                //for (int i = 1; i <= 100; i++)
-                //{
-                //    entity.HasData(
-                //        new Product
-                //        {
-                //            Id = i,
-                //            ProductCode = "lap-mi-" + i,
-                //            Name = "Laptop Xiaomi " + i,
-                //            BrandId = 1,
-                //            CategoryId = (int)EnumCategory.Laptop,
-                //            InitialPrice = new Random().Next(50, 5000) * 10000,
-                //            CurrentPrice = new Random().Next(50, 5000) * 10000,
-                //            PromotionPrice = new Random().Next(5, 500) * 10000,
-                //            DurationWarranty = 12,
-                //            MetaTitle = "lap-top-xiaomi" + i,
-                //            Description = "Laptop thuong hieu Xiaomi",
-                //            Rate = (byte)(new Random().Next(1, 5)),
-                //            ViewCount = new Random().Next(1, 50000),
-                //            LikeCount = new Random().Next(1, 10000),
-                //            TotalSold = new Random().Next(1, 5000),
-                //            Quantity = new Random().Next(1, 2000),
-                //            Status = true,
-                //            CreateAt = DateTime.UtcNow,
-                //            CreateBy = 1,
-                //            UpdateAt = DateTime.UtcNow,
-                //            UpdateBy = 1
-                //        });
-                //}
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 1,
+                        Name = "Macbook Air 13 128GB 2017",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 22990000,
+                        CurrentPrice = 21490000,
+                        DurationWarranty = 12,
+                        Description = "Macbook Air 13 128 GB MQD32SA/A (2017) với thiết kế không thay đổi," +
+                        " vỏ nhôm sang trọng, siêu mỏng và siêu nhẹ, hiệu năng được nâng cấp, thời lượng pin cực lâu," +
+                        " phù hợp cho nhu cầu làm việc văn phòng nhẹ nhàng, không cần quá chú trọng vào hiển thị của màn hình.",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 2,
+                        Name = "Macbook Air 13 128GB 2018",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 26990000,
+                        CurrentPrice = 26490000,
+                        DurationWarranty = 12,
+                        Description = "Macbook Air 13 128GB 2018 là sự đột phá về công nghệ và thiết kế. Chiếc MacBook giờ " +
+                        "đây còn mỏng nhẹ hơn, cao cấp đáng kinh ngạc với màn hình Retina tràn viền tuyệt đỉnh.",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 3,
+                        Name = "Macbook Air 13 256GB 2018",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 33990000,
+                        CurrentPrice = 33490000,
+                        DurationWarranty = 12,
+                        Description = "MacBook Air 13 256GB 2018 đánh dấu sự thay đổi toàn diện của huyền thoại" +
+                        " MacBook siêu mỏng nhẹ luôn được rất nhiều người dùng yêu thích từ trước đến nay.",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 4,
+                        Name = "Macbook Air 13 128GB 2019",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 27990000,
+                        CurrentPrice = 27490000,
+                        DurationWarranty = 12,
+                        Description = "MacBook Air 128GB 2019 có thiết kế tuyệt đẹp, màn hình Retina Truetone" +
+                        " đẳng cấp và trải nghiệm bàn phím tuyệt vời nhất từ trước đến nay. Đây sẽ là chiếc laptop" +
+                        " nhỏ gọn hoàn hảo nhất dành cho bạn.",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 5,
+                        Name = "Macbook Air 13 256GB 2019",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 34990000,
+                        CurrentPrice = 34490000,
+                        DurationWarranty = 12,
+                        Description = "MacBook Air 256GB 2019 không chỉ là phương tiện làm việc cơ động lý tưởng" +
+                        " mà còn là một tuyệt tác về thiết kế, với màn hình Retina tuyệt mỹ cùng kiểu dáng sang trọng," +
+                        " mỏng nhẹ đến không ngờ.",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 6,
+                        Name = "Macbook 12 512GB 2017",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 32990000,
+                        CurrentPrice = 32490000,
+                        DurationWarranty = 12,
+                        Description = "MacBook 12 2017 với đường nét thiết kế không có thay đổi so với" +
+                        " phiên bản 2016 nhưng Apple đã nâng cấp thêm bộ nhớ và giới thiệu bộ vi xử lý" +
+                        " Intel thế hệ thứ 7 (Kaby Lake).",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 7,
+                        Name = "Macbook Pro 13 inch 256GB 2017",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 38990000,
+                        CurrentPrice = 38490000,
+                        DurationWarranty = 12,
+                        Description = "Thế hệ MacBook Pro 13 inch 2017 ngoài việc cập nhật bộ vi xử lý Intel" +
+                        " thế hệ thứ 7 (Kaby Lake) thì còn được nâng cấp gấp đôi dung lượng bộ nhớ. Ngoài ra" +
+                        " thiết kế cũng như một số tính năng nổi bật vẫn không có thay đổi so với dòng MacBook 2016.",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 8,
+                        Name = "Macbook Pro 13 Touch Bar i5 1.4GHz/8G/128GB",
+                        BrandId = 1,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 38990000,
+                        CurrentPrice = 38490000,
+                        DurationWarranty = 12,
+                        Description = "MacBook Pro 13 Touch Bar (2019) có thiết kế siêu nhỏ gọn" +
+                        " nhưng bên trong lại là cấu hình hết sức mạnh mẽ, màn hình Retina tuyệt mỹ" +
+                        " cùng bàn phím cánh bướm thế hệ mới.",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+            });
+
+            modelBuilder.Entity<Laptop>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 1,
+                        ProductId = 1,
+                        CPU = "Intel Core i5 Dual-Core 1.8 Ghz 3MB(L3 Cache)",
+                        RAM = "LPDDR3 8GB 1600 Mhz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel HD Graphics 6000 1440 x 900 pixels",
+                        Screen = "LED-backlit 13.3 inch",
+                        PortSupport = "	2xUSB 3.0, 2xThunderbolt 2, 1xSDXC Card, 1xMagSafe 2, 1xHeadphone",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.35 Kg",
+                        Size = "",
+                        Camera = "8.0 MP",
+                        Color = "Xám",
+                        Pin = "Lithium-polymer",
+                    });
+
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 2,
+                        ProductId = 2,
+                        CPU = "Intel Core i5 Dual-Core 3.6 GHz 4MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133 MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel UHD Graphics 617",
+                        Screen = "LED-backlit 13.3 inch Retina(2560 x 1600 Pixels)",
+                        PortSupport = "2 cổng USB-C tích hợp Thunderbolt 3 và 1 cổng tai nghe 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.25 Kg",
+                        Size = "Dài 304.1mm - Rộng 212.4mm - Dày 4.1–15.6mm",
+                        Camera = "8.0 MP",
+                        Color = "Xám",
+                        Pin = "Lithium-Polymer, Liền, 50.3‑watt‑hour",
+                    });
+
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 3,
+                        ProductId = 3,
+                        CPU = "Intel Core i5 Dual-Core 3.6 GHz 4MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133 MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel UHD Graphics 617",
+                        Screen = "LED-backlit 13.3 inch Retina(2560 x 1600 Pixels)",
+                        PortSupport = "2 cổng USB-C tích hợp Thunderbolt 3 và 1 cổng tai nghe 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.25 Kg",
+                        Size = "Dài 304.1mm - Rộng 212.4mm - Dày 4.1–15.6mm",
+                        Camera = "8.0 MP",
+                        Color = "Xám",
+                        Pin = "Lithium-Polymer, Liền, 50.3‑watt‑hour",
+                    });
+
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 4,
+                        ProductId = 4,
+                        CPU = "Intel Core i5 Dual-Core 3.6 GHz 4MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133 MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel UHD Graphics 617",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.25 Kg",
+                        Size = "Cao 0.41–1.56 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "8.0 MP",
+                        Color = "Xám",
+                        Pin = "49.9 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 5,
+                        ProductId = 5,
+                        CPU = "Intel Core i5 Dual-Core 3.6 GHz 4MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133 MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel UHD Graphics 617",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.25 Kg",
+                        Size = "Cao 0.41–1.56 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "49.9 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 6,
+                        ProductId = 6,
+                        CPU = "Intel Core i5 Dual-Core 3.2 GHz 4MB L3 Cache",
+                        RAM = "LPDDR3 8GB 1866 MHz",
+                        ROM = "SSD 512GB",
+                        Card = "Intel HD Graphics 615",
+                        Screen = "LED-backlit 2304 x 1440 Pixels",
+                        PortSupport = "1xUSB Type-C, 1x 3.5mm headphone jack",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "0.92 kg",
+                        Size = "",
+                        Camera = "8.0 MP",
+                        Color = "Xám",
+                        Pin = "Lithium-polymer",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 7,
+                        ProductId = 7,
+                        CPU = "Intel Core i5 Dual-Core 3.6 GHz 4MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 256GB",
+                        Card = "Intel Iris Plus Graphics 640",
+                        Screen = "LED-backlit 2560x1600 pixels",
+                        PortSupport = "2xThunderbolt 3(USB-C), 1xHeadphone",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "",
+                        Camera = "8.0 MP",
+                        Color = "Xám",
+                        Pin = "Lithium-polymer",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 8,
+                        ProductId = 8,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
             });
 
             modelBuilder.Entity<Image>(entity =>
@@ -303,32 +733,6 @@ namespace KLTN.DataAccess.Models
                 //            Id = i,
                 //            ProductId = i,
                 //            Url = "laptop-mi-01.jpg"
-                //        });
-                //}
-            });
-
-            modelBuilder.Entity<Laptop>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                //for (int i = 1; i <= 100; i++)
-                //{
-                //    entity.HasData(
-                //        new Laptop
-                //        {
-                //            Id = i,
-                //            ProductId = i,
-                //            Screen = "15.6 inch, Full HD (1920 x 1080)",
-                //            CPU = "Intel Core i5 Coffee Lake, 8265U, 1.60 GHz",
-                //            RAM = "4 GB, DDR4 (On board +1 khe), 2133 MHz",
-                //            ROM = "HDD: 1 TB SATA3, Intel Optane 16GB",
-                //            Card = "Card đồ họa tích hợp, Intel® UHD Graphics 620",
-                //            PortSupport = "2 x USB 3.0, HDMI, LAN (RJ45), USB Type-C",
-                //            OperatingSystem = "Windows 10 Home SL",
-                //            Design = "Vỏ nhựa, PIN liền",
-                //            Size = "Dày 22.45 mm, 2.0 kg",
-                //            Camera = "8.0mpx",
-                //            Color = "Đen",
-                //            Pin = "Pin liền, 3 cell"
                 //        });
                 //}
             });

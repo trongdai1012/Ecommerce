@@ -75,7 +75,6 @@ namespace KLTN.Services
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
-                                  ProductCode = pro.ProductCode,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
