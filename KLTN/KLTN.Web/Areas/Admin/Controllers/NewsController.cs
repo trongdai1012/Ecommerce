@@ -12,6 +12,7 @@ using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin,Manager")]
     public class NewsController : BaseController
     {
         private readonly INewsService _newsService;

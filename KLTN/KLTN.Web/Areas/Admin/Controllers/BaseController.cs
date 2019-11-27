@@ -8,7 +8,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
     [Route(RouteConfigs.AdminToController)]
     [Route(RouteConfigs.AdminToControllerToAction)]
     [Route(RouteConfigs.AdminToControllerToActionToId)]
-    [Authorize]
+    [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
     public class BaseController : Controller
     {
     }

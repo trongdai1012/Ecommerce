@@ -4,12 +4,13 @@ using AutoMapper;
 using KLTN.Common.Datatables;
 using KLTN.DataModels.Models.Brands;
 using KLTN.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin,Manager")]
     public class BrandController : BaseController
     {
         private readonly IBrandService _brandService;
@@ -44,15 +45,6 @@ namespace KLTN.Web.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            //var listCateParent = _categoryService.GetAll();
-            //var cate = new CreateBrandModel();
-            //cate.ListCategory = listCateParent.Select(x =>
-            //    new SelectListItem()
-            //    {
-            //        Text = x.Name,
-            //        Value = x.Id.ToString()
-            //    }
-            //).ToList();
             return View();
         }
 

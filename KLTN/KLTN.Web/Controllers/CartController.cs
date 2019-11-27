@@ -8,6 +8,7 @@ using KLTN.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace KLTN.Web.Controllers
 {
@@ -149,38 +150,89 @@ namespace KLTN.Web.Controllers
         //[Route("Payment")]
         public IActionResult Payment(OrderViewModel orderView)
         {
-            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            if (cart == null) return BadRequest();
-            var listOrdDt = new List<OrderDetailViewModel>();
-            decimal subTotal = 0;
-            foreach (var item in cart)
+            if (!ModelState.IsValid)
             {
-                listOrdDt.Add(new OrderDetailViewModel
+                var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+                if (cart == null) return BadRequest();
+                var listOrdDt = new List<OrderDetailViewModel>();
+                decimal subTotal = 0;
+                foreach (var item in cart)
                 {
-                    ProductId = item.Product.Id,
-                    Quantity = item.Quantity,
-                    Image = item.Product.Image,
-                    Price = item.Product.CurrentPrice,
-                    TotalPrice = item.Product.CurrentPrice * item.Quantity
-                });
-                subTotal += item.Product.CurrentPrice * item.Quantity;
+                    listOrdDt.Add(new OrderDetailViewModel
+                    {
+                        ProductId = item.Product.Id,
+                        ProductName = item.Product.Name,
+                        Quantity = item.Quantity,
+                        Image = item.Product.Image,
+                        Price = item.Product.CurrentPrice,
+                        TotalPrice = item.Product.CurrentPrice * item.Quantity
+                    });
+                    subTotal += item.Product.CurrentPrice * item.Quantity;
+                }
+
+                ViewBag.ListOrdDT = listOrdDt;
+
+                var user = _userService.GetUserById(Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == "Id").Value));
+                var order = new OrderViewModel
+                {
+                    RecipientFirstName = user.FirstName,
+                    RecipientLastName = user.LastName,
+                    RecipientEmail = user.Email,
+                    RecipientAddress = user.Address,
+                    RecipientProvinceName = user.ProvinceName,
+                    RecipientDistrictName = user.DistrictName,
+                    RecipientPrecinctName = user.PrecinctName,
+                    RecipientDistrictCode = user.DistrictId,
+                    RecipientPrecinctCode = user.PrecinctId,
+                    RecipientProvinceCode = user.ProvinceId,
+                    RecipientPhone = user.Phone,
+                    TotalPrice = subTotal
+                };
+
+                return View(orderView);
             }
 
-            orderView.TotalPrice = subTotal;
-            var result = _orderService.Create(orderView,listOrdDt);
-
-            if (result==1)
+            try
             {
-                cart.Clear();
-                return RedirectToAction("PaymentSuccess", "Notification");
-            }
+                var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+                if (cart == null) return BadRequest();
+                var listOrdDt = new List<OrderDetailViewModel>();
+                decimal subTotal = 0;
+                foreach (var item in cart)
+                {
+                    listOrdDt.Add(new OrderDetailViewModel
+                    {
+                        ProductId = item.Product.Id,
+                        Quantity = item.Quantity,
+                        Image = item.Product.Image,
+                        Price = item.Product.CurrentPrice,
+                        TotalPrice = item.Product.CurrentPrice * item.Quantity
+                    });
+                    subTotal += item.Product.CurrentPrice * item.Quantity;
+                }
 
-            if (result == 2)
+                orderView.TotalPrice = subTotal;
+                var result = _orderService.Create(orderView, listOrdDt);
+
+                if (result == 1)
+                {
+                    cart.Clear();
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                    return RedirectToAction("PaymentSuccess", "Notification");
+                }
+
+                if (result == 2)
+                {
+                    return RedirectToAction("QuantityInvalid", "Notification");
+                }
+
+                return RedirectToAction("PaymentFailed", "Notification");
+            }catch(Exception e)
             {
-                return RedirectToAction("QuantityInvalid", "Notification");
+                Log.Error("Have an error when payment order", e);
+                return BadRequest();
             }
-
-            return RedirectToAction("PaymentFailed", "Notification");
+            
         }
 
         //[Route("update")]

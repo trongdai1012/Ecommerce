@@ -10,6 +10,7 @@ using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin,Manager")]
     public class ContactController : BaseController
     {
         private readonly IContactService _contactService;

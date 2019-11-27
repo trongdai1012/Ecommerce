@@ -73,9 +73,15 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-controller="Contact" asp-action="Index">Liên hệ</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">Quản trị</a>
-                                    </li>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        @if (!User.IsInRole("Customer"))
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">Quản trị</a>
+                                            </li>
+                                        }
+                                    }
                                 </ul>
                             </div>
 

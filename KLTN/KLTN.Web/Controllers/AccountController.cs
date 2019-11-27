@@ -89,11 +89,31 @@ namespace KLTN.Web.Controllers
                         ModelState.AddModelError(Signs.DoubleQuotationMarks, "Có lỗi không xác định, xin lỗi vì sự bất tiện này");
                         return View(authentication);
                     default:
+                        var role = "";
+                        switch (account.Item1.Role)
+                        {
+                            case 0:
+                                role = "Admin";
+                                break;
+                            case 1:
+                                role = "Manager";
+                                break;
+                            case 2:
+                                role = "WareHouseStaff";
+                                break;
+                            case 3:
+                                role = "Shipper";
+                                break;
+                            default:
+                                role = "Customer";
+                                break;
+
+                        }
                         var claims = new List<Claim>
                         {
                             new Claim(Constants.Id, account.Item1.Id.ToString()),
                             new Claim(Constants.Email, account.Item1.Email),
-                            new Claim(Constants.Role, account.Item1.Role.ToString())
+                            new Claim(ClaimTypes.Role, role)
                         };
 
                         // create identity

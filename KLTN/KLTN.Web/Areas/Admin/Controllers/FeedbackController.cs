@@ -9,6 +9,7 @@ using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin,Manager")]
     public class FeedbackController : BaseController
     {
         private readonly IFeedbackService _feedbackService;

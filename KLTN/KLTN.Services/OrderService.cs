@@ -1191,13 +1191,6 @@ namespace KLTN.Services
             return listShipper;
         }
 
-        public IEnumerable<User> GetAllClerk()
-        {
-            var listClerk = _unitOfWork.UserRepository.GetMany(x => x.Role == (int)EnumRole.Clerk && x.Status == true);
-
-            return listClerk;
-        }
-
         public IEnumerable<User> GetAllWareHouseStaff()
         {
             var listWareHouseStaff = _unitOfWork.UserRepository.GetMany(x => x.Role == (int)EnumRole.WareHouseStaff && x.Status == true);

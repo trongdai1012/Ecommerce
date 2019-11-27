@@ -22,8 +22,6 @@ namespace KLTN.Services
 
         IEnumerable<User> GetAllShipper();
 
-        IEnumerable<User> GetAllClerk();
-
         IEnumerable<User> GetAllWareHouseStaff();
 
         int OrderConfirm(int id);

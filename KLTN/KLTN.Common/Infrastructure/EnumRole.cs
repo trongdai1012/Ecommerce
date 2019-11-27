@@ -8,7 +8,6 @@ namespace KLTN.Common.Infrastructure
     {
         Admin = 0,
         Manager,
-        Clerk,
         WareHouseStaff,
         Shipper,
         Customer

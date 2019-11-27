@@ -2,10 +2,13 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using KLTN.Common;
+using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.AutoMapper;
+using KLTN.DataModels.Models.Orders;
 using KLTN.DataModels.Models.Products;
 using KLTN.DataModels.Models.Users;
+using KLTN.DataModels.Validations.Orders;
 using KLTN.DataModels.Validations.Product;
 using KLTN.DataModels.Validations.Users;
 using KLTN.Services;
@@ -19,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Security.Claims;
 
 namespace KLTN.Web
 {
@@ -80,18 +84,27 @@ namespace KLTN.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.AccessDeniedPath = new PathString(RedirectConfig.AdminAccountAuthentication);
+                    options.AccessDeniedPath = new PathString("/");
                     options.LoginPath = new PathString(RedirectConfig.AccountAuthentication);
                     options.ReturnUrlParameter = Constants.RequestPath;
                     options.SlidingExpiration = true;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 });
 
+            //Add authorization with Policy
+            services.AddAuthorization(
+                options =>
+                {
+                    options.AddPolicy(nameof(EnumRole.Admin), policy => policy.RequireClaim(ClaimTypes.Role, nameof(EnumRole.Admin)));
+                }
+            );
+
             //Add Transient
             services.AddTransient<IValidator<RegisterUserViewModel>, RegisterValidator>();
             services.AddTransient<IValidator<CreateEmployeeViewModel>, CreateEmployeeValidator>();
             services.AddTransient<IValidator<CreateAdminViewModel>, CreateAdminValidator>();
             services.AddTransient<IValidator<CreateLaptopViewModel>, CreateLaptopValidator>();
+            services.AddTransient<IValidator<OrderViewModel>, PaymentValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
