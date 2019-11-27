@@ -1,9 +1,8 @@
-﻿@{
-    ViewData["Title"] = "RetypeSuccess";
+﻿
+@{
+    ViewData["Title"] = "QuantityNotValid";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<link rel="stylesheet" href="~/css/alert.css" />
 
 <!--================Home Banner Area =================-->
 <section class="banner_area">
@@ -23,25 +22,21 @@
     </div>
 </section>
 <!--================End Home Banner Area =================-->
-
 <section>
-    <div class="alert alert-success">
+    <div class="alert alert-danger">
         <div class="container">
             <div class="alert-icon">
                 <i class="material-icons">Thông báo</i>
             </div>
-            <a href="/" class="close" aria-label="Close">
+            <a asp-controller="Cart" asp-action="Index" class="close" aria-label="Close">
                 <i class="material-icons">
-                    Về trang chủ
+                    Đến giỏ hàng
                 </i>
             </a>
-            <b>Lấy lại mật khẩu thành công. </b>
+            <b>Giỏ hàng có sản phẩm không đáp ứng số lượng. </b>Vui lòng kiểm tra lại giỏ hàng của bạn.
         </div>
     </div>
 </section>
-
 @section scripts{
     <script src="~/js/alert.js"></script>
 }
-
-

@@ -36,7 +36,7 @@
                 <nav class="navbar navbar-expand-lg navbar-light w-100">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <a class="navbar-brand logo_h" href="index.html">
-                        <img src="img/logo.png" alt="" />
+                        <img src="~/img/logo.png" alt="" />
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@
                                            aria-expanded="false">Thể loại</a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">
-                                                <a class="nav-link" asp-action="Laptop" asp-controller="Product" />Laptop</a>
+                                                <a class="nav-link" asp-action="Laptop" asp-controller="Product">Laptop</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="#">Điện thoại</a>
@@ -68,16 +68,7 @@
                                         </ul>
                                     </li>
                                     <li class="nav-item submenu dropdown">
-                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                           aria-expanded="false">Blog</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">Blog</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">Blog Details</a>
-                                            </li>
-                                        </ul>
+                                        <a href="~/News/Index" class="nav-link dropdown-toggle">Tin tức</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" asp-controller="Contact" asp-action="Index">Liên hệ</a>
@@ -111,13 +102,13 @@
                                             {
                                                 <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Thông tin cá nhân</a>
                                                 <a class="dropdown-item" asp-controller="Order" asp-action="Index">Lịch sử mua hàng</a>
-                                                <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Register">Đăng xuất</a>
+                                                <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Đăng xuất</a>
                                             }
                                             else
                                             {
                                                 <a class="dropdown-item" asp-controller="Account" asp-action="Authentication">Đăng nhập</a>
                                                 <a class="dropdown-item" asp-controller="Account" asp-action="Register">Đăng ký</a>
-                                                <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Register">Quên mật khẩu</a>
+                                                <a class="dropdown-item" asp-controller="Account" asp-action="ForgotPassword">Quên mật khẩu</a>
                                             }
                                         </div>
                                     </li>

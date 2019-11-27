@@ -16,7 +16,7 @@ namespace KLTN.Services
 
         Tuple<IEnumerable<OrderViewModel>, int, int> LoadOrder(DTParameters dtParameters);
 
-        bool Create(OrderViewModel orderView, IEnumerable<OrderDetailViewModel> orderDetails);
+        int Create(OrderViewModel orderView, IEnumerable<OrderDetailViewModel> orderDetails);
 
         Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int> GetOrderDetailById(int id);
 

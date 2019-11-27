@@ -1,0 +1,61 @@
+﻿@model Tuple<NewsViewModel, IEnumerable<NewsViewModel>>
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .text {
+        display: block;
+        width: 271px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<!--================Blog Area =================-->
+<section class="blog_area single-post-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 posts-list">
+                <div class="blog_details">
+                    <h2>
+                        @Model.Item1.Title
+                    </h2>
+                </div>
+                <div class="single-post">
+                    <div class="feature-img">
+                        <img class="img-fluid" src="~/DataImage/@Model.Item1.Image" alt="">
+                    </div>
+                    <div class="blog_details">
+                        <p class="excert">
+                            @Model.Item1.Content
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget post_category_widget">
+                        <h4 class="widget_title">Mục tin tức</h4>
+                        <ul class="list cat-list">
+                            @foreach (var item in Model.Item2)
+                            {
+                                <li>
+                                    <a href="/News/Detail/@item.Id" class="d-flex">
+                                        <h4><b style="color:black">@item.Title</b></h4><br />
+                                    </a>
+                                </li>
+                                <li>
+                                    <p class="text">@item.Content</p>
+                                </li>
+                            }
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================Blog Area =================-->

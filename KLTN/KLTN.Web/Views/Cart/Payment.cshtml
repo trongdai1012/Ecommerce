@@ -31,145 +31,120 @@
     </div>
 </section>
 <!--================End Home Banner Area =================-->
-
-<!--================Home Banner Area =================-->
-<section class="banner_area">
-    <div class="banner_inner d-flex align-items-center">
-        <div class="container">
-            <div class="banner_content d-md-flex justify-content-between align-items-center">
-                <div class="mb-3 mb-md-0">
-                    <h2>Product Checkout</h2>
-                    <p>Very us move be blessed multiply night</p>
-                </div>
-                <div class="page_link">
-                    <a href="index.html">Home</a>
-                    <a href="checkout.html">Product Checkout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--================End Home Banner Area =================-->
 <!--================Checkout Area =================-->
-<section class="checkout_area">
-    <div class="container">
-        <div class="billing_details">
-            <div class="row">
-                <div class="col-lg-8">
-                    <h3>Billing Details</h3>
-                    <form class="row contact_form"
-                          asp-action="Payment"
-                          method="post">
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text"
-                                   asp-for="RecipientFirstName"
-                                   class="form-control"
-                                   id="first"
-                                   value="@Model.RecipientFirstName"
-                                   placeholder="Tên" />
-                        </div>
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text"
-                                   asp-for="RecipientLastName"
-                                   class="form-control"
-                                   id="last"
-                                   value="@Model.RecipientLastName"
-                                   placeholder="Họ đệm" />
-
-                        </div>
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text"
-                                   class="form-control"
-                                   asp-for="RecipientPhone"
-                                   id="number"
-                                   value="@Model.RecipientPhone"
-                                   placeholder="Số điện thoại" />
-                        </div>
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text"
-                                   asp-for="RecipientEmail"
-                                   class="form-control"
-                                   id="email"
-                                   value="@Model.RecipientEmail"
-                                   placeholder="Email" />
-                        </div>
-                        <div class="col-md-12 form-group p_star">
-                            <input asp-for="RecipientProvinceName" type="hidden" id="province" />
-                            <select class="country_select form-control" asp-for="RecipientProvinceCode" id="ddlProvince"></select>
-                        </div>
-                        <div class="col-md-12 form-group p_star">
-                            <input asp-for="RecipientDistrictName" type="hidden" id="district" />
-                            <select class="country_select form-control" asp-for="RecipientDistrictCode" id="ddlDistrict"></select>
-                        </div>
-                        <div class="col-md-12 form-group p_star">
-                            <input asp-for="RecipientPrecinctName" type="hidden" id="precinct" />
-                            <select class="country_select form-control" asp-for="RecipientPrecinctCode" id="ddlPrecinct"></select>
-                        </div>
-                        <div class="col-md-12 form-group p_star">
-                            <input type="text"
-                                   asp-for="RecipientAddress"
-                                   class="form-control"
-                                   value=""
-                                   placeholder="Nhập địa chỉ cụ thể" />
-
-                        </div>
-                        <div class="col-md-12 form-group p_star">
-                            <button class="main_btn" type="submit">Thanh toán</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-4">
-                    <div class="order_box">
-                        <h2>Your Order</h2>
-                        <ul class="list">
-                            <li>
-                                <a href="#">
-                                    Sản phẩm
-                                    <span>Giá</span>
-                                </a>
-                            </li>
-                            @foreach (var item in ViewBag.ListOrdDT)
-                            {
-                                <li>
-                                    <a href="#">
-                                        @item.ProductName
-                                        <span class="middle">x @item.Quantity</span>
-                                        <span class="last">@item.TotalPrice</span>
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                        <ul class="list list_2">
-                            <li>
-                                <a href="#">
-                                    Tổng tiền
-                                    <span>@Model.TotalPrice</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="payment_item active">
-                            <div class="radion_btn">
-                                <input type="radio" id="f-option6" name="selector" />
-                                <label for="f-option6">Paypal </label>
-                                <img src="~/card.jpg" alt="" />
-                                <div class="check"></div>
-                            </div>
-                            <p>
-                                Please send a check to Store Name, Store Street, Store Town,
-                                Store State / County, Store Postcode.
-                            </p>
-                        </div>
-                        <div class="creat_account">
-                            <input type="checkbox" id="f-option4" name="selector" />
-                            <label for="f-option4">I’ve read and accept the </label>
-                            <a href="#">terms & conditions*</a>
-                        </div>
-                        <a class="main_btn">Proceed to Paypal</a>
+<section class="checkout_area" style="margin-top:30px">
+    <div class="col-md-12 row">
+        <div class="billing_details col-md-6">
+                <h3>Billing Details</h3>
+                <form class="row contact_form"
+                      asp-action="Payment"
+                      method="post">
+                    <div class="col-md-6 form-group p_star">
+                        <input type="text"
+                               asp-for="RecipientFirstName"
+                               class="form-control"
+                               id="first"
+                               value="@Model.RecipientFirstName"
+                               placeholder="Tên" />
                     </div>
+                    <div class="col-md-6 form-group p_star">
+                        <input type="text"
+                               asp-for="RecipientLastName"
+                               class="form-control"
+                               id="last"
+                               value="@Model.RecipientLastName"
+                               placeholder="Họ đệm" />
+
+                    </div>
+                    <div class="col-md-6 form-group p_star">
+                        <input type="text"
+                               class="form-control"
+                               asp-for="RecipientPhone"
+                               id="number"
+                               value="@Model.RecipientPhone"
+                               placeholder="Số điện thoại" />
+                    </div>
+                    <div class="col-md-6 form-group p_star">
+                        <input type="text"
+                               asp-for="RecipientEmail"
+                               class="form-control"
+                               id="email"
+                               value="@Model.RecipientEmail"
+                               placeholder="Email" />
+                    </div>
+                    <div class="col-md-12 form-group p_star">
+                        <input asp-for="RecipientProvinceName" type="hidden" id="province" />
+                        <select class="country_select form-control" asp-for="RecipientProvinceCode" id="ddlProvince"></select>
+                    </div>
+                    <div class="col-md-12 form-group p_star">
+                        <input asp-for="RecipientDistrictName" type="hidden" id="district" />
+                        <select class="country_select form-control" asp-for="RecipientDistrictCode" id="ddlDistrict"></select>
+                    </div>
+                    <div class="col-md-12 form-group p_star">
+                        <input asp-for="RecipientPrecinctName" type="hidden" id="precinct" />
+                        <select class="country_select form-control" asp-for="RecipientPrecinctCode" id="ddlPrecinct"></select>
+                    </div>
+                    <div class="col-md-12 form-group p_star">
+                        <input type="text"
+                               asp-for="RecipientAddress"
+                               class="form-control"
+                               value=""
+                               placeholder="Nhập địa chỉ cụ thể" />
+
+                    </div>
+                    <div class="col-md-12 form-group p_star">
+                        <button class="main_btn" type="submit">Thanh toán</button>
+                    </div>
+                </form>
+            </div>
+            <div class="order_box col-md-6" style="width:500px">
+                <h2>Your Order</h2>
+                <ul class="list">
+                    <li>
+                        <a href="#">
+                            Sản phẩm
+                            <span>Giá</span>
+                        </a>
+                    </li>
+                    @foreach (var item in ViewBag.ListOrdDT)
+                    {
+                        <li>
+                            <a href="#">
+                                @item.ProductName
+                                <span class="middle">x @item.Quantity</span>
+                                <span class="last">@item.TotalPrice</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <ul class="list list_2">
+                    <li>
+                        <a href="#">
+                            Tổng tiền
+                            <span>@Model.TotalPrice</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="payment_item active">
+                    <div class="radion_btn">
+                        <input type="radio" id="f-option6" name="selector" />
+                        <label for="f-option6">Paypal </label>
+                        <img src="~/card.jpg" alt="" />
+                        <div class="check"></div>
+                    </div>
+                    <p>
+                        Please send a check to Store Name, Store Street, Store Town,
+                        Store State / County, Store Postcode.
+                    </p>
                 </div>
+                @*<div class="creat_account">
+                    <input type="checkbox" id="f-option4" name="selector" />
+                    <label for="f-option4">I’ve read and accept the </label>
+                    <a href="#">terms & conditions*</a>
+                </div>
+                <a class="main_btn">Proceed to Paypal</a>*@
             </div>
         </div>
-    </div>
 </section>
 <!--================End Checkout Area =================-->
 

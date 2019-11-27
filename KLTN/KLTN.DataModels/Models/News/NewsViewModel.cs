@@ -13,6 +13,7 @@ namespace KLTN.DataModels.Models.News
         public string CreateBy { get; set; }
         public DateTime UpdateAt { get; set; }
         public string UpdateBy { get; set; }
+        public string Image { get; set; }
         public bool Status { get; set; }
     }
 }

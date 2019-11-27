@@ -42,7 +42,7 @@ namespace KLTN.Services
             _mapper = mapper;
         }
 
-        public bool Create(OrderViewModel orderView, IEnumerable<OrderDetailViewModel> orderDetails)
+        public int Create(OrderViewModel orderView, IEnumerable<OrderDetailViewModel> orderDetails)
         {
             try
             {
@@ -78,7 +78,9 @@ namespace KLTN.Services
                     };
                     _unitOfWork.OrderDetailRepository.Create(ordDetail);
                     var product = _unitOfWork.ProductRepository.GetById(ordDetail.ProductId);
+                    if (item.Quantity > product.Quantity) return 2;
                     product.TotalSold += 1;
+                    product.Quantity -= ordDetail.Quantity;
                     var feedback = _unitOfWork.FeedbackRepository.Get(x =>
                                     x.ProductId == ordDetail.ProductId && x.UserId == order.CreateBy);
                     if (feedback == null)
@@ -107,14 +109,13 @@ namespace KLTN.Services
 
                 _unitOfWork.DeliveryRepository.Create(delivery);
 
-
                 _unitOfWork.Save();
-                return true;
+                return 1;
             }
             catch (Exception e)
             {
                 Log.Error("Have an error when create order", e);
-                return false;
+                return -1;
             }
         }
 
@@ -426,6 +427,15 @@ namespace KLTN.Services
                     delivery.CancelOrderAt = DateTime.UtcNow;
                     delivery.CancelContent = content;
                     delivery.CancelBy = userId;
+
+                    var ord = _unitOfWork.OrderDetailRepository.GetMany(x => x.OrderId == order.Id);
+
+                    foreach (var item in ord)
+                    {
+                        var product = _unitOfWork.ProductRepository.GetById(item.ProductId);
+                        product.Quantity += item.Quantity;
+                        product.TotalSold -= item.Quantity;
+                    }
 
                     _unitOfWork.Save();
                     return 1;

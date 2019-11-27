@@ -231,7 +231,34 @@
                         <div class="col-md-2">
                             <label><span class="prefix"><b style="color:black">Cập nhật mới nhất:</b></span></label>
                         </div>
-                        <div><span class="label label-success">@Model.Item1.UpdateAt</span></div>
+                        @if (@Model.Item1.StatusOrder == 0)
+                        {
+                            <div><span class="label label-success">@Model.Item1.CreateAt</span></div>
+                        }
+                        else if (@Model.Item1.StatusOrder == 1)
+                        {
+                            <div><span class="label label-success">@Model.Item3.ConfirmAt</span></div>
+                        }
+                        else if (@Model.Item1.StatusOrder == 2)
+                        {
+                            <div><span class="label label-success">@Model.Item3.PreparingOrderAt</span></div>
+                        }
+                        else if (@Model.Item1.StatusOrder == 3)
+                        {
+                            <div><span class="label label-success">@Model.Item3.FinishDeliveryAt</span></div>
+                        }
+                        else if (@Model.Item1.StatusOrder == 4)
+                        {
+                            <div><span class="label label-success">@Model.Item3.StartDeliveryAt</span></div>
+                        }
+                        else if (@Model.Item1.StatusOrder == 5)
+                        {
+                            <div><span class="label label-success">@Model.Item3.FinishDeliveryAt</span></div>
+                        }
+                        else
+                        {
+                            <div><span class="label label-success">@Model.Item3.CancelOrderAt</span></div>
+                        }
                     </div>
                 </li>
             </ul>
@@ -248,15 +275,15 @@
                     <div class="order-status">
                         <div class="order-status-timeline">
                             <!-- class names: c0 c1 c2 c3 and c4 -->
-                            @if (Model.Item1.StatusOrder < 1)
+                            @if (Model.Item1.StatusOrder < 2)
                             {
                                 <div class="order-status-timeline-completion"></div>
                             }
-                            else if (Model.Item1.StatusOrder < 2)
+                            else if (Model.Item1.StatusOrder < 4)
                             {
                                 <div class="order-status-timeline-completion c1"></div>
                             }
-                            else if (Model.Item1.StatusOrder < 4)
+                            else if (Model.Item1.StatusOrder < 5)
                             {
                                 <div class="order-status-timeline-completion c2"></div>
                             }

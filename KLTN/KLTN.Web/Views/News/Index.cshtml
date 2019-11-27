@@ -1,0 +1,67 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<NewsViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .text {
+        display: block;
+        width: 665px;
+        height: 30px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<!--================Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+            <div class="banner_content d-md-flex justify-content-between align-items-center">
+                <div class="mb-3 mb-md-0">
+                    <h2>Big Const Ecommerce</h2>
+                    <p>Luôn sẵn sàng phục vụ</p>
+                </div>
+                <div class="page_link">
+                    <a href="/">Trang chủ</a>
+                    <a>Tin tức</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Home Banner Area =================-->
+<!--================Blog Area =================-->
+<section class="blog_area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-5 mb-lg-0">
+                <div class="blog_left_sidebar">
+                    @foreach (var item in Model)
+                    {
+                        <article class="blog_item">
+                            <div class="blog_details">
+                                <a class="d-inline-block" href="/News/Detail/@item.Id">
+                                    <h2>@item.Title</h2>
+                                </a>
+                                <p class="text">@item.Content</p>
+                                <ul class="blog-info-link">
+                                    <li><a href="/News/Detail/@item.Id"><i class="ti-user"></i>Xem chi tiết</a></li>
+                                </ul>
+                            </div>
+                        </article>
+                    }
+                    <div class="blog-pagination justify-content-center d-flex">
+                        @Html.PagedListPager(Model, pageIndex => Url.Action("Index", new { pageIndex }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================Blog Area =================-->

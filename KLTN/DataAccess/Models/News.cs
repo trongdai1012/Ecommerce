@@ -8,5 +8,6 @@ namespace KLTN.DataAccess.Models
     {
         public string Title { get; set; }
         public string Content { get; set; }
+        public string Image { get; set; }
     }
 }

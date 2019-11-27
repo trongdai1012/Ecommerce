@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KLTN.Services
 {
@@ -105,7 +107,8 @@ namespace KLTN.Services
                                CreateBy = usc.Email,
                                UpdateBy = usu.Email,
                                UpdateAt = newss.UpdateAt,
-                               Status = newss.Status
+                               Status = newss.Status,
+                               Image = newss.Image
                            }).FirstOrDefault();
                 if (news == null)
                 {
@@ -125,8 +128,25 @@ namespace KLTN.Services
         /// Create category
         /// </summary>
         /// <param name="model"></param>
-        public int Create(NewsViewModel model)
+        public async Task<int> Create(NewsViewModel model, IFormFile image)
         {
+            var extImg = Path.GetExtension(image.FileName);
+            var imgName = Guid.NewGuid().ToString() + extImg;
+            var fileName = Path.Combine(Directory.GetCurrentDirectory(), RedirectConfig.DataImages,
+                imgName);
+
+            var checkImage = Path.GetExtension(image.FileName).ToUpper();
+            if (checkImage != ".JPEG" && checkImage != ".JPG" && checkImage != ".PNG" && checkImage != ".GIF" && checkImage != ".TIFF" &&
+                checkImage != ".PSD" && checkImage != ".PDF" && checkImage != ".EPS" && checkImage != ".AI" && checkImage != ".INDD" && checkImage != ".RAW")
+            {
+                return 2;
+            }
+
+            using (var stream = new FileStream(fileName, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
             var checkName = CheckTitleExisted(model.Title);
             if (checkName) return 0;
             try
@@ -139,7 +159,8 @@ namespace KLTN.Services
                     CreateBy = GetUserId(),
                     UpdateAt = DateTime.UtcNow,
                     UpdateBy = GetUserId(),
-                    Status = true
+                    Status = true,
+                    Image = imgName
                 };
                 _unitOfWork.NewsRepository.Create(news);
                 _unitOfWork.Save();
@@ -206,6 +227,48 @@ namespace KLTN.Services
             news.Status = !news.Status;
             _unitOfWork.Save();
             return news.Status;
+        }
+
+        public IEnumerable<NewsViewModel> GetAll()
+        {
+            var listNews = (from news in _unitOfWork.NewsRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on news.CreateBy equals usc.Id
+                            join usu in _unitOfWork.UserRepository.ObjectContext on news.UpdateBy equals usu.Id
+                            select new NewsViewModel
+                            {
+                                Id = news.Id,
+                                Title = news.Title,
+                                Content = news.Content,
+                                CreateAt = news.CreateAt,
+                                CreateBy = usc.Email,
+                                UpdateAt = news.UpdateAt,
+                                UpdateBy = usu.Email,
+                                Status = news.Status,
+                                Image = news.Image
+                            });
+
+            return listNews;
+        }
+
+        public IEnumerable<NewsViewModel> GetSixNews(int id)
+        {
+            var listNews = (from news in _unitOfWork.NewsRepository.ObjectContext
+                            join usc in _unitOfWork.UserRepository.ObjectContext on news.CreateBy equals usc.Id
+                            join usu in _unitOfWork.UserRepository.ObjectContext on news.UpdateBy equals usu.Id
+                            select new NewsViewModel
+                            {
+                                Id = news.Id,
+                                Title = news.Title,
+                                Content = news.Content,
+                                CreateAt = news.CreateAt,
+                                CreateBy = usc.Email,
+                                UpdateAt = news.UpdateAt,
+                                UpdateBy = usu.Email,
+                                Status = news.Status,
+                                Image = news.Image
+                            });
+
+            return listNews.Where(x=>x.Id!=id).OrderBy(x=>x.CreateAt).Take(6);
         }
     }
 }

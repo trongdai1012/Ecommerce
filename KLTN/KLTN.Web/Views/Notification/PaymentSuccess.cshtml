@@ -4,20 +4,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="alert alert-success">
-    <div class="container">
-        <div class="alert-icon">
-            <i class="material-icons">Thông báo</i>
+<!--================Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+            <div class="banner_content d-md-flex justify-content-between align-items-center">
+                <div class="mb-3 mb-md-0">
+                    <h2>Big Const Ecommerce</h2>
+                    <p>Luôn sẵn sàng phục vụ</p>
+                </div>
+                <div class="page_link">
+                    <a href="/">Trang chủ</a>
+                    <a>Thông báo</a>
+                </div>
+            </div>
         </div>
-        <a href="/" class="close" aria-label="Close">
-            <i class="material-icons">
-                Về trang chủ
-            </i>
-        </a>
-        <b>Thanh toán thành công. </b>Cảm ơn bạn đã mua sản phẩm.
     </div>
-</div>
+</section>
+<!--================End Home Banner Area =================-->
+
+<section>
+    <div class="alert alert-success">
+        <div class="container">
+            <div class="alert-icon">
+                <i class="material-icons">Thông báo</i>
+            </div>
+            <a href="/" class="close" aria-label="Close">
+                <i class="material-icons">
+                    Về trang chủ
+                </i>
+            </a>
+            <b>Thanh toán thành công. </b>Cảm ơn bạn đã mua sản phẩm.
+        </div>
+    </div>
+</section>
 @section scripts{
     <script src="~/js/alert.js"></script>
 }
-

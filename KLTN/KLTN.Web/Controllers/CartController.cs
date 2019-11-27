@@ -168,11 +168,18 @@ namespace KLTN.Web.Controllers
 
             orderView.TotalPrice = subTotal;
             var result = _orderService.Create(orderView,listOrdDt);
-            if (result)
+
+            if (result==1)
             {
                 cart.Clear();
                 return RedirectToAction("PaymentSuccess", "Notification");
             }
+
+            if (result == 2)
+            {
+                return RedirectToAction("QuantityInvalid", "Notification");
+            }
+
             return RedirectToAction("PaymentFailed", "Notification");
         }
 
@@ -228,7 +235,9 @@ namespace KLTN.Web.Controllers
 
             var totalItem = model.Count();
 
-            var result = new Tuple<List<CartItem>, int>(model, totalItem);
+            var modelLimited = model.OrderBy(x => x.Quantity).Take(3).ToList();
+
+            var result = new Tuple<List<CartItem>, int>(modelLimited, totalItem);
 
             return PartialView("_GetCart",result);
         }

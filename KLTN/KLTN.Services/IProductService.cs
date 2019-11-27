@@ -1,4 +1,5 @@
 ﻿using KLTN.Common.Datatables;
+using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Products;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -28,5 +29,7 @@ namespace KLTN.Services
         Task<int> UpdateLaptop(UpdateLaptopViewModel laptopModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
 
         bool ChangeStatus(int id);
+
+        IEnumerable<ProductViewModel> GetBanner();
     }
 }

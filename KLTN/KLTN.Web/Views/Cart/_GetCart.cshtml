@@ -1,5 +1,15 @@
 ﻿@model Tuple<List<CartItem>, int>
 
+<style>
+    .text {
+        display: block;
+        width: 150px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+
 <a href="#" class="icons" data-toggle="dropdown">
     <i class="ti-shopping-cart"></i>
     <span class="badge badge-danger navbar-badge">@Model.Item2</span>
@@ -10,12 +20,12 @@
     {
         <a href="#" class="dropdown-item" style="height:77px; width:278px">
             <!-- Message Start -->
-            <div class="media">
-                <img src="~/DataImage/@item.Product.Image" alt="@item.Product.Name" style="border-radius:50%" class="img-size-50 mr-3 img-circle" height="70" width="70">
+            <div class="media" title="@item.Product.Name">
+                <img src="~/DataImage/@item.Product.Image" alt="@item.Product.Name" class="img-size-50 mr-3 img-circle" height="70" width="70">
                 <div class="media-body">
-                    <h3 class="dropdown-item-title">
+                    <p class="dropdown-item-title text">
                         @item.Product.Name
-                    </h3>
+                    </p>
                     <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>Số lượng: @item.Quantity</p>
                 </div>
             </div>

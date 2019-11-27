@@ -28,6 +28,11 @@ namespace KLTN.Web.Controllers
             return View();
         }
 
+        public IActionResult QuantityInvalid()
+        {
+            return View();
+        }
+
         public IActionResult SendContactSuccess()
         {
             return View();

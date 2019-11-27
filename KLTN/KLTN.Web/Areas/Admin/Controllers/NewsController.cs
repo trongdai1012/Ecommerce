@@ -6,6 +6,7 @@ using KLTN.Common.Datatables;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.News;
 using KLTN.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -47,10 +48,10 @@ namespace KLTN.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(NewsViewModel newsModel)
+        public async Task<IActionResult> Create(NewsViewModel newsModel,IFormFile file)
         {
             if (!ModelState.IsValid) return View(newsModel);
-            var result = _newsService.Create(newsModel);
+            var result = await _newsService.Create(newsModel, file);
             switch (result)
             {
                 case 0:
@@ -58,6 +59,9 @@ namespace KLTN.Web.Areas.Admin.Controllers
                     return View(newsModel);
                 case 1:
                     return RedirectToAction("Index", "News");
+                case 2:
+                    ModelState.AddModelError("", "Ảnh không hợp lệ.");
+                    return View(newsModel);
                 default:
                     ModelState.AddModelError("", "Có lỗi không xác định khi tạo bài viết, vui lòng liên hệ người quản trị");
                     return View(newsModel);

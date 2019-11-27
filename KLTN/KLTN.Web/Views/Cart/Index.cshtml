@@ -31,6 +31,7 @@
                         <tr>
                             <th scope="col">Sản phẩm</th>
                             <th scope="col">Giá</th>
+                            <th scope="col">Còn lại</th>
                             <th scope="col">Số lượng</th>
                             <th scope="col">Thành tiền</th>
                         </tr>
@@ -38,49 +39,52 @@
                     <tbody class="col-md-12">
                         @foreach (var item in ViewBag.cart)
                         {
-                            <tr>
-                                <td>
-                                    <div class="media">
-                                        <div class="d-flex">
-                                            <img src="~/DataImage/@item.Product.Image"
-                                                 alt="" height="100" width="147" />
-                                        </div>
-                                        <div class="media-body">
-                                            <p>@item.Product.Name</p>
-                                            <a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Xóa</a>
-                                        </div>
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <img src="~/DataImage/@item.Product.Image"
+                                             alt="" height="100" width="147" />
                                     </div>
-                                </td>
-                                <td>
-                                    <h5>@item.Product.CurrentPrice</h5>
-                                </td>
-                                <td>
-                                    <div class="product_count">
-                                        <input type="text"
-                                               name="qty"
-                                               id="@item.Product.Id"
-                                               data-id="@item.Product.Id"
-                                               maxlength="6"
-                                               value="@item.Quantity"
-                                               title="Quantity:"
-                                               class="input-text qty inputqty"
-                                               style="width:100%" />
-                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                                                class="increase items-count"
-                                                type="button">
-                                            <i class="lnr lnr-chevron-up"></i>
-                                        </button>
-                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0 ) result.value--;return false;"
-                                                class="reduced items-count"
-                                                type="button">
-                                            <i class="lnr lnr-chevron-down"></i>
-                                        </button>
+                                    <div class="media-body">
+                                        <p>@item.Product.Name</p>
+                                        <a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Xóa</a>
                                     </div>
-                                </td>
-                                <td style="padding-left:0px;padding-right:0px;width:150px">
-                                    <h5 style="width:100%" id="total-@item.Product.Id">@string.Format(info, "{0:C0}", (item.Product.CurrentPrice * item.Quantity))</h5>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                            <td>
+                                <h5>@item.Product.CurrentPrice</h5>
+                            </td>
+                            <td>
+                                <h5 id="inventory-@item.Product.Id">@item.Product.Quantity</h5>
+                            </td>
+                            <td>
+                                <div class="product_count">
+                                    <input type="text"
+                                           name="qty"
+                                           id="@item.Product.Id"
+                                           data-id="@item.Product.Id"
+                                           maxlength="6"
+                                           value="@item.Quantity"
+                                           title="Quantity:"
+                                           class="input-text qty inputqty"
+                                           style="width:100%" />
+                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                            class="increase items-count"
+                                            type="button">
+                                        <i class="lnr lnr-chevron-up"></i>
+                                    </button>
+                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0 ) result.value--;return false;"
+                                            class="reduced items-count"
+                                            type="button">
+                                        <i class="lnr lnr-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td style="padding-left:0px;padding-right:0px;width:150px">
+                                <h5 style="width:100%" id="total-@item.Product.Id">@string.Format(info, "{0:C0}", (item.Product.CurrentPrice * item.Quantity))</h5>
+                            </td>
+                        </tr>
                         }
                         <tr>
                             <td></td>

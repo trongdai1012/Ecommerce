@@ -1,9 +1,11 @@
 ﻿using KLTN.Common.Datatables;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.News;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KLTN.Services
 {
@@ -13,10 +15,14 @@ namespace KLTN.Services
 
         Tuple<NewsViewModel, int> GetNewsById(int? id);
 
-        int Create(NewsViewModel model);
+        Task<int> Create(NewsViewModel model, IFormFile image);
 
         bool Update(NewsViewModel viewModel);
 
         bool ChangeStatus(int id);
+
+        IEnumerable<NewsViewModel> GetAll();
+
+        IEnumerable<NewsViewModel> GetSixNews(int id);
     }
 }

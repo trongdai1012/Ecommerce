@@ -572,7 +572,7 @@ namespace KLTN.Services
                     var img = _unitOfWork.ImageRepository.Get(x => x.ProductId == laptopModel.Id);
 
                     var imgDel = img.Url;
-                    
+
                     product.Name = laptopModel.Name;
                     product.CategoryId = (int)EnumCategory.Laptop;
                     product.BrandId = laptopModel.BrandId;
@@ -609,13 +609,13 @@ namespace KLTN.Services
                     return 1;
                 }
 
-                if (CheckNameOtherExisted(laptopModel.Name,laptopModel.Id)) return 2;
+                if (CheckNameOtherExisted(laptopModel.Name, laptopModel.Id)) return 2;
 
                 var productCode1 = NonUnicode(laptopModel.Name);
 
                 var product1 = _unitOfWork.ProductRepository.GetById(laptopModel.Id);
                 var laptop1 = _unitOfWork.LaptopRepository.Get(x => x.ProductId == laptopModel.Id);
-                
+
                 product1.Name = laptopModel.Name;
                 product1.CategoryId = (int)EnumCategory.Laptop;
                 product1.BrandId = laptopModel.BrandId;
@@ -787,14 +787,14 @@ namespace KLTN.Services
                     Weight = laptopModel.Weight
                 };
 
-                 _unitOfWork.LaptopRepository.Create(newLaptop);
+                _unitOfWork.LaptopRepository.Create(newLaptop);
 
-                 _unitOfWork.Save();
+                _unitOfWork.Save();
 
                 return 1;
             }
             catch (Exception e)
-             {
+            {
                 Log.Error("Have an error when create laptop in service", e);
                 return -1;
             }
@@ -1059,7 +1059,7 @@ namespace KLTN.Services
             {
                 var product = _unitOfWork.ProductRepository.GetById(mobileModel.Id);
                 var mobile = _unitOfWork.MobileRepository.Get(x => x.ProductId == mobileModel.Id);
-                
+
                 product.Name = mobileModel.Name;
                 product.BrandId = mobileModel.BrandId;
                 product.InitialPrice = mobileModel.InitialPrice;
@@ -1151,6 +1151,22 @@ namespace KLTN.Services
             product.Status = !product.Status;
             _unitOfWork.Save();
             return product.Status;
+        }
+
+        public IEnumerable<ProductViewModel> GetBanner()
+        {
+            var listSelect = _unitOfWork.ProductRepository.GetAll().OrderByDescending(x => x.Quantity).Take(2);
+
+            var listPro = _mapper.Map<IEnumerable<ProductViewModel>>(listSelect);
+
+            foreach (var item in listPro)
+            {
+                var img = _unitOfWork.ImageRepository.Get(x => x.ProductId == item.Id && x.IsDefault == true);
+                item.Image = img.Url;
+                item.CurrentPrice = Math.Round(item.CurrentPrice / 1000, 0);
+            }
+
+            return listPro;
         }
     }
 }
