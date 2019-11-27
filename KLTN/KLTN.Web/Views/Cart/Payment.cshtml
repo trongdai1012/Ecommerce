@@ -7,11 +7,31 @@
     select {
         display: block;
     }
-    
+
     #ddlProvince {
         display: block;
     }
 </style>
+
+<!--================Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+            <div class="banner_content d-md-flex justify-content-between align-items-center">
+                <div class="mb-3 mb-md-0">
+                    <h2>Big Const Ecommerce</h2>
+                    <p>Luôn sẵn sàng phục vụ</p>
+                </div>
+                <div class="page_link">
+                    <a href="/">Trang chủ</a>
+                    <a>Thanh toán đơn hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Home Banner Area =================-->
+
 <!--================Home Banner Area =================-->
 <section class="banner_area">
     <div class="banner_inner d-flex align-items-center">
@@ -129,9 +149,9 @@
                         </ul>
                         <div class="payment_item active">
                             <div class="radion_btn">
-                                <input type="radio" id="f-option6" name="selector"/>
+                                <input type="radio" id="f-option6" name="selector" />
                                 <label for="f-option6">Paypal </label>
-                                <img src="~/card.jpg" alt=""/>
+                                <img src="~/card.jpg" alt="" />
                                 <div class="check"></div>
                             </div>
                             <p>
@@ -140,7 +160,7 @@
                             </p>
                         </div>
                         <div class="creat_account">
-                            <input type="checkbox" id="f-option4" name="selector"/>
+                            <input type="checkbox" id="f-option4" name="selector" />
                             <label for="f-option4">I’ve read and accept the </label>
                             <a href="#">terms & conditions*</a>
                         </div>
@@ -155,14 +175,14 @@
 
 @section scripts{
     <script>
-        $(function() {
+        $(function () {
             loadProvince();
             registerEvent();
         });
 
         function registerEvent() {
             $('#ddlProvince').off('change').on('change',
-                function() {
+                function () {
                     var id = $(this).val();
                     if (id != '') {
                         document.getElementById('province').value = $("#ddlProvince option:selected").text();
@@ -174,7 +194,7 @@
                     }
                 });
             $('#ddlDistrict').off('change').on('change',
-                function() {
+                function () {
                     var id = $(this).val();
                     if (id != '') {
                         document.getElementById('district').value = $("#ddlDistrict option:selected").text();
@@ -184,7 +204,7 @@
                     }
                 });
             $('#ddlPrecinct').off('change').on('change',
-                function() {
+                function () {
                     var id = $(this).val();
                     if (id != '') {
                         document.getElementById('precinct').value = $("#ddlPrecinct option:selected").text();
@@ -199,13 +219,13 @@
                 url: '/Admin/User/LoadProvince',
                 type: "POST",
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     if (response.status == true) {
                         console.log(response.data);
                         var html = '<option value="">--Chọn tỉnh thành--</option>';
                         var data = response.data;
                         $.each(data,
-                            function(i, item) {
+                            function (i, item) {
                                 html += '<option value="' + item.id + '">' + item.name + '</option>'
                             });
                         $('#ddlProvince').html(html);
@@ -220,13 +240,13 @@
                 type: "POST",
                 data: { provinceID: id },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     console.log(response.data);
                     if (response.status == true) {
                         var html = '<option value="">--Chọn quận huyện--</option>';
                         var data = response.data;
                         $.each(data,
-                            function(i, item) {
+                            function (i, item) {
                                 html += '<option value="' + item.id + '">' + item.name + '</option>'
                             });
                         $('#ddlDistrict').html(html);
@@ -241,13 +261,13 @@
                 type: "POST",
                 data: { districtID: id },
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     console.log(response.data);
                     if (response.status == true) {
                         var html = '<option value="">--Chọn xã phường--</option>';
                         var data = response.data;
                         $.each(data,
-                            function(i, item) {
+                            function (i, item) {
                                 html += '<option value="' + item.id + '">' + item.name + '</option>'
                             });
                         $('#ddlPrecinct').html(html);

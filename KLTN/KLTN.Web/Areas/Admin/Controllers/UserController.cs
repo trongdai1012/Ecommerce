@@ -30,39 +30,6 @@ namespace KLTN.Web.Areas.Admin.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public IActionResult Register(RegisterUserViewModel registerUser)
-        {
-            if (!ModelState.IsValid) return View();
-            _userService.Register(registerUser);
-            return RedirectToAction("Index", "Home");
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult ConfirmUser(string confirmString)
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public IActionResult ConfirmUser()
-        {
-            var confirmString = HttpContext.Request.Path.ToString().Split("/")[4];
-            var result = _userService.ConfirmUser(confirmString);
-            if (result) return RedirectToAction("Index", "Home");
-            return View();
-        }
-
         [HttpGet]
         public IActionResult ListAdmin()
         {
