@@ -83,6 +83,7 @@ namespace KLTN.Services
                     feedback.Comment = comment;
                     feedback.Rate = rate;
                     feedback.RatedAt = DateTime.UtcNow;
+                    feedback.IsRated = true;
                     _unitOfWork.Save();
                     return 1;
                 }
@@ -160,6 +161,7 @@ namespace KLTN.Services
             var listFeedback = from feed in _unitOfWork.FeedbackRepository.ObjectContext
                             join usc in _unitOfWork.UserRepository.ObjectContext on feed.UserId equals usc.Id
                             join pro in _unitOfWork.ProductRepository.ObjectContext on feed.ProductId equals pro.Id
+                            where feed.IsRated
                             select new FeedbackViewModel
                             {
                                 Id = feed.Id,

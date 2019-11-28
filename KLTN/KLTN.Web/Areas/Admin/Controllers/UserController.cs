@@ -18,6 +18,7 @@ using Serilog;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
@@ -184,75 +185,6 @@ namespace KLTN.Web.Areas.Admin.Controllers
                 Log.Error("Have an error when update admin in UserController", e);
                 return BadRequest();
             }
-        }
-        [AllowAnonymous]
-        [HttpPost]
-        public JsonResult LoadProvince()
-        {
-            var xmlDoc = XDocument.Load(Path.Combine(_hostingEnvironment.WebRootPath, "Provinces_Data.xml"));
-
-            var xElements = xmlDoc.Element("Root").Elements("Item").Where(x => x.Attribute("type").Value == "province");
-            var list = xElements.Select(item => new ProvinceModel
-            {
-                ID = int.Parse(item.Attribute("id").Value),
-                Name = item.Attribute("value").Value
-            })
-                .ToList();
-            return Json(new
-            {
-                data = list,
-                status = true
-            });
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public JsonResult LoadDistrict(int provinceID)
-        {
-            var xmlDoc = XDocument.Load(Path.Combine(_hostingEnvironment.WebRootPath, "Provinces_Data.xml"));
-
-            var xElement = xmlDoc.Element("Root").Elements("Item")
-                .Single(x => x.Attribute("type").Value == "province" && int.Parse(x.Attribute("id").Value) == provinceID);
-
-            var list = xElement.Elements("Item")
-                .Where(x => x.Attribute("type").Value == "district")
-                .Select(item => new DistrictModel
-                {
-                    ID = int.Parse(item.Attribute("id").Value),
-                    Name = item.Attribute("value").Value,
-                    ProvinceID = int.Parse(xElement.Attribute("id").Value)
-                })
-                .ToList();
-            return Json(new
-            {
-                data = list,
-                status = true
-            });
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public JsonResult LoadPrecinct(int districtID)
-        {
-            var xmlDoc = XDocument.Load(Path.Combine(_hostingEnvironment.WebRootPath, "Provinces_Data.xml"));
-
-            var xElement = xmlDoc.Element("Root").Elements("Item").Elements("Item")
-                .Single(x => x.Attribute("type").Value == "district" && int.Parse(x.Attribute("id").Value) == districtID);
-
-            var list = xElement.Elements("Item")
-                .Where(x => x.Attribute("type").Value == "precinct")
-                .Select(item => new PrecinctModel
-                {
-                    Id = int.Parse(item.Attribute("id").Value),
-                    Name = item.Attribute("value").Value,
-                    DistrictId = int.Parse(xElement.Attribute("id").Value)
-                })
-                .ToList();
-            return Json(new
-            {
-                data = list,
-                status = true
-            });
         }
 
         [HttpGet]

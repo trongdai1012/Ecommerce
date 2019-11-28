@@ -292,7 +292,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             {
                 var result = _orderService.FinishPrepareOrder(id);
                 if (result == 1) return Redirect("~/Admin/Order/OrderWaitPrepare"); ;
-                if (result == 2) ErrorMessage = "Vui lòng chuẩn bị đơn hàng trước.";
+                if (result == 2) ErrorMessage = "Vui lòng bắt đầu chuẩn bị đơn hàng trước.";
                 if (result == 3) ErrorMessage = "Đơn hàng đã được chuẩn bị xong bởi một nhân viên khác.";
                 if (result == 4) ErrorMessage = "Chỉ có người chuẩn bị đơn hàng mới có quyền hoàn thành việc chuẩn bị đơn.";
                 if (result == -1) ErrorMessage = "Có lỗi không xác định trong quá trình hoàn thành chuẩn bị đơn hàng, vui lòng liên hệ người quản trị website!";

@@ -6,6 +6,7 @@ using KLTN.Common.Datatables;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.News;
 using KLTN.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;

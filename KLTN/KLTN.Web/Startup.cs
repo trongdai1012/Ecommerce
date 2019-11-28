@@ -84,7 +84,7 @@ namespace KLTN.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.AccessDeniedPath = new PathString("/");
+                    options.AccessDeniedPath = new PathString("/Notification/NotAuthorized");
                     options.LoginPath = new PathString(RedirectConfig.AccountAuthentication);
                     options.ReturnUrlParameter = Constants.RequestPath;
                     options.SlidingExpiration = true;

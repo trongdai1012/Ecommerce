@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using KLTN.Common.Datatables;
 using KLTN.DataModels.Models.Products;
 using KLTN.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace KLTN.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin,Manager")]
     public class ProductController : BaseController
     {
         private readonly IBrandService _brandService;

@@ -730,7 +730,7 @@ namespace KLTN.DataAccess.Models
                         {
                             Id = 1,
                             ProductId = 1,
-                            Url = "1dot1.jpg",
+                            Url = "1dot1.png",
                             IsDefault = true
                         });
                 entity.HasData(
@@ -847,7 +847,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 17,
                            ProductId = 6,
-                           Url = "6dot1.jpg",
+                           Url = "6dot1.png",
                            IsDefault = true
                        });
                 entity.HasData(
@@ -869,7 +869,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 20,
                            ProductId = 7,
-                           Url = "7dot1.jpg",
+                           Url = "7dot1.png",
                            IsDefault = true
                        });
                 entity.HasData(
