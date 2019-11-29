@@ -11,7 +11,7 @@ namespace KLTN.Services
 {
     public interface IProductService
     {
-        IEnumerable<LaptopViewModel> GetAllLaptop(string key);
+        IEnumerable<LaptopViewModel> GetAllLaptop(string key, int brandId);
 
         IEnumerable<MobileViewModel> GetAllMobile(string key);
 

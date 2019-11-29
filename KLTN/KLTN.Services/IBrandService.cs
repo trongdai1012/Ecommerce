@@ -19,5 +19,7 @@ namespace KLTN.Services
         bool Update(BrandViewModel model);
 
         bool ChangeStatus(int id);
+
+        IEnumerable<BrandViewModel> GetBrandHasLaptop();
     }
 }

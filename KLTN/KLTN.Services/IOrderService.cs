@@ -58,5 +58,9 @@ namespace KLTN.Services
         Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int> GetOrderDetailUserId(int id);
 
         IEnumerable<OrderChartModel> GetOrderChart(FilterModel isMonth);
+
+        IEnumerable<ProductChartModel> GetTopSoldChart(FilterModel isMonth);
+
+        IEnumerable<RevenueModel> GetRevenue(FilterModel isMonth);
     }
 }

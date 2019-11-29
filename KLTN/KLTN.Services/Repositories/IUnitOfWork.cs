@@ -14,6 +14,7 @@ namespace KLTN.Services.Repositories
         //declare entities Repository
         IGenericRepository<User> UserRepository { get; }
         IGenericRepository<Brand> BrandRepository { get; }
+        IGenericRepository<BrandHasCate> BrandHasCateRepository { get; }
         IGenericRepository<Contact> ContactRepository { get; }
         IGenericRepository<ConfirmForgot> ForgotRepository { get; }
         IGenericRepository<DataTest> DataTestRepository { get; }

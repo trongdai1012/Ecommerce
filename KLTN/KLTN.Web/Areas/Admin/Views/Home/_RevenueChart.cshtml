@@ -1,0 +1,125 @@
+﻿@model IEnumerable<KLTN.DataModels.Models.ReportRevenue.RevenueModel>
+@{
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var xLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Date).ToList());
+    var yValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Revenue).ToList());
+}
+<div class="card">
+    <div class="card-header d-flex p-0 ui-sortable-handle" style="cursor: move;">
+        <h3 class="card-title p-3">
+            <i class="fas fa-chart-line mr-1"></i>
+            Doanh thu trong tuần
+        </h3>
+        <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item">
+                <a onclick="RevenueChartByWeek()" class="nav-link" href="#" data-toggle="tab">Tuần</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="RevenueChartByMonth()" class="nav-link" href="#" data-toggle="tab">Tháng</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class="position-relative mb-4">
+            <canvas id="visitors-chart" height="500"></canvas>
+        </div>
+
+        <div class="d-flex flex-row justify-content-end">
+            <span class="mr-2">
+                <i class="fas fa-square text-primary"></i> This Week
+            </span>
+
+            <span>
+                <i class="fas fa-square text-gray"></i> Last Week
+            </span>
+        </div>
+    </div>
+    <!-- ./card-body -->
+    <!-- /.card-footer -->
+</div>
+<!-- /.card -->
+<script>
+    $(function () {
+        'use strict';
+
+        var ticksStyle = {
+            fontColor: '#495057',
+            fontStyle: 'bold'
+        };
+
+        var mode = 'index';
+        var intersect = true;
+
+        var $visitorsChart = $('#visitors-chart');
+        var visitorsChart = new Chart($visitorsChart,
+            {
+                data: {
+                    labels: @Html.Raw(xLabels),
+                    datasets: [
+                        {
+                            type: 'line',
+                            data:  @Html.Raw(yValues),
+                            backgroundColor: 'transparent',
+                            borderColor: '#007bff',
+                            pointBorderColor: '#007bff',
+                            pointBackgroundColor: '#007bff',
+                            fill: false
+                            // pointHoverBackgroundColor: '#007bff',
+                            // pointHoverBorderColor    : '#007bff'
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        mode: mode,
+                        intersect: intersect,
+                        callbacks: {
+                            label: function(tooltipItem, chart){
+                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                return datasetLabel + tooltipItem.yLabel.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                            }
+                        }
+                    },
+                    hover: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [
+                            {
+                                // display: false,
+                                gridLines: {
+                                    display: true,
+                                    lineWidth: '4px',
+                                    color: 'rgba(0, 0, 0, .2)',
+                                    zeroLineColor: 'transparent'
+                                },
+                                ticks: $.extend({
+                                        beginAtZero: true,
+                                        suggestedMax: 200,
+                                        callback: function(value) {
+                                            return  value.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                                        }
+                                    },
+                                    ticksStyle)
+                            }
+                        ],
+                        xAxes: [
+                            {
+                                display: true,
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: ticksStyle
+                            }
+                        ]
+                    }
+                }
+            });
+    })
+</script>

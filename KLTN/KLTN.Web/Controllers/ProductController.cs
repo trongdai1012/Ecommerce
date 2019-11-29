@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using KLTN.DataModels.Models.Products;
 using KLTN.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +13,17 @@ namespace KLTN.Web.Controllers
     {
         private readonly IProductService _productService;
 
+        private readonly IBrandService _brandService;
+
         private readonly IFeedbackService _feedbackService;
 
-        public ProductController(IProductService productService, IFeedbackService feedbackService)
+        public ProductController(IProductService productService, IFeedbackService feedbackService, IBrandService brandService)
         {
             _productService = productService;
 
             _feedbackService = feedbackService;
+
+            _brandService = brandService;
         }
 
         public IActionResult LaptopDetail(int id)
@@ -36,7 +41,7 @@ namespace KLTN.Web.Controllers
         [HttpPost]
         public JsonResult Rating(int productId, byte rate, string comment)
         {
-            if(rate<1 || rate > 5) return Json( new {status = 3});
+            if (rate < 1 || rate > 5) return Json(new { status = 3 });
             try
             {
                 var myRating = _feedbackService.Rating(productId, comment, rate);
@@ -67,7 +72,7 @@ namespace KLTN.Web.Controllers
                     Feedback = feedback
                 });
         }
-        
+
         [HttpPost]
         public IActionResult FeedbackProduct(int id)
         {
@@ -85,13 +90,19 @@ namespace KLTN.Web.Controllers
 
         public IActionResult LapTop(string searchKey, int pageIndex = 1, int pageSize = 12)
         {
-            var listLap = _productService.GetAllLaptop(searchKey);
+            return View();
+        }
 
-            return View(listLap.OrderBy(x=>x.InitialPrice).ToPagedList(pageIndex, pageSize));
+        public IActionResult ListLapTop(string searchKey, int brandId, int pageIndex = 1, int pageSize = 12)
+        {
+            var listLap = _productService.GetAllLaptop(searchKey, brandId);
+
+            return PartialView("_ListLapTop", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
         }
 
         public IActionResult Mobile(string searchKey, int pageIndex = 1, int pageSize = 12)
         {
+            ViewBag.ListBrand = _brandService.GetBrandHasLaptop();
             var listMobile = _productService.GetAllMobile(searchKey);
 
             return View(listMobile.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));

@@ -68,7 +68,7 @@ namespace KLTN.Services
             }
         }
 
-        public IEnumerable<LaptopViewModel> GetAllLaptop(string key)
+        public IEnumerable<LaptopViewModel> GetAllLaptop(string key, int brandId)
         {
             if (string.IsNullOrEmpty(key))
             {

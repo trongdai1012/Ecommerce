@@ -254,5 +254,19 @@ namespace KLTN.Services
             _unitOfWork.Save();
             return brand.Status;
         }
+
+        public IEnumerable<BrandViewModel> GetBrandHasLaptop()
+        {
+            var listBrand = from brandCate in _unitOfWork.BrandHasCateRepository.ObjectContext
+                            join bra in _unitOfWork.BrandRepository.ObjectContext on brandCate.BrandId equals bra.Id
+                            where brandCate.CategoryId == 1 && bra.Status
+                            select new BrandViewModel
+                            {
+                                Id = bra.Id,
+                                Name = bra.Name
+                            };
+
+            return listBrand;
+        }
     }
 }

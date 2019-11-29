@@ -1227,7 +1227,7 @@ namespace KLTN.Services
                                                                     && x.CreateAt.Year == DateTime.UtcNow.Year);
 
                 var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-                var dateStart = new DateTime(DateTime.UtcNow.Year,DateTime.UtcNow.Month, 1);
+                var dateStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
                 for (var i = 0; i < daysInMonth; i++)
                 {
                     var orderInDay = new OrderChartModel
@@ -1268,13 +1268,134 @@ namespace KLTN.Services
 
             return soldOrder;
         }
-    }
-    public static class DateTimeExtensions
-    {
-        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+
+        public IEnumerable<ProductChartModel> GetTopSoldChart(FilterModel isMonth)
         {
-            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
-            return dt.AddDays(-1 * diff).Date;
+            var listGetTopProduct = new List<ProductChartModel>();
+
+            if (!string.IsNullOrEmpty(isMonth.Filter))
+            {
+                var listOrdDTSold = from ordDT in _unitOfWork.OrderDetailRepository.ObjectContext
+                                    join ord in _unitOfWork.OrderRepository.ObjectContext on ordDT.OrderId equals ord.Id
+                                    where ord.CreateAt.Month == DateTime.UtcNow.Month
+                                                                    && ord.CreateAt.Year == DateTime.UtcNow.Year
+                                                                    && ord.StatusOrder == 5
+                                    select new
+                                    {
+                                        ProductId = ordDT.ProductId,
+                                        Quantity = ordDT.Quantity
+                                    };
+
+
+                listGetTopProduct = listOrdDTSold.GroupBy(x => x.ProductId).Select(y =>
+                                    new ProductChartModel
+                                    {
+                                        IdProduct = y.Key,
+                                        Count = y.Sum(x => x.Quantity)
+                                    }).OrderBy(x=>x.Count).Take(6).ToList();
+
+                foreach (var item in listGetTopProduct)
+                {
+                    item.NameProduct = _unitOfWork.ProductRepository.GetById(item.IdProduct).Name;
+                }
+            }
+            else
+            {
+
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
+                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year & x.StatusOrder == 5);
+
+
+                var dateStartOfWeek = DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday);
+
+                var listOrdDTSold = from ordDT in _unitOfWork.OrderDetailRepository.ObjectContext
+                                    join ord in _unitOfWork.OrderRepository.ObjectContext on ordDT.OrderId equals ord.Id
+                                    where ord.CreateAt.Month == DateTime.UtcNow.Month
+                                                                    && ord.CreateAt.Year == DateTime.UtcNow.Year
+                                                                    && DateTime.Compare(ord.CreateAt,dateStartOfWeek) >= 0
+                                                                    && DateTime.Compare(dateStartOfWeek.AddDays(7),ord.CreateAt) < 0
+                                                                    && ord.StatusOrder == 5
+                                    select new
+                                    {
+                                        ProductId = ordDT.ProductId,
+                                        Quantity = ordDT.Quantity
+                                    };
+
+
+                listGetTopProduct = listOrdDTSold.GroupBy(x => x.ProductId).Select(y =>
+                                    new ProductChartModel
+                                    {
+                                        IdProduct = y.Key,
+                                        Count = y.Sum(x => x.Quantity)
+                                    }).OrderBy(x => x.Count).Take(6).ToList();
+
+                foreach (var item in listGetTopProduct)
+                {
+                    item.NameProduct = _unitOfWork.ProductRepository.GetById(item.IdProduct).Name;
+                }
+            }
+
+            return listGetTopProduct;
+        }
+
+        public IEnumerable<RevenueModel> GetRevenue(FilterModel isMonth)
+        {
+            var revenueModel = new List<RevenueModel>();
+
+            if (!string.IsNullOrEmpty(isMonth.Filter))
+            {
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
+                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year
+                                                                    && x.StatusOrder == 5);
+
+                var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                var dateStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+                for (var i = 0; i < daysInMonth; i++)
+                {
+                    var revenueInday = new RevenueModel
+                    {
+                        Date = dateStart.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                        Revenue = listOrder.Where(x => x.CreateAt.Date.Day == dateStart.Date.Day
+                                                    && x.CreateAt.Month == dateStart.Month).Sum(x=>x.TotalPrice),
+                    };
+                    revenueModel.Add(revenueInday);
+                    dateStart = dateStart.AddDays(1);
+                }
+            }
+            else
+            {
+
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
+                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year
+                                                                    && x.StatusOrder == 5);
+
+                var dateStartOfWeek = DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday);
+
+                for (var i = 0; i < 7; i++)
+                {
+                    var revenueInDay = new RevenueModel
+                    {
+                        Date = dateStartOfWeek.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                        Revenue = listOrder.Where(x => x.CreateAt.Date.Day == dateStartOfWeek.Date.Day
+                                                    && x.CreateAt.Month == dateStartOfWeek.Month).Sum(x=>x.TotalPrice),
+                    };
+                    revenueModel.Add(revenueInDay);
+                    dateStartOfWeek = dateStartOfWeek.AddDays(1);
+                }
+            }
+
+            return revenueModel;
         }
     }
 }
+public static class DateTimeExtensions
+{
+    public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+    {
+        int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+        return dt.AddDays(-1 * diff).Date;
+    }
+}
+
+
+

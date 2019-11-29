@@ -12,6 +12,7 @@ namespace KLTN.DataAccess.Models
         }
         
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<BrandHasCate> BrandHasCates { get; set; }
         public DbSet<CommentFeedback> CommentFeedbacks { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<ConfirmForgot> ConfirmForgots { get; set; }
@@ -66,9 +67,47 @@ namespace KLTN.DataAccess.Models
                     new User
                     {
                         Id = 2,
-                        Email = "admin1@gmail.com",
+                        Email = "manager@gmail.com",
                         Password = "123456",
-                        Role = (byte)EnumRole.Admin,
+                        Role = (byte)EnumRole.Manager,
+                        FirstName = "Admin",
+                        LastName = "Manager",
+                        Gender = true,
+                        BirthDay = Convert.ToDateTime("10-12-1994"),
+                        Phone = "+84981965080",
+                        Address = "Bac Giang",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1,
+                        Status = true,
+                        IsConfirm = true
+                    },
+                    new User
+                    {
+                        Id = 3,
+                        Email = "warehouse@gmail.com",
+                        Password = "123456",
+                        Role = (byte)EnumRole.WareHouseStaff,
+                        FirstName = "Admin",
+                        LastName = "Manager",
+                        Gender = true,
+                        BirthDay = Convert.ToDateTime("10-12-1994"),
+                        Phone = "+84981965080",
+                        Address = "Bac Giang",
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1,
+                        Status = true,
+                        IsConfirm = true
+                    },
+                    new User
+                    {
+                        Id = 4,
+                        Email = "shipper@gmail.com",
+                        Password = "123456",
+                        Role = (byte)EnumRole.Shipper,
                         FirstName = "Admin",
                         LastName = "Manager",
                         Gender = true,
@@ -226,6 +265,123 @@ namespace KLTN.DataAccess.Models
                         UpdateAt = DateTime.UtcNow,
                         UpdateBy = 2,
                         Status = true
+                    });
+            });
+
+            modelBuilder.Entity<BrandHasCate>(entity=>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 1,
+                        BrandId = 1,
+                        CategoryId = 1
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 2,
+                        BrandId = 1,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 3,
+                        BrandId = 2,
+                        CategoryId = 1
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 4,
+                        BrandId = 2,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 5,
+                        BrandId = 3,
+                        CategoryId = 1
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 6,
+                        BrandId = 3,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 7,
+                        BrandId = 4,
+                        CategoryId = 1
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 8,
+                        BrandId = 4,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 9,
+                        BrandId = 5,
+                        CategoryId = 1
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 10,
+                        BrandId = 5,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 11,
+                        BrandId = 6,
+                        CategoryId = 1
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 12,
+                        BrandId = 6,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 13,
+                        BrandId = 7,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 14,
+                        BrandId = 8,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 15,
+                        BrandId = 9,
+                        CategoryId = 2
+                    });
+                entity.HasData(
+                    new BrandHasCate
+                    {
+                        Id = 16,
+                        BrandId = 10,
+                        CategoryId = 2
                     });
             });
 

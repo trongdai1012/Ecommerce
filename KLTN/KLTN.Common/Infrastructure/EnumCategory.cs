@@ -7,7 +7,6 @@ namespace KLTN.Common.Infrastructure
     public enum EnumCategory
     {
         Laptop = 1,
-        Mobile,
-        Orther
+        Mobile
     }
 }
