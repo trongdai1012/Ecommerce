@@ -98,7 +98,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             {
                 var result = _brandService.Update(model);
 
-                return result ? (IActionResult)RedirectToAction("Index", "News") : BadRequest();
+                return result ? (IActionResult)RedirectToAction("Index", "Brand") : BadRequest();
             }
             catch (Exception e)
             {

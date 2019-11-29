@@ -1,0 +1,229 @@
+﻿@model IEnumerable<KLTN.DataModels.Models.ReportRevenue.ReportRevenueModel>
+@{
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var dLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Date).ToList());
+    var toValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrder).ToList());
+    var trValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalRevenue * Convert.ToDecimal(0.1)).ToList());
+    var tocValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrderCancel).ToList());
+    var tofValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrderFinish).ToList());
+}
+
+<div class="col-12 no-print">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Thống kê doanh thu</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-widget="remove"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="chart">
+                <canvas id="chart" style="height:500px"></canvas>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<div class="col-12">
+    <div class="card card-info">
+        <div class="card-header no-print">
+            <h3 class="card-title">Thống kê doanh thu</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-widget="remove"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="invoice p-3 mb-3">
+                <!-- title row -->
+                <div class="row">
+                    <div class="col-12">
+                        <h4>
+                            <i class="fas fa-globe"></i> Auction
+                            <small class="float-right">Ngày: @DateTime.UtcNow.ToString("dd-MM-yyyy")</small>
+                        </h4>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- info row -->
+                <div class="row">
+                    <div class="col-sm-5 invoice-col">
+                        <address>
+                            Big Const Ecommerce, Học viện Nông ngiệp Việt Nam<br>
+                        </address>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h3>
+                            Báo cáo doanh thu
+                        </h3>
+                        <br />
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <!-- Table row -->
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Ngày</th>
+                                    <th>Tổng đơn hàng</th>
+                                    <th>Hoàn thành</th>
+                                    <th>Huỷ bỏ</th>
+                                    <th>Doanh thu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td> @item.Date </td>
+                                        <td> @item.TotalOrder </td>
+                                        <td> @item.TotalOrderFinish </td>
+                                        <td> @item.TotalOrderCancel </td>
+                                        <td> @string.Format(info, "{0:C}", item.TotalRevenue * Convert.ToDecimal(0.1))</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <td> <b>Tổng cộng:</b> </td>
+                                    <td> <b> <i>@*@string.Format(info, "{0:C}", Model.Sum(i => i.Money))*@ </i></b> </td>
+                                    <td> <b> <i>@string.Format(info, "{0:C}", Model.Sum(i => i.TotalRevenue * Convert.ToDecimal(0.1)))</i></b> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <br />
+                <div class="row">
+                    <!-- accepted payments column -->
+                    <div class="col-8">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4  text-center">
+                        <i>Hà nội, ngày @DateTime.UtcNow.Day, tháng @DateTime.UtcNow.Month, năm @DateTime.UtcNow.Year </i>
+                        <div>
+                            <h5><b>NGƯỜI LẬP BIỂU</b></h5>
+                            <i> (Ký, họ tên)</i>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                    <div class="col-12">
+                        <button onclick="printReport()" class="btn btn-default"><i class="fas fa-print"></i> Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.col -->
+<script type="text/javascript">
+
+        $(function () {
+    var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+        var data = {
+                labels: @Html.Raw(dLabels),
+                datasets: [
+                  {
+                    label               : 'Tổng đơn hàng',
+                    backgroundColor     : 'rgba(60,141,188,0.9)',
+                    borderColor         : 'rgba(60,141,188,0.8)',
+                    pointRadius          : false,
+                    pointColor          : '#3b8bba',
+                    pointStrokeColor    : 'rgba(60,141,188,1)',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data                : @Html.Raw(toValues)
+                  },
+                  {
+                    label               : 'Tổng đơn hoàn thành',
+                    backgroundColor     : 'rgba(210, 214, 222, 1)',
+                    borderColor         : 'rgba(210, 214, 222, 1)',
+                    pointRadius         : false,
+                    pointColor          : 'rgba(210, 214, 222, 1)',
+                    pointStrokeColor    : '#c1c7d1',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data                : @Html.Raw(tofValues)
+                  },
+                  {
+                    label               : 'Tổng đơn huỷ bỏ',
+                      backgroundColor: 'rgba(255, 16, 35, 1)',
+                      borderColor: 'rgba(255, 16, 35, 1)',
+                    pointRadius         : false,
+                      pointColor: 'rgba(255, 16, 35, 1)',
+                    pointStrokeColor    : '#c1c7d1',
+                    pointHighlightFill  : '#fff',
+                      pointHighlightStroke: 'rgba(255, 16, 35, 1)',
+                    data                : @Html.Raw(tocValues)
+                  },
+                ]
+            };
+
+var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true,
+                            callback: function(value) {
+                              return  value.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                            }
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+}],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+
+                },
+                tooltips: {
+                  callbacks: {
+                    label: function(tooltipItem, chart){
+                      var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                      return datasetLabel + ': ' + tooltipItem.yLabel.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                    }
+                  }
+                }
+
+            };
+       var myChart = new  Chart(ctx, {
+                options: options,
+                data: data,
+                type:'bar'
+
+            });
+        });
+</script>  

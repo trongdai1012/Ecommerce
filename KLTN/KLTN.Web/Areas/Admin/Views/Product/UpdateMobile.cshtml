@@ -1,0 +1,138 @@
+﻿@model UpdateMoblieViewModel
+@{
+    ViewData["Title"] = "Cập nhật điện thoại";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- general form elements -->
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Cập nhật điện thoại</h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form role="form" asp-action="UpdateMobile" method="post" enctype="multipart/form-data">
+        <div class="card-body">
+            <div class="form-group">
+                <label>Tên sản phẩm</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="Nhập tên sản phẩm">
+                <div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    Chọn thương hiệu <span class="required">*</span>
+                </label>
+                <select asp-for="BrandId" asp-items="@ViewBag.BrandId" class="form-control create-whidth"></select>
+            </div>
+            <div class="form-group">
+                <label>Giá gốc</label>
+                <input type="number" class="form-control" asp-for="InitialPrice" placeholder="0" value="0">
+                <div>
+                    <span asp-validation-for="InitialPrice" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Giá hiện tại</label>
+                <input type="number" class="form-control" asp-for="CurrentPrice" placeholder="0" value="0">
+                <div>
+                    <span asp-validation-for="InitialPrice" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Thời lượng bảo hành</label>
+                <input type="number" class="form-control" asp-for="DurationWarranty" placeholder="0" value="0">
+                <div>
+                    <span asp-validation-for="InitialPrice" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mô tả sản phẩm</label>
+                <textarea type="text" class="form-control" asp-for="Description" placeholder="Nhập miêu tả sản phẩm"></textarea>
+                <div>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Số lượng</label>
+                <input type="number" class="form-control" asp-for="Quantity" placeholder="0" value="0">
+            </div>
+            <div class="form-group">
+                <label>Chi tiết màn hình</label>
+                <input type="text" class="form-control" asp-for="Screen" placeholder="Nhập chi tiết màn hình">
+            </div>
+            <div class="form-group">
+                <label>Chi tiết hệ điều hành</label>
+                <input type="text" class="form-control" asp-for="OperatingSystem" placeholder="Nhập chi tiết hệ điều hành">
+            </div>
+            <div class="form-group">
+                <label>Camera trước</label>
+                <input type="text" class="form-control" asp-for="RearCamera" placeholder="Nhập chi tiết camera trước">
+            </div>
+            <div class="form-group">
+                <label>Camera sau</label>
+                <input type="text" class="form-control" asp-for="FrontCamera" placeholder="Nhập chi tiết camera sau">
+            </div>
+            <div class="form-group">
+                <label>CPU</label>
+                <input type="text" class="form-control" asp-for="CPU" placeholder="Nhập chi tiết CPU">
+            </div>
+            <div class="form-group">
+                <label>RAM</label>
+                <input type="text" class="form-control" asp-for="RAM" placeholder="Nhập chi tiết RAM">
+            </div>
+            <div class="form-group">
+                <label>ROM</label>
+                <input type="text" class="form-control" asp-for="ROM" placeholder="Nhập chi tiết ROM">
+            </div>
+            <div class="form-group">
+                <label>SIM</label>
+                <input type="text" class="form-control" asp-for="SIM" placeholder="Nhập chi tiết Card">
+            </div>
+            <div class="form-group">
+                <label>Cổng hỗ trợ</label>
+                <input type="text" class="form-control" asp-for="RAM" placeholder="Nhập chi tiết cổng hỗ trợ">
+            </div>
+            <div class="form-group">
+                <label>PIN</label>
+                <input type="text" class="form-control" asp-for="Pin" placeholder="Nhập chi tiết cấu hình Pin">
+            </div>
+            <div class="form-group">
+                <label>Màu sắc</label>
+                <input type="text" class="form-control" asp-for="Color" placeholder="Nhập chi tiết màu sắc">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">Ảnh hiển thị</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="imageFileMajor">
+                        <label class="custom-file-label">Chọn ảnh</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">Ảnh</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="imageFile" multiple>
+                        <label class="custom-file-label">Chọn ảnh</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+    </form>
+</div>
+<!-- /.card -->
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+}
+
+

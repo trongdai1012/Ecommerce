@@ -68,8 +68,58 @@ namespace KLTN.Services
             }
         }
 
-        public IEnumerable<LaptopViewModel> GetAllLaptop(string key, int brandId)
+        public async Task<IEnumerable<LaptopViewModel>> GetAllLaptop(string key, int brandId)
         {
+            if (brandId != 0)
+            {
+                var listAllLap = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                                  join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                                  join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                                  join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                                  join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
+                                  where pro.CategoryId == (int)EnumCategory.Laptop && pro.Status && pro.BrandId == brandId
+                                  select new LaptopViewModel
+                                  {
+                                      Id = pro.Id,
+                                      Name = pro.Name,
+                                      Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                      Brand = bra.Name,
+                                      InitialPrice = pro.InitialPrice,
+                                      CurrentPrice = pro.CurrentPrice,
+                                      Description = pro.Description,
+                                      Screen = lap.Screen,
+                                      OperatingSystem = lap.OperatingSystem,
+                                      Camera = lap.Camera,
+                                      CPU = lap.CPU,
+                                      RAM = lap.RAM,
+                                      ROM = lap.ROM,
+                                      Card = lap.Card,
+                                      Design = lap.Design,
+                                      Size = lap.Size,
+                                      PortSupport = lap.PortSupport,
+                                      Pin = lap.Pin,
+                                      Color = lap.Color,
+                                      Weight = lap.Weight,
+                                      CreateAt = pro.CreateAt,
+                                      CreateBy = usc.Email,
+                                      UpdateAt = pro.UpdateAt,
+                                      UpdateBy = usu.Email,
+                                      ViewCount = pro.ViewCount,
+                                      LikeCount = pro.LikeCount,
+                                      TotalSold = pro.TotalSold,
+                                      Status = pro.Status,
+                                      Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                where img.ProductId == pro.Id
+                                                select img).ToList(),
+                                      ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                      where img.ProductId == pro.Id
+                                                      select img.Url
+                                          ).FirstOrDefault()
+                                  }).ToList();
+
+                return listAllLap;
+            }
+
             if (string.IsNullOrEmpty(key))
             {
                 var listAllLap = (from pro in _unitOfWork.ProductRepository.ObjectContext
@@ -852,7 +902,7 @@ namespace KLTN.Services
                     _unitOfWork.Save();
 
                     var imgOld = Path.Combine(Directory.GetCurrentDirectory(), RedirectConfig.DataImages,
-                        img.Url);
+                        imgDel);
                     File.Delete(imgOld);
 
                     return 1;
@@ -1229,51 +1279,6 @@ namespace KLTN.Services
             return mobileModel;
         }
 
-        //public int UpdateLaptop(UpdateLaptopViewModel laptopModel)
-        //{
-
-
-        //    try
-        //    {
-        //        var product = _unitOfWork.ProductRepository.GetById(laptopModel.Id);
-        //        var laptop = _unitOfWork.LaptopRepository.Get(x => x.ProductId == laptopModel.Id);
-
-        //        product.ProductCode = laptopModel.ProductCode;
-        //        product.Name = laptopModel.Name;
-        //        product.BrandId = laptopModel.BrandId;
-        //        product.InitialPrice = laptopModel.InitialPrice;
-        //        product.CurrentPrice = laptopModel.CurrentPrice;
-        //        product.PromotionPrice = laptopModel.PromotionPrice;
-        //        product.DurationWarranty = laptopModel.DurationWarranty;
-        //        product.MetaTitle = laptopModel.MetaTitle;
-        //        product.Description = laptopModel.Description;
-        //        product.UpdateAt = DateTime.UtcNow;
-        //        product.UpdateBy = GetClaimUserId();
-
-        //        laptop.Screen = laptopModel.Screen;
-        //        laptop.OperatingSystem = laptopModel.OperatingSystem;
-        //        laptop.Camera = laptopModel.Camera;
-        //        laptop.CPU = laptopModel.CPU;
-        //        laptop.RAM = laptopModel.RAM;
-        //        laptop.ROM = laptopModel.ROM;
-        //        laptop.Card = laptopModel.Card;
-        //        laptop.Design = laptopModel.Design;
-        //        laptop.Size = laptopModel.Size;
-        //        laptop.PortSupport = laptopModel.PortSupport;
-        //        laptop.Pin = laptopModel.Pin;
-        //        laptop.Color = laptopModel.Color;
-        //        laptop.Weight = laptopModel.Weight;
-
-        //        _unitOfWork.Save();
-        //        return 1;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Error("Have an error when update laptop in service", e);
-        //        return -1;
-        //    }
-        //}
-
         public int CreateMobile(CreateMoblieViewModel mobileModel)
         {
             try
@@ -1324,42 +1329,107 @@ namespace KLTN.Services
             }
         }
 
-        public int UpdateMobile(UpdateMoblieViewModel mobileModel)
+        public async Task<int> UpdateMobile(UpdateMoblieViewModel mobileModel, IFormFile imageFileMajor, List<IFormFile> imageFile)
         {
             try
             {
-                var product = _unitOfWork.ProductRepository.GetById(mobileModel.Id);
+                if (imageFileMajor != null)
+                {
+                    var extImg = Path.GetExtension(imageFileMajor.FileName);
+                    var imgName = Guid.NewGuid().ToString() + extImg;
+                    var fileName = Path.Combine(Directory.GetCurrentDirectory(), RedirectConfig.DataImages,
+                        imgName);
+
+                    var checkImage = Path.GetExtension(imageFileMajor.FileName).ToUpper();
+                    if (checkImage != ".JPEG" && checkImage != ".JPG" && checkImage != ".PNG" && checkImage != ".GIF" && checkImage != ".TIFF" &&
+                        checkImage != ".PSD" && checkImage != ".PDF" && checkImage != ".EPS" && checkImage != ".AI" && checkImage != ".INDD" && checkImage != ".RAW")
+                    {
+                        return 0;
+                    }
+
+                    using (var stream = new FileStream(fileName, FileMode.Create))
+                    {
+                        await imageFileMajor.CopyToAsync(stream);
+                    }
+
+
+                    if (CheckNameOtherExisted(mobileModel.Name, mobileModel.Id)) return 2;
+
+                    var product = _unitOfWork.ProductRepository.GetById(mobileModel.Id);
+                    var mobile1 = _unitOfWork.MobileRepository.Get(x => x.ProductId == mobileModel.Id);
+                    var img = _unitOfWork.ImageRepository.Get(x => x.ProductId == mobileModel.Id);
+
+                    var imgDel = img.Url;
+
+                    product.Name = mobileModel.Name;
+                    product.CategoryId = (int)EnumCategory.Mobile;
+                    product.BrandId = mobileModel.BrandId;
+                    product.InitialPrice = mobileModel.InitialPrice;
+                    product.CurrentPrice = mobileModel.CurrentPrice;
+                    product.DurationWarranty = mobileModel.DurationWarranty;
+                    product.Description = mobileModel.Description;
+                    product.Quantity = mobileModel.Quantity;
+                    product.UpdateAt = DateTime.UtcNow;
+                    product.UpdateBy = GetClaimUserId();
+
+                    img.Url = imgName;
+
+                    mobile1.Screen = mobileModel.Screen;
+                    mobile1.OperatingSystem = mobileModel.OperatingSystem;
+                    mobile1.FrontCamera = mobileModel.FrontCamera;
+                    mobile1.RearCamera = mobileModel.RearCamera;
+                    mobile1.CPU = mobileModel.CPU;
+                    mobile1.RAM = mobileModel.RAM;
+                    mobile1.ROM = mobileModel.ROM;
+                    mobile1.SIM = mobileModel.SIM;
+                    mobile1.Pin = mobileModel.Pin;
+                    mobile1.Color = mobileModel.Color;
+
+                    _unitOfWork.Save();
+
+                    var imgOld = Path.Combine(Directory.GetCurrentDirectory(), RedirectConfig.DataImages,
+                        imgDel);
+                    File.Delete(imgOld);
+
+                    return 1;
+                }
+
+                if (CheckNameOtherExisted(mobileModel.Name, mobileModel.Id)) return 2;
+
+                var product1 = _unitOfWork.ProductRepository.GetById(mobileModel.Id);
                 var mobile = _unitOfWork.MobileRepository.Get(x => x.ProductId == mobileModel.Id);
 
-                product.Name = mobileModel.Name;
-                product.BrandId = mobileModel.BrandId;
-                product.InitialPrice = mobileModel.InitialPrice;
-                product.CurrentPrice = mobileModel.CurrentPrice;
-                product.DurationWarranty = mobileModel.DurationWarranty;
-                product.Description = mobileModel.Description;
+                product1.Name = mobileModel.Name;
+                product1.CategoryId = (int)EnumCategory.Mobile;
+                product1.BrandId = mobileModel.BrandId;
+                product1.InitialPrice = mobileModel.InitialPrice;
+                product1.CurrentPrice = mobileModel.CurrentPrice;
+                product1.DurationWarranty = mobileModel.DurationWarranty;
+                product1.Description = mobileModel.Description;
+                product1.Quantity = mobileModel.Quantity;
+                product1.UpdateAt = DateTime.UtcNow;
+                product1.UpdateBy = GetClaimUserId();
 
                 mobile.Screen = mobileModel.Screen;
                 mobile.OperatingSystem = mobileModel.OperatingSystem;
-                mobile.RearCamera = mobileModel.RearCamera;
                 mobile.FrontCamera = mobileModel.FrontCamera;
+                mobile.RearCamera = mobileModel.FrontCamera;
                 mobile.CPU = mobileModel.CPU;
                 mobile.RAM = mobileModel.RAM;
                 mobile.ROM = mobileModel.ROM;
                 mobile.SIM = mobileModel.SIM;
                 mobile.Pin = mobileModel.Pin;
-                mobile.Color = mobileModel.Color;
 
                 _unitOfWork.Save();
+
                 return 1;
             }
             catch (Exception e)
             {
-                Log.Error("Have an error when update laptop in service", e);
+                Log.Error("Have an error when create laptop in service", e);
                 return -1;
             }
         }
-
-        //public UpdateLaptopViewModel
 
         /// <summary>
         /// check file exist

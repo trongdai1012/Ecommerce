@@ -1,0 +1,9 @@
+﻿/*view User/Index*/
+.columns-align-center tbody > tr > td {
+    text-align: center;
+}
+
+/*view User/Index*/
+.columns-align-center thead > tr > th {
+    text-align: center;
+}

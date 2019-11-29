@@ -13,6 +13,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/align-table.css" rel="stylesheet" />
     <!-- Tempusdominus Bbootstrap 4 -->
     <link rel="stylesheet" href="~/Admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
@@ -21,6 +22,8 @@
     <link rel="stylesheet" href="~/Admin/plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Admin/dist/css/adminlte.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/admin/plugins/select2/css/select2.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/Admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
@@ -109,27 +112,9 @@
     <!-- jQuery UI 1.11.4 -->
     <script src="~/Admin/plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="~/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="~/Admin/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="~/Admin/plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="~/Admin/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="~/Admin/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
     <!-- daterangepicker -->
-    <script src="~/Admin/plugins/moment/moment.min.js"></script>
-    <script src="~/Admin/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="~/Admin/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- Select2 -->
-    <script src="~/Admin/plugins/select2/js/select2.full.min.js"></script>
-    <!-- InputMask -->
-    <script src="~/Admin/plugins/inputmask/jquery.inputmask.bundle.js"></script>
     <script src="~/Admin/plugins/moment/moment.min.js"></script>
     <!-- date-range-picker -->
     <script src="~/Admin/plugins/daterangepicker/daterangepicker.js"></script>
@@ -138,19 +123,21 @@
     <!-- Tempusdominus Bootstrap 4 -->
     <script src="~/Admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- DataTables -->
-    <script src="~/Admin/plugins/datatables/jquery.dataTables.js"></script>
-    <script src="~/Admin/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/admin/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/admin/plugins/datatables/dataTables.bootstrap4.js"></script>
     <!-- ChartJS -->
     <script src="~/Admin/plugins/chart.js/Chart.min.js"></script>
     <!-- Sparkline -->
     <script src="~/Admin/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/admin/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/admin/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
     <!-- jQuery Knob Chart -->
     <script src="~/Admin/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="~/Admin/plugins/moment/moment.min.js"></script>
-    <script src="~/Admin/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="~/Admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Select2 -->
+    <script src="~/Admin/plugins/select2/js/select2.full.min.js"></script>
+    <!-- InputMask -->
+    <script src="~/Admin/plugins/inputmask/jquery.inputmask.bundle.js"></script>
     <!-- Summernote -->
     <script src="~/Admin/plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
@@ -164,15 +151,6 @@
     <!-- AdminLTE for demo purposes -->
     <script src="~/Admin/dist/js/demo.js"></script>
     <script>
-        //$(document).ready(function () {
-        //    $('a.nav-link').click(function () {
-        //        //removing the previous selected menu state
-        //        $('a.nav-link').removeClass('active');
-        //        //adding the state for this parent menu
-        //        $(this).addClass('active');
-
-        //    });
-        //});
         $(document).ready(function () {
             $('ul.nav-treeview li a').click(function () {
                 //removing the previous selected menu state

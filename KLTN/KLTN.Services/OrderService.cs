@@ -1292,7 +1292,7 @@ namespace KLTN.Services
                                     {
                                         IdProduct = y.Key,
                                         Count = y.Sum(x => x.Quantity)
-                                    }).OrderBy(x=>x.Count).Take(6).ToList();
+                                    }).OrderBy(x => x.Count).Take(6).ToList();
 
                 foreach (var item in listGetTopProduct)
                 {
@@ -1312,8 +1312,8 @@ namespace KLTN.Services
                                     join ord in _unitOfWork.OrderRepository.ObjectContext on ordDT.OrderId equals ord.Id
                                     where ord.CreateAt.Month == DateTime.UtcNow.Month
                                                                     && ord.CreateAt.Year == DateTime.UtcNow.Year
-                                                                    && DateTime.Compare(ord.CreateAt,dateStartOfWeek) >= 0
-                                                                    && DateTime.Compare(dateStartOfWeek.AddDays(7),ord.CreateAt) < 0
+                                                                    && DateTime.Compare(ord.CreateAt, dateStartOfWeek) >= 0
+                                                                    && DateTime.Compare(dateStartOfWeek.AddDays(7), ord.CreateAt) < 0
                                                                     && ord.StatusOrder == 5
                                     select new
                                     {
@@ -1356,7 +1356,7 @@ namespace KLTN.Services
                     {
                         Date = dateStart.ToString("dd-MMM", new CultureInfo("vi-VN")),
                         Revenue = listOrder.Where(x => x.CreateAt.Date.Day == dateStart.Date.Day
-                                                    && x.CreateAt.Month == dateStart.Month).Sum(x=>x.TotalPrice),
+                                                    && x.CreateAt.Month == dateStart.Month).Sum(x => x.TotalPrice),
                     };
                     revenueModel.Add(revenueInday);
                     dateStart = dateStart.AddDays(1);
@@ -1377,7 +1377,7 @@ namespace KLTN.Services
                     {
                         Date = dateStartOfWeek.ToString("dd-MMM", new CultureInfo("vi-VN")),
                         Revenue = listOrder.Where(x => x.CreateAt.Date.Day == dateStartOfWeek.Date.Day
-                                                    && x.CreateAt.Month == dateStartOfWeek.Month).Sum(x=>x.TotalPrice),
+                                                    && x.CreateAt.Month == dateStartOfWeek.Month).Sum(x => x.TotalPrice),
                     };
                     revenueModel.Add(revenueInDay);
                     dateStartOfWeek = dateStartOfWeek.AddDays(1);
@@ -1385,6 +1385,130 @@ namespace KLTN.Services
             }
 
             return revenueModel;
+        }
+
+        public IEnumerable<ReportRevenueModel> GetReportRevenue(FilterDateModel model)
+        {
+            var listRevenue = new List<ReportRevenueModel>();
+
+            if (model.StartDate == null && model.EndDate != null)
+            {
+                var listOrderInDay = _unitOfWork.OrderRepository.GetMany(x=>DateTime.Compare(model.EndDate,x.CreateAt)==0);
+                var revenue = new ReportRevenueModel {
+                    Date = model.EndDate.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                    TotalOrder = listOrderInDay.Count(),
+                    TotalOrderCancel = listOrderInDay.Where(x => x.StatusOrder == 6).Count(),
+                    TotalOrderFinish = listOrderInDay.Where(x => x.StatusOrder == 5).Count(),
+                    TotalRevenue = listOrderInDay.Sum(x => x.TotalPrice)
+                };
+
+                listRevenue.Add(revenue);
+            }
+
+            if (model.StartDate != null && model.EndDate == null)
+            {
+                var listOrderInDay = _unitOfWork.OrderRepository.GetMany(x => DateTime.Compare(model.StartDate, x.CreateAt) == 0);
+                var revenue = new ReportRevenueModel
+                {
+                    Date = model.StartDate.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                    TotalOrder = listOrderInDay.Count(),
+                    TotalOrderCancel = listOrderInDay.Where(x => x.StatusOrder == 6).Count(),
+                    TotalOrderFinish = listOrderInDay.Where(x => x.StatusOrder == 5).Count(),
+                    TotalRevenue = listOrderInDay.Sum(x => x.TotalPrice)
+                };
+
+                listRevenue.Add(revenue);
+            }
+
+            if(model.StartDate != null && model.EndDate != null)
+            {
+                var listOrderInDay = _unitOfWork.OrderRepository.GetMany(x => DateTime.Compare(model.StartDate, x.CreateAt) >= 0 
+                                                                         && DateTime.Compare(model.EndDate,x.CreateAt) <= 0);
+
+                var totalDay = (model.EndDate - model.StartDate).TotalDays;
+
+                for (int i = 0; i < totalDay; i++)
+                {
+                    var revenue = new ReportRevenueModel
+                    {
+                        Date = model.StartDate.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                        TotalOrder = listOrderInDay.Where(x => DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalOrderCancel = listOrderInDay.Where(x => x.StatusOrder == 6
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalOrderFinish = listOrderInDay.Where(x => x.StatusOrder == 5
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalRevenue = listOrderInDay.Where(x=>x.StatusOrder==5 
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Sum(x => x.TotalPrice)
+                    };
+
+                    listRevenue.Add(revenue);
+                    model.StartDate.AddDays(1);
+                }
+            }
+
+            if(!string.IsNullOrEmpty(model.MonthDate) && !string.IsNullOrEmpty(model.YearDate))
+            {
+                var year = Convert.ToInt32(model.YearDate);
+                var month = Convert.ToInt32(model.MonthDate);
+
+                var startDate = new DateTime(year,month,1);
+                var totalDayInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
+
+                var listOrderInDay = _unitOfWork.OrderRepository.GetMany(x => DateTime.Compare(startDate, x.CreateAt) >= 0
+                                                                         && DateTime.Compare(startDate.AddDays(totalDayInMonth-1)
+                                                                         , x.CreateAt) <= 0);
+
+                var totalDay = (model.EndDate - model.StartDate).TotalDays;
+
+                for (int i = 0; i < totalDayInMonth; i++)
+                {
+                    var revenue = new ReportRevenueModel
+                    {
+                        Date = startDate.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                        TotalOrder = listOrderInDay.Where(x => DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalOrderCancel = listOrderInDay.Where(x => x.StatusOrder == 6
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalOrderFinish = listOrderInDay.Where(x => x.StatusOrder == 5
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalRevenue = listOrderInDay.Where(x => x.StatusOrder == 5
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Sum(x => x.TotalPrice)
+                    };
+
+                    listRevenue.Add(revenue);
+                    startDate.AddDays(1);
+                }
+            }
+            else if(!string.IsNullOrEmpty(model.MonthDate) && string.IsNullOrEmpty(model.YearDate))
+            {
+                var month = Convert.ToInt32(model.MonthDate);
+
+                var startDate = new DateTime(DateTime.UtcNow.Year, month, 1);
+                var totalDayInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, startDate.Month);
+
+                var listOrderInDay = _unitOfWork.OrderRepository.GetMany(x => DateTime.Compare(startDate, x.CreateAt) >= 0
+                                                                         && DateTime.Compare(startDate.AddDays(totalDayInMonth-1)
+                                                                         , x.CreateAt) <= 0);
+
+                for (int i = 0; i < totalDayInMonth; i++)
+                {
+                    var revenue = new ReportRevenueModel
+                    {
+                        Date = startDate.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                        TotalOrder = listOrderInDay.Where(x => DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalOrderCancel = listOrderInDay.Where(x => x.StatusOrder == 6
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalOrderFinish = listOrderInDay.Where(x => x.StatusOrder == 5
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalRevenue = listOrderInDay.Where(x => x.StatusOrder == 5
+                                            && DateTime.Compare(model.StartDate, x.CreateAt) == 0).Sum(x => x.TotalPrice)
+                    };
+
+                    listRevenue.Add(revenue);
+                    startDate.AddDays(1);
+                }
+            }
+
+            return listRevenue;
         }
     }
 }

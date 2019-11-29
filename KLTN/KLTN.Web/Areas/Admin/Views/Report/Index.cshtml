@@ -1,0 +1,161 @@
+﻿@model IEnumerable<KLTN.DataModels.Models.ReportRevenue.ReportRevenueModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index"> Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item active">Báo cáo thống kê</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="row">
+    <div class="col-12 no-print">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Tìm kiếm</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-widget="remove"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label>Ngày bắt đầu</label>
+                            <input type="text" id="startDateFilter" onclick="clearInputMonthYear()" onfocus="this.value=''" class="form-control">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Ngày kết thúc</label>
+                            <input type="text" class="form-control" id="endDateFilter" onclick="clearInputMonthYear()">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Tháng</label>
+                            <input type="text" id="monthFilter" onclick="clearInputDate()" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#monthFilter">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Năm</label>
+                            <input type="text" id="yearFilter" onclick="clearInputDate()" class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#yearFilter">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <input id="btnSearch" type="button" class="btn btn-primary" value="Thống kê" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+<div id="loadReport" class="row">
+</div>
+<!-- /.content -->
+<script>
+    function clearInputMonthYear() {
+        document.getElementById('monthFilter').value = '';
+        document.getElementById('yearFilter').value = '';
+    }
+    function clearInputDate() {
+        document.getElementById('startDateFilter').value = '';
+        document.getElementById('endDateFilter').value = '';
+    }
+    function printReport() {
+        window.print();
+    }
+</script>
+@section scripts
+    {
+    <script>
+        $(function () {
+
+            //Date range picker
+            $('#startDateFilter').daterangepicker(
+                {
+                    autoUpdateInput: false,
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: 'vi'
+                }, function (chosenDate) {
+                    $('#startDateFilter').val(chosenDate.format('DD/MM/YYYY'));
+                });
+
+            //Date range picker
+            $('#endDateFilter').daterangepicker(
+                {
+                    autoUpdateInput: false,
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: 'vi'
+                }, function (chosenDate) {
+                    $('#endDateFilter').val(chosenDate.format('DD/MM/YYYY'));
+                });        })
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#monthFilter').datetimepicker({
+                viewMode: 'years',
+                format: 'MM',
+                locale: 'vi'
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#yearFilter').datetimepicker({
+                viewMode: 'years',
+                format: 'YYYY',
+                locale: 'vi'
+            });
+        });
+    </script>
+    <script>
+
+        $(function () {
+            GetReport();
+        });
+        $('#btnSearch').on('click',
+            function (e) {
+                var dateModel = {
+                    nameProduct: $('#startDateFilter').val(),
+                    endDate: $('#endDateFilter').val(),
+                    monthDate: $('#monthFilter').val(),
+                    yearDate: $('#yearFilter').val()
+                };
+                GetReport(dateModel);
+
+            });
+
+        function GetReport(dateModel) {
+            $.ajax({
+                url: '/Admin/Report/Report',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: dateModel
+            })
+                .done(function (result) {
+                    $('#loadReport').html(result);
+                }).fail(function (xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+                });
+        }
+    </script>
+}

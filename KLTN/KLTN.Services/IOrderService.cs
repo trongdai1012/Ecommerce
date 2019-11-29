@@ -62,5 +62,7 @@ namespace KLTN.Services
         IEnumerable<ProductChartModel> GetTopSoldChart(FilterModel isMonth);
 
         IEnumerable<RevenueModel> GetRevenue(FilterModel isMonth);
+
+        IEnumerable<ReportRevenueModel> GetReportRevenue(FilterDateModel model);
     }
 }

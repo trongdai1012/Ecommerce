@@ -124,6 +124,26 @@ namespace KLTN.Web.Areas.Admin.Controllers
             return RedirectToAction("Laptop", "Product");
         }
 
+        [HttpGet]
+        public IActionResult UpdateMobile(int id)
+        {
+            var lap = _productService.GetMobileUpdateById(id);
+            ViewBag.BrandId = new SelectList(_brandService.GetAll(), "Id", "Name", lap.BrandId);
+            return View(lap);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateMobile(UpdateMoblieViewModel model, IFormFile imageFileMajor, List<IFormFile> imageFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.BrandId = new SelectList(_brandService.GetAll(), "Id", "Name", model.BrandId);
+                return View(model);
+            };
+            await _productService.UpdateMobile(model, imageFileMajor, imageFile);
+            return RedirectToAction("Mobile", "Product");
+        }
+
         /// <summary>
         /// Action ChangeStatus return JsonResult to ajax
         /// </summary>

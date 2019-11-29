@@ -11,7 +11,7 @@ namespace KLTN.Services
 {
     public interface IProductService
     {
-        IEnumerable<LaptopViewModel> GetAllLaptop(string key, int brandId);
+        Task<IEnumerable<LaptopViewModel>> GetAllLaptop(string key, int brandId);
 
         IEnumerable<MobileViewModel> GetAllMobile(string key);
 
@@ -34,10 +34,14 @@ namespace KLTN.Services
 
         UpdateLaptopViewModel GetLaptopUpdateById(int id);
 
+        UpdateMoblieViewModel GetMobileUpdateById(int id);
+
         Task<int> UpdateLaptop(UpdateLaptopViewModel laptopModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
 
         bool ChangeStatus(int id);
 
         IEnumerable<ProductViewModel> GetBanner();
+
+        Task<int> UpdateMobile(UpdateMoblieViewModel mobileModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
     }
 }

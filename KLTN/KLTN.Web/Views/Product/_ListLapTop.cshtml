@@ -4,14 +4,13 @@
 <div class="col-lg-9">
     <div class="product_top_bar">
         <div class="left_dorp">
-            <select class="sorting">
-                <option value="1">Default sorting</option>
-                <option value="2">Default sorting 01</option>
-                <option value="4">Default sorting 02</option>
+            <label>Sắp xếp</label>
+            <select class="sorting" id="orderId" onchange="GetListLapOrder()">
+                <option value="1">Giá tăng dần</option>
+                <option value="2">Giá giảm dần</option>
             </select>
         </div>
     </div>
-
     <div class="latest_product_inner">
         <div class="row">
             @foreach (var item in Model)
@@ -67,30 +66,18 @@
     <div class="left_sidebar_area">
         <aside class="left_widgets p_filter_widgets">
             <div class="l_w_title">
-                <h3>Browse Categories</h3>
+                <h3 style="font-size:25px;"><b style="color:black">Thương hiệu</b></h3>
             </div>
-            <div class="widgets_inner">
+            <div>
                 <ul class="list">
-                    <li>
-                        <a href="#">Frozen Fish</a>
-                    </li>
-                    <li>
-                        <a href="#">Dried Fish</a>
-                    </li>
-                    <li>
-                        <a href="#">Fresh Fish</a>
-                    </li>
-                    <li>
-                        <a href="#">Meat Alternatives</a>
-                    </li>
-                    <li>
-                        <a href="#">Fresh Fish</a>
-                    </li>
-                    <li>
-                        <a href="#">Meat Alternatives</a>
-                    </li>
-                    <li>
-                        <a href="#">Meat</a>
+                    @foreach (var item in ViewBag.ListBrand)
+                    {
+                        <li style="margin-left:15px">
+                            <a style="font-size:20px" id="select-checkbox-@item.Id" onclick="GetListLap(@item.Id)">@item.Name</a>
+                        </li>
+                    }
+                    <li style="margin-left:15px">
+                        <a  style="font-size:20px"onclick="GetListProduct()">Tất cả</a>
                     </li>
                 </ul>
             </div>

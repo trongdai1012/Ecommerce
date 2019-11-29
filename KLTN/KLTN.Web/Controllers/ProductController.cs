@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using KLTN.DataModels.Models.Products;
 using KLTN.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -88,16 +89,28 @@ namespace KLTN.Web.Controllers
             }
         }
 
-        public IActionResult LapTop(string searchKey, int pageIndex = 1, int pageSize = 12)
+        public async Task<IActionResult> LapTop(string searchKey, int pageIndex = 1, int pageSize = 12)
         {
             return View();
         }
 
-        public IActionResult ListLapTop(string searchKey, int brandId, int pageIndex = 1, int pageSize = 12)
+        public async Task<IActionResult> ListLapTop(string searchKey, int brandId, int orderBy, int pageIndex = 1, int pageSize = 12)
         {
-            var listLap = _productService.GetAllLaptop(searchKey, brandId);
+            ViewBag.ListBrand = await _brandService.GetBrandHasLaptop();
+
+            var listLap = await _productService.GetAllLaptop(searchKey, brandId);
+
+            if (orderBy == 1)
+            {
+                return PartialView("_ListLapTop", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+            }if(orderBy == 2)
+            {
+                return PartialView("_ListLapTop", listLap.OrderByDescending(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+            }
 
             return PartialView("_ListLapTop", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+
+
         }
 
         public IActionResult Mobile(string searchKey, int pageIndex = 1, int pageSize = 12)

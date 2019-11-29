@@ -3,6 +3,7 @@ using KLTN.DataModels.Models.Brands;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KLTN.Services
 {
@@ -20,6 +21,6 @@ namespace KLTN.Services
 
         bool ChangeStatus(int id);
 
-        IEnumerable<BrandViewModel> GetBrandHasLaptop();
+        Task<IEnumerable<BrandViewModel>> GetBrandHasLaptop();
     }
 }
