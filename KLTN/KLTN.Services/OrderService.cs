@@ -4,12 +4,14 @@ using KLTN.Common.Datatables;
 using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Orders;
+using KLTN.DataModels.Models.ReportRevenue;
 using KLTN.DataModels.Models.Users;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace KLTN.Services
@@ -1213,6 +1215,66 @@ namespace KLTN.Services
         {
             var user = _unitOfWork.UserRepository.GetById(id);
             return user != null ? user.Email : "";
+        }
+
+        public IEnumerable<OrderChartModel> GetOrderChart(FilterModel isMonth)
+        {
+            var soldOrder = new List<OrderChartModel>();
+
+            if (!string.IsNullOrEmpty(isMonth.Filter))
+            {
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
+                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year);
+
+                var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                var dateStart = new DateTime(DateTime.UtcNow.Year,DateTime.UtcNow.Month, 1);
+                for (var i = 0; i < daysInMonth; i++)
+                {
+                    var orderInDay = new OrderChartModel
+                    {
+                        Date = dateStart.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                        TotalOrder = listOrder.Where(x => x.CreateAt.Date.Day == dateStart.Date.Day
+                                                    && x.CreateAt.Month == dateStart.Month).Count(),
+                        TotalOrderFinish = listOrder.Where(x => x.CreateAt.Date.Day == dateStart.Date.Day
+                                                    && x.CreateAt.Month == dateStart.Month && x.StatusOrder == 5).Count()
+                    };
+                    soldOrder.Add(orderInDay);
+                    dateStart = dateStart.AddDays(1);
+                }
+            }
+            else
+            {
+
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
+                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year);
+
+
+                var dateStartOfWeek = DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday);
+
+                for (var i = 0; i < 7; i++)
+                {
+                    var orderInDay = new OrderChartModel
+                    {
+                        Date = dateStartOfWeek.ToString("dd-MMM", new CultureInfo("vi-VN")),
+                        TotalOrder = listOrder.Where(x => x.CreateAt.Date.Day == dateStartOfWeek.Date.Day
+                                                    && x.CreateAt.Month == dateStartOfWeek.Month).Count(),
+                        TotalOrderFinish = listOrder.Where(x => x.CreateAt.Date.Day == dateStartOfWeek.Date.Day
+                                                    && x.CreateAt.Month == dateStartOfWeek.Month && x.StatusOrder == 5).Count()
+                    };
+                    soldOrder.Add(orderInDay);
+                    dateStartOfWeek = dateStartOfWeek.AddDays(1);
+                }
+            }
+
+            return soldOrder;
+        }
+    }
+    public static class DateTimeExtensions
+    {
+        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
         }
     }
 }

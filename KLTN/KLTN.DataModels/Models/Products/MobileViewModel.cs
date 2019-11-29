@@ -7,23 +7,21 @@ namespace KLTN.DataModels.Models.Products
     public class MobileViewModel
     {
         public int Id { get; set; }
-        public string ProductCode { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
         public string Brand { get; set; }
         public decimal InitialPrice { get; set; }
         public decimal CurrentPrice { get; set; }
-        public decimal PromotionPrice { get; set; }
         public int DurationWarranty { get; set; }
-        public string MetaTitle { get; set; }
         public string Description { get; set; }
+        public string ImageDefault { get; set; }
         public List<Image> Images { get; set; }
         public byte Rate { get; set; }
         public List<CommentFeedback> Comment { get; set; }
         public int ViewCount { get; set; }
         public int LikeCount { set; get; }
         public int TotalSold { get; set; }
-        public int Amount { get; set; }
+        public int Quantity { get; set; }
         public string Screen { get; set; }
         public string OperatingSystem { get; set; }
         public string RearCamera { get; set; }

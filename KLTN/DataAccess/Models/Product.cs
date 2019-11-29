@@ -17,6 +17,9 @@ namespace KLTN.DataAccess.Models
         public int TotalSold { get; set; }
         public int Quantity { get; set; }
 
+
+        public virtual Laptop Laptop { get; set; }
+        public virtual Mobile Mobile { get; set; }
         public virtual Brand Brand { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
         public virtual List<Image> Images { get; set; }

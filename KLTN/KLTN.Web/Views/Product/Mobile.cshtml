@@ -1,10 +1,11 @@
 ﻿@using X.PagedList.Mvc.Core
-@model X.PagedList.IPagedList<LaptopViewModel>
+@model X.PagedList.IPagedList<MobileViewModel>
 
 @{
-    ViewData["Title"] = "LapTop";
+    ViewData["Title"] = "Mobile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <!--================Home Banner Area =================-->
@@ -18,14 +19,13 @@
                 </div>
                 <div class="page_link">
                     <a href="/">Trang chủ</a>
-                    <a>Laptop</a>
+                    <a>Điện thoại</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 <!--================End Home Banner Area =================-->
-
 <!--================Category Product Area =================-->
 <section class="cat_product_area section_gap">
     <div class="container">
@@ -48,13 +48,15 @@
                             <div class="col-lg-4 col-md-6">
                                 <div class="single-product">
                                     <div class="product-img">
-                                        <img class="card-img"
-                                             src="/DataImage/@item.ImageDefault"
-                                             width="255"
-                                             height="255"
-                                             alt="" />
+                                        <a asp-controller="Product" asp-action="MobileDetail" asp-route-id="@item.Id">
+                                            <img class="card-img"
+                                                 src="/DataImage/@item.ImageDefault"
+                                                 width="255"
+                                                 height="255"
+                                                 alt="" />
+                                        </a>
                                         <div class="p_icon">
-                                            <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
+                                            <a asp-controller="Product" asp-action="MobileDetail" asp-route-id="@item.Id">
                                                 <i class="ti-eye"></i>
                                             </a>
                                             @if (User.Identity.IsAuthenticated)
@@ -88,7 +90,7 @@
                         }
                     </div>
                     <div style="float: right">
-                        @Html.PagedListPager(Model, pageIndex => Url.Action("Laptop", new { pageIndex }))
+                        @Html.PagedListPager(Model, pageIndex => Url.Action("Mobile", new { pageIndex }))
                     </div>
                 </div>
             </div>

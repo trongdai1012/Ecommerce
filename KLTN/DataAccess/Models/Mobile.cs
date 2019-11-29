@@ -14,5 +14,7 @@
         public string SIM { get; set; }
         public string Pin { get; set; }
         public string Color { get; set; }
+
+        public Product Product { get; set; }
     }
 }

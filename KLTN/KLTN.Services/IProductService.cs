@@ -13,16 +13,24 @@ namespace KLTN.Services
     {
         IEnumerable<LaptopViewModel> GetAllLaptop(string key);
 
+        IEnumerable<MobileViewModel> GetAllMobile(string key);
+
         Tuple<ProductViewModel, int> GetProductById(int? id);
 
         Tuple<IEnumerable<LaptopViewModel>, int, int> LoadLaptop(DTParameters dtParameters);
 
+        Tuple<IEnumerable<MobileViewModel>, int, int> LoadMobile(DTParameters dtParameters);
+
         Tuple<LaptopViewModel, int> GetLaptopById(int? id);
+
+        Tuple<MobileViewModel, int> GetMobileById(int? id);
 
         Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, int>
             GetProductRecommender();
 
         Task<int> CreateLaptop(CreateLaptopViewModel laptopModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
+
+        Task<int> CreateMobile(CreateMoblieViewModel mobileModel, IFormFile imageFileMajor, List<IFormFile> imageFile);
 
         UpdateLaptopViewModel GetLaptopUpdateById(int id);
 

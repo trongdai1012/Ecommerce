@@ -24,6 +24,7 @@ namespace KLTN.DataAccess.Models
         public string Phone { get; set; }
         public bool IsConfirm { get; set; }
 
+        public virtual List<Product> Products { get; set; }
         public virtual List<Brand> Brands { get; set; }
         public virtual List<Contact> Contacts { get; set; }
         public virtual UserConfirm UserConfirm { get; set; }

@@ -1,6 +1,7 @@
 ﻿using KLTN.Common.Datatables;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Orders;
+using KLTN.DataModels.Models.ReportRevenue;
 using System;
 using System.Collections.Generic;
 
@@ -55,5 +56,7 @@ namespace KLTN.Services
         Tuple<IEnumerable<OrderViewModel>, int> GetMission();
 
         Tuple<OrderViewModel, IEnumerable<OrderDetailViewModel>, DeliveryViewModel, int> GetOrderDetailUserId(int id);
+
+        IEnumerable<OrderChartModel> GetOrderChart(FilterModel isMonth);
     }
 }

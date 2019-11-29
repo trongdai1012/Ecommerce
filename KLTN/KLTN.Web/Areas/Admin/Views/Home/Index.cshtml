@@ -1,8 +1,186 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
 
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>150</h3>
+
+                <p>Phiên đấu giá mới</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>85<sup style="font-size: 20px">%</sup></h3>
+
+                <p>Tỉ lệ đấu giá thành công</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>44</h3>
+
+                <p>Người dùng đang truy cập</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-ios-people"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>0</h3>
+
+                <p>Phản hồi</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-email-unread"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ./col -->
+</div>
+
+
+<div class="row">
+    <section class="col-lg-7 connectedSortable ui-sortable">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card" id="chartAuction">
+        </div>
+        <!-- /.card -->
+    </section>
+    <section class="col-lg-5 connectedSortable ui-sortable">
+        <div class="card" id="chartProduct">
+        </div>
+    </section>
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-12" id="chartRevenue">
+    </div>
+    <!-- /.col -->
+</div>
+
+@section scripts
+    {
+    <script>
+
+        $(function() {
+            GetAuctionChart();
+            GetProductChart();
+            GetRevenueChart();
+        });
+
+        function AuctionChartByWeek() {
+            GetAuctionChart();
+        }
+        function AuctionChartByMonth() {
+            var dateModel = {
+                Filter: "month"
+            };
+            GetAuctionChart(dateModel);
+        }
+
+        function ProductChartByWeek() {
+            GetProductChart();
+        }
+        function ProductChartByMonth() {
+            var filter = "month";
+            GetProductChart(dateModel);
+        }
+
+        function RevenueChartByWeek() {
+            GetRevenueChart();
+        }
+        function RevenueChartByMonth() {
+            var dateModel = {
+                filteryy: "month"
+            };
+            GetRevenueChart(dateModel);
+        }
+
+        function GetAuctionChart(dateModel) {
+            $.ajax({
+                    url: '/Admin/Home/OrderChart',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    dataType: "html",
+                    data: dateModel
+                })
+                .done(function(result) {
+                    $('#chartAuction').html(result);
+                }).fail(function(xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+            });
+        }
+
+        function GetProductChart(dateModel) {
+            $.ajax({
+                    url: '/Admin/Home/ProductChart',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    dataType: "html",
+                    data: dateModel
+                })
+                .done(function(result) {
+                    $('#chartProduct').html(result);
+                }).fail(function(xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+            });
+        }
+
+        function GetRevenueChart(dateModel) {
+            $.ajax({
+                    url: '/Admin/Home/DashboardChart',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    dataType: "html",
+                    data: dateModel
+                })
+                .done(function(result) {
+                    $('#chartRevenue').html(result);
+                }).fail(function(xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+            });
+        }
+
+    </script>
+}

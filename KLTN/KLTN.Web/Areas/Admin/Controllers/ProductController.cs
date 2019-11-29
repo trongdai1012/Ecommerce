@@ -45,6 +45,27 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
+        public IActionResult Mobile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult LoadMobile([FromBody] DTParameters dtParameters)
+        {
+            var tupleData = _productService.LoadMobile(dtParameters);
+
+            return Json(new
+            {
+                draw = dtParameters.Draw,
+                recordsTotal = tupleData.Item3,
+                recordsFiltered = tupleData.Item2,
+                data = tupleData.Item1
+                    .Skip(dtParameters.Start)
+                    .Take(dtParameters.Length)
+            });
+        }
+
         [HttpGet]
         public IActionResult CreateLaptop()
         {
@@ -62,6 +83,25 @@ namespace KLTN.Web.Areas.Admin.Controllers
             };
             await _productService.CreateLaptop(model,imageFileMajor,imageFile);
             return RedirectToAction("Laptop","Product");
+        }
+
+        [HttpGet]
+        public IActionResult CreateMobile()
+        {
+            ViewBag.BrandId = new SelectList(_brandService.GetAll(), "Id", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMobile(CreateMoblieViewModel model, IFormFile imageFileMajor, List<IFormFile> imageFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.BrandId = new SelectList(_brandService.GetAll(), "Id", "Name");
+                return View(model);
+            };
+            await _productService.CreateMobile(model, imageFileMajor, imageFile);
+            return RedirectToAction("Mobile", "Product");
         }
 
         [HttpGet]

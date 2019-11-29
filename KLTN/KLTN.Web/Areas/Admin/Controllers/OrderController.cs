@@ -91,7 +91,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             return View(order);
         }
 
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrder([FromBody] DTParameters dtParameters)
         {
@@ -108,7 +108,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrderWaitConfirm([FromBody] DTParameters dtParameters)
         {
@@ -125,7 +125,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,Manager,WareHouseStaff")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrderWaitPrepare([FromBody] DTParameters dtParameters)
         {
@@ -142,7 +142,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,Manager,WareHouseStaff")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrderPreparing([FromBody] DTParameters dtParameters)
         {
@@ -159,7 +159,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,Manager,Shipper")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrderWaitDelivery([FromBody] DTParameters dtParameters)
         {
@@ -176,7 +176,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,Manager,Shipper")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrderDelivering([FromBody] DTParameters dtParameters)
         {
@@ -193,7 +193,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrderFinish([FromBody] DTParameters dtParameters)
         {
@@ -210,7 +210,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadOrderCancel([FromBody] DTParameters dtParameters)
         {
@@ -226,7 +226,8 @@ namespace KLTN.Web.Areas.Admin.Controllers
                     .Take(dtParameters.Length)
             });
         }
-        
+
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpPost]
         public IActionResult LoadTaskByUserId([FromBody] DTParameters dtParameters)
         {
@@ -352,6 +353,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin,Manager,WareHouseStaff,Shipper")]
         [HttpGet]
         public IActionResult CancelOrder(int id, string content)
         {

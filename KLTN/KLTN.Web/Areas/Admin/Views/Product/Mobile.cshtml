@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Mobile";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -14,7 +14,7 @@
                         <a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="breadcrumb-item active">Quản lý sản phẩm</li>
-                    <li class="breadcrumb-item active">Danh sách laptop</li>
+                    <li class="breadcrumb-item active">Danh sách điện thoại</li>
                 </ol>
             </div>
         </div>
@@ -28,12 +28,12 @@
                 <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
             }*@
         <div class="card-header">
-            <h3 class="card-title">danh sách laptop</h3>
+            <h3 class="card-title">Danh sách điện thoại</h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
             <p class="text-right">
-                <a asp-area="Admin" asp-controller="Product" asp-action="CreateLaptop" class="btn btn-primary">Thêm mới sản phẩm</a>
+                <a asp-area="Admin" asp-controller="Product" asp-action="CreateMobile" class="btn btn-primary">Thêm mới điện thoại</a>
             </p>
             <table id="laptop-index" class="table table-bordered columns-align-center table-hover" style="width:100%">
                 <thead>
@@ -45,6 +45,7 @@
                         <th>Lượt xem</th>
                         <th>Lượt thích</th>
                         <th>Lượt mua</th>
+                        <th>Tồn kho</th>
                         <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
@@ -81,7 +82,7 @@
             searching: { regex: true },
             // Ajax Filter
             ajax: {
-                url: "/Admin/Product/LoadLaptop",
+                url: "/Admin/Product/LoadMobile",
                 type: "POST",
                 contentType: "application/json",
                 dataType: "json",
@@ -104,6 +105,7 @@
                 { data: "viewCount" },
                 { data: "likeCount" },
                 { data: "totalSold" },
+                { data: "quantity" },
                 {
                     data: "status",
                     "mRender": function (data, type, row) {
@@ -123,11 +125,11 @@
                     "mRender": function (data, type, row) {
                         var url;
                         if (row["status"].toString() === "true") {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"MobileDetail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a title=\"Sửa\" href=\"UpdateLaptop\\" +
+                                "<a title=\"Sửa\" href=\"UpdateMobile\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +
@@ -135,11 +137,11 @@
                                 row["id"] +
                                 "\"></a>";
                         } else {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"MobileDetail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
-                                "<a href=\"UpdateLaptop\\" +
+                                "<a href=\"UpdateMobile\\" +
                                 data +
                                 "\"" +
                                 " class=\"btn btn-warning fa fa-edit\"></a> " +
@@ -154,4 +156,5 @@
         });
     </script>
 }
+
 

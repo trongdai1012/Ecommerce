@@ -142,10 +142,10 @@
                                 }
                                 <td></td>
 
-                                @if (Model.Item1.StatusOrder == 0)
+                                @if (Model.Item1.StatusOrder == 0 && User.IsInRole("Admin") || Model.Item1.StatusOrder == 0 && User.IsInRole("Manager"))
                                 {
                                     <td>
-                                        <a href="/Admin/Order/ConfirmOrder/@Model.Item1.Id">Xác nhận đơn hàng</a>`
+                                        <a href="/Admin/Order/ConfirmOrder/@Model.Item1.Id">Xác nhận đơn hàng</a>
                                     </td>
                                 }
                                 else
@@ -202,13 +202,13 @@
                                     </td>
                                 }
                                 <td></td>
-                                @if (Model.Item1.StatusOrder == 1)
+                                @if (Model.Item1.StatusOrder == 1 && User.IsInRole("WareHouseStaff"))
                                 {
                                     <td>
                                         <a asp-action="StartPrepareOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Chuẩn bị đơn hàng</a>
                                     </td>
                                 }
-                                else if (Model.Item1.StatusOrder == 2)
+                                else if (Model.Item1.StatusOrder == 2 && User.IsInRole("WareHouseStaff"))
                                 {
                                     <td>
                                         <a asp-action="FinishPrepareOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Chuẩn bị hoàn tất</a>
@@ -267,13 +267,13 @@
                                     </td>
                                 }
                                 <td></td>
-                                @if (Model.Item1.StatusOrder == 3)
+                                @if (Model.Item1.StatusOrder == 3 && User.IsInRole("Shipper"))
                                 {
                                     <td>
                                         <a asp-action="StartDeliveryOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Nhận giao hàng</a>
                                     </td>
                                 }
-                                else if (Model.Item1.StatusOrder == 4)
+                                else if (Model.Item1.StatusOrder == 4 && User.IsInRole("Shipper"))
                                 {
                                     <td>
                                         <a asp-action="FinishDeliveryOrder" asp-controller="Order" asp-route-id="@Model.Item1.Id">Đã hoàn thành</a>

@@ -27,6 +27,12 @@ namespace KLTN.Web.Controllers
             return View(laptop);
         }
 
+        public IActionResult MobileDetail(int id)
+        {
+            var mobile = _productService.GetMobileById(id).Item1;
+            return View(mobile);
+        }
+
         [HttpPost]
         public JsonResult Rating(int productId, byte rate, string comment)
         {
@@ -82,6 +88,13 @@ namespace KLTN.Web.Controllers
             var listLap = _productService.GetAllLaptop(searchKey);
 
             return View(listLap.OrderBy(x=>x.InitialPrice).ToPagedList(pageIndex, pageSize));
+        }
+
+        public IActionResult Mobile(string searchKey, int pageIndex = 1, int pageSize = 12)
+        {
+            var listMobile = _productService.GetAllMobile(searchKey);
+
+            return View(listMobile.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
         }
     }
 }

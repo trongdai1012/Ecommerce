@@ -7,7 +7,6 @@ namespace KLTN.DataModels.Models.Products
     public class CreateMoblieViewModel
     {
         public int Id { get; set; }
-        public string ProductCode { get; set; }
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
@@ -15,7 +14,6 @@ namespace KLTN.DataModels.Models.Products
         public decimal CurrentPrice { get; set; }
         public decimal PromotionPrice { get; set; }
         public int DurationWarranty { get; set; }
-        public string MetaTitle { get; set; }
         public string Description { get; set; }
         public byte Rate { get; set; }
         public int ViewCount { get; set; }

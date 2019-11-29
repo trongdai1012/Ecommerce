@@ -1,0 +1,94 @@
+﻿@model IEnumerable<KLTN.DataModels.Models.ReportRevenue.OrderChartModel>
+@{
+    var xLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Date).ToList());
+    var yValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrder).ToList());
+    var ypValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrderFinish).ToList());
+}
+
+<div class="card-header d-flex p-0 ui-sortable-handle" style="cursor: move;">
+    <h3 class="card-title p-3">
+        <i class="fas fa-chart-bar mr-1"></i>
+        Biểu đồ tổng quan đơn đặt hàng trong tháng
+    </h3>
+    <ul class="nav nav-pills ml-auto p-2">
+        <li class="nav-item">
+            <a onclick="AuctionChartByWeek()" class="nav-link" href="#" data-toggle="tab">Tuần</a>
+        </li>
+        <li class="nav-item">
+            <a onclick="AuctionChartByMonth()" class="nav-link" href="#" data-toggle="tab">Tháng</a>
+        </li>
+    </ul>
+</div><!-- /.card-header -->
+<div class="card-body">
+    <div class="position-relative mb-4">
+        <canvas id="auction-chart" height="400"></canvas>
+    </div>
+</div>
+<script type="text/javascript">
+
+        $(function () {
+            var chartName = "auction-chart";
+            var ctx = document.getElementById(chartName).getContext('2d');
+            var data = {
+                labels:@Html.Raw(xLabels),
+                datasets: [
+                    {
+                        label               : 'Số phiên đấu giá thành công',
+                        backgroundColor     : 'rgba(60,141,188,0.9)',
+                        borderColor         : 'rgba(60,141,188,0.8)',
+                        pointRadius          : false,
+                        pointColor          : '#3b8bba',
+                        pointStrokeColor    : 'rgba(60,141,188,1)',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data                : @Html.Raw(yValues)
+                    },
+                    {
+                        label               : 'Số phiên đấu giá thất bại',
+                        backgroundColor     : 'rgba(210, 214, 222, 1)',
+                        borderColor         : 'rgba(210, 214, 222, 1)',
+                        pointRadius         : false,
+                        pointColor          : 'rgba(210, 214, 222, 1)',
+                        pointStrokeColor    : '#c1c7d1',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data                : @Html.Raw(ypValues)
+                    }
+                ]
+            };
+
+            var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+
+                },
+                tooltips: {
+                }
+
+            };
+            var myChart = new  Chart(ctx, {
+                options: options,
+                data: data,
+                type:'bar'
+            });
+        });
+</script> 

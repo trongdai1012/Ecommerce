@@ -1,6 +1,6 @@
-﻿var user = {
+﻿var pro = {
     init: function () {
-        user.registerEvents();
+        pro.registerEvents();
     },
     registerEvents: function () {
         $(document).on('click', '.btn-active', function (e) {
@@ -30,4 +30,4 @@
         });
     }
 };
-user.init();
+pro.init();

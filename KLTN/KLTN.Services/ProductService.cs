@@ -4,6 +4,7 @@ using KLTN.Common.Datatables;
 using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Products;
+using KLTN.DataModels.Models.ReportRevenue;
 using KLTN.Services.Repositories;
 using Microsoft.AspNetCore.Http;
 using Serilog;
@@ -167,6 +168,102 @@ namespace KLTN.Services
             return listLaptop;
         }
 
+        public IEnumerable<MobileViewModel> GetAllMobile(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                var listAllMobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                                  join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                                  join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                                  join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                                  join mobile in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobile.ProductId
+                                  where pro.CategoryId == (int)EnumCategory.Mobile && pro.Status
+                                  select new MobileViewModel
+                                  {
+                                      Id = pro.Id,
+                                      Name = pro.Name,
+                                      Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                      Brand = bra.Name,
+                                      InitialPrice = pro.InitialPrice,
+                                      CurrentPrice = pro.CurrentPrice,
+                                      Description = pro.Description,
+                                      Screen = mobile.Screen,
+                                      OperatingSystem = mobile.OperatingSystem,
+                                      FrontCamera = mobile.FrontCamera,
+                                      RearCamera = mobile.RearCamera,
+                                      CPU = mobile.CPU,
+                                      RAM = mobile.RAM,
+                                      ROM = mobile.ROM,
+                                      Pin = mobile.Pin,
+                                      Color = mobile.Color,
+                                      CreateAt = pro.CreateAt,
+                                      CreateBy = usc.Email,
+                                      UpdateAt = pro.UpdateAt,
+                                      UpdateBy = usu.Email,
+                                      ViewCount = pro.ViewCount,
+                                      LikeCount = pro.LikeCount,
+                                      TotalSold = pro.TotalSold,
+                                      Status = pro.Status,
+                                      Quantity = pro.Quantity,
+                                      DurationWarranty = pro.DurationWarranty,
+                                      Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                where img.ProductId == pro.Id
+                                                select img).ToList(),
+                                      ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                      where img.ProductId == pro.Id
+                                                      select img.Url
+                                          ).FirstOrDefault()
+                                  }).ToList();
+
+                return listAllMobile;
+            }
+
+            var listMobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              join mobile in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobile.ProductId
+                              where pro.CategoryId == (int)EnumCategory.Mobile && pro.Name == key
+                              select new MobileViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  Description = pro.Description,
+                                  Screen = mobile.Screen,
+                                  OperatingSystem = mobile.OperatingSystem,
+                                  FrontCamera = mobile.FrontCamera,
+                                  RearCamera = mobile.RearCamera,
+                                  CPU = mobile.CPU,
+                                  RAM = mobile.RAM,
+                                  ROM = mobile.ROM,
+                                  Pin = mobile.Pin,
+                                  Color = mobile.Color,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Quantity = pro.Quantity,
+                                  DurationWarranty = pro.DurationWarranty,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  select img.Url
+                                          ).FirstOrDefault()
+                              }).ToList();
+
+            return listMobile;
+        }
+
         /// <summary>
         /// Get a product by id
         /// </summary>
@@ -232,6 +329,71 @@ namespace KLTN.Services
             {
                 Log.Error("Have an error when get brand by id in brand service", e);
                 return new Tuple<LaptopViewModel, int>(null, -1);
+            }
+        }
+
+        /// <summary>
+        /// Get a product by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Tuple<MobileViewModel, int> GetMobileById(int? id)
+        {
+            try
+            {
+                var mobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
+                              where pro.CategoryId == (int)EnumCategory.Mobile && pro.Id == id
+                              select new MobileViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  Description = pro.Description,
+                                  Screen = mobi.Screen,
+                                  OperatingSystem = mobi.OperatingSystem,
+                                  FrontCamera = mobi.FrontCamera,
+                                  RearCamera = mobi.RearCamera,
+                                  CPU = mobi.CPU,
+                                  RAM = mobi.RAM,
+                                  ROM = mobi.ROM,
+                                  Pin = mobi.Pin,
+                                  Color = mobi.Color,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Status = pro.Status,
+                                  Quantity = pro.Quantity,
+                                  DurationWarranty = pro.DurationWarranty,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  select img.Url
+                                      ).FirstOrDefault()
+                              }).FirstOrDefault();
+
+                if (mobile == null) return new Tuple<MobileViewModel, int>(null, 0);
+                var product = _unitOfWork.ProductRepository.GetById(id);
+                product.ViewCount += 1;
+                _unitOfWork.Save();
+                return new Tuple<MobileViewModel, int>(mobile, 1);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get brand by id in brand service", e);
+                return new Tuple<MobileViewModel, int>(null, -1);
             }
         }
 
@@ -320,6 +482,93 @@ namespace KLTN.Services
             var totalResultsCount = listLaptop.Count();
 
             var tuple = new Tuple<IEnumerable<LaptopViewModel>, int, int>(listLaptop, filteredResultsCount,
+                totalResultsCount);
+
+            return tuple;
+        }
+
+        /// <summary>
+        /// Get all list categories
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<IEnumerable<MobileViewModel>, int, int> LoadMobile(DTParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
+            string orderCriteria;
+            bool orderAscendingDirection;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
+            }
+            else
+            {
+                // if we have an empty search then just order the results by Id ascending
+                orderCriteria = ParamConstants.Id;
+                orderAscendingDirection = true;
+            }
+
+            var listMobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
+                              where pro.CategoryId == (int)EnumCategory.Mobile
+                              select new MobileViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  CreateAt = pro.CreateAt,
+                                  CreateBy = usc.Email,
+                                  UpdateAt = pro.UpdateAt,
+                                  UpdateBy = usu.Email,
+                                  Status = pro.Status,
+                                  Screen = mobi.Screen,
+                                  OperatingSystem = mobi.OperatingSystem,
+                                  RearCamera = mobi.RearCamera,
+                                  FrontCamera = mobi.FrontCamera,
+                                  CPU = mobi.CPU,
+                                  RAM = mobi.RAM,
+                                  ROM = mobi.ROM,
+                                  SIM = mobi.SIM,
+                                  Pin = mobi.Pin,
+                                  Color = mobi.Color,
+                                  ViewCount = pro.ViewCount,
+                                  LikeCount = pro.LikeCount,
+                                  TotalSold = pro.TotalSold,
+                                  Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                            where img.ProductId == pro.Id
+                                            select img).ToList(),
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id
+                                                  select img.Url
+                                      ).FirstOrDefault()
+                              });
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                listMobile = listMobile.Where(r =>
+                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Brand.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                    r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
+            }
+
+            listMobile = orderAscendingDirection
+                ? listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
+                : listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
+
+            var viewModels = listMobile.OrderBy(x => x.Id).ToArray();
+            var filteredResultsCount = viewModels.ToArray().Length;
+            var totalResultsCount = viewModels.Count();
+
+            var tuple = new Tuple<IEnumerable<MobileViewModel>, int, int>(viewModels, filteredResultsCount,
                 totalResultsCount);
 
             return tuple;
@@ -800,6 +1049,127 @@ namespace KLTN.Services
             }
         }
 
+        public async Task<int> CreateMobile(CreateMoblieViewModel mobileModel, IFormFile imageFileMajor, List<IFormFile> imageFile)
+        {
+            try
+            {
+                var extImg = Path.GetExtension(imageFileMajor.FileName);
+                var imgName = Guid.NewGuid().ToString() + extImg;
+                var fileName = Path.Combine(Directory.GetCurrentDirectory(), RedirectConfig.DataImages,
+                    imgName);
+
+                var checkImage = Path.GetExtension(imageFileMajor.FileName).ToUpper();
+                if (checkImage != ".JPEG" && checkImage != ".JPG" && checkImage != ".PNG" && checkImage != ".GIF" && checkImage != ".TIFF" &&
+                    checkImage != ".PSD" && checkImage != ".PDF" && checkImage != ".EPS" && checkImage != ".AI" && checkImage != ".INDD" && checkImage != ".RAW")
+                {
+                    return 0;
+                }
+
+                using (var stream = new FileStream(fileName, FileMode.Create))
+                {
+                    await imageFileMajor.CopyToAsync(stream);
+                }
+
+                var listImg = new List<string>();
+
+                foreach (var item in imageFile)
+                {
+                    var extImg1 = Path.GetExtension(item.FileName);
+                    var imgName1 = Guid.NewGuid().ToString() + extImg;
+                    var fileName1 = Path.Combine(Directory.GetCurrentDirectory(), RedirectConfig.DataImages,
+                        imgName1);
+
+                    var checkImage1 = Path.GetExtension(item.FileName).ToUpper();
+                    if (checkImage == ".JPEG" || checkImage == ".JPG" || checkImage == ".PNG" || checkImage == ".GIF" || checkImage == ".TIFF" ||
+                        checkImage == ".PSD" || checkImage == ".PDF" || checkImage == ".EPS" || checkImage == ".AI" || checkImage == ".INDD" || checkImage == ".RAW")
+                    {
+                        using (var stream = File.Create(fileName1))
+                        {
+                            await item.CopyToAsync(stream);
+                        }
+
+                        listImg.Add(imgName1);
+                    }
+                }
+
+                if (CheckNameExisted(mobileModel.Name)) return 2;
+
+                var productCode = NonUnicode(mobileModel.Name);
+
+                var product = new Product
+                {
+                    Name = mobileModel.Name,
+                    CategoryId = (int)EnumCategory.Mobile,
+                    BrandId = mobileModel.BrandId,
+                    InitialPrice = mobileModel.InitialPrice,
+                    CurrentPrice = mobileModel.CurrentPrice,
+                    DurationWarranty = mobileModel.DurationWarranty,
+                    Description = mobileModel.Description,
+                    Rate = 0,
+                    ViewCount = 0,
+                    LikeCount = 0,
+                    TotalSold = 0,
+                    Quantity = mobileModel.Amount,
+                    Status = true,
+                    CreateAt = DateTime.UtcNow,
+                    CreateBy = GetClaimUserId(),
+                    UpdateAt = DateTime.UtcNow,
+                    UpdateBy = GetClaimUserId()
+                };
+
+                var productCreate = _unitOfWork.ProductRepository.Create(product);
+
+                var img = new Image
+                {
+                    ProductId = productCreate.Id,
+                    Url = imgName,
+                    IsDefault = true
+                };
+
+                var image = _unitOfWork.ImageRepository.Create(img);
+
+                foreach (var item in listImg)
+                {
+                    var img1 = new Image
+                    {
+                        ProductId = productCreate.Id,
+                        Url = item,
+                        IsDefault = false
+                    };
+
+                    _unitOfWork.ImageRepository.Create(img1);
+                }
+
+                _unitOfWork.Save();
+
+                var newMobile= new Mobile
+                {
+                    ProductId = image.ProductId,
+                    Screen = mobileModel.Screen,
+                    OperatingSystem = mobileModel.OperatingSystem,
+                    CPU = mobileModel.CPU,
+                    RAM = mobileModel.RAM,
+                    ROM = mobileModel.ROM,
+                    Pin = mobileModel.Pin,
+                    Color = mobileModel.Color,
+                    FrontCamera = mobileModel.FrontCamera,
+                    RearCamera = mobileModel.RearCamera,
+                    SIM = mobileModel.SIM
+                };
+
+                _unitOfWork.MobileRepository.Create(newMobile);
+
+                _unitOfWork.Save();
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when create mobile in service", e);
+                return -1;
+            }
+        }
+
         public UpdateLaptopViewModel GetLaptopUpdateById(int id)
         {
             var laptopModel = new UpdateLaptopViewModel();
@@ -829,6 +1199,34 @@ namespace KLTN.Services
             laptopModel.Weight = laptop.Weight;
 
             return laptopModel;
+        }
+
+        public UpdateMoblieViewModel GetMobileUpdateById(int id)
+        {
+            var mobileModel = new UpdateMoblieViewModel();
+            var product = _unitOfWork.ProductRepository.GetById(id);
+            var mobile = _unitOfWork.MobileRepository.Get(x => x.ProductId == id);
+
+            mobileModel.Name = product.Name;
+            mobileModel.BrandId = product.BrandId;
+            mobileModel.InitialPrice = product.InitialPrice;
+            mobileModel.CurrentPrice = product.CurrentPrice;
+            mobileModel.DurationWarranty = product.DurationWarranty;
+            mobileModel.Description = product.Description;
+            mobileModel.Quantity = product.Quantity;
+
+            mobileModel.Screen = mobile.Screen;
+            mobileModel.OperatingSystem = mobile.OperatingSystem;
+            mobileModel.FrontCamera = mobile.FrontCamera;
+            mobileModel.RearCamera = mobile.RearCamera;
+            mobileModel.CPU = mobile.CPU;
+            mobileModel.RAM = mobile.RAM;
+            mobileModel.ROM = mobile.ROM;
+            mobileModel.SIM = mobile.SIM;
+            mobileModel.Pin = mobile.Pin;
+            mobileModel.Color = mobile.Color;
+
+            return mobileModel;
         }
 
         //public int UpdateLaptop(UpdateLaptopViewModel laptopModel)
@@ -875,133 +1273,6 @@ namespace KLTN.Services
         //        return -1;
         //    }
         //}
-
-        /// <summary>
-        /// Get a product by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Tuple<MobileViewModel, int> GetMobileById(int? id)
-        {
-            try
-            {
-                var mobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Mobile && pro.Id == id
-                              select new MobileViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  Status = pro.Status,
-                                  Screen = mobi.Screen,
-                                  OperatingSystem = mobi.OperatingSystem,
-                                  RearCamera = mobi.RearCamera,
-                                  FrontCamera = mobi.FrontCamera,
-                                  CPU = mobi.CPU,
-                                  RAM = mobi.RAM,
-                                  ROM = mobi.ROM,
-                                  SIM = mobi.SIM,
-                                  Pin = mobi.Pin,
-                                  Color = mobi.Color
-                              }).FirstOrDefault();
-                return mobile == null
-                    ? new Tuple<MobileViewModel, int>(null, 0)
-                    : new Tuple<MobileViewModel, int>(mobile, 1);
-            }
-            catch (Exception e)
-            {
-                Log.Error("Have an error when get brand by id in brand service", e);
-                return new Tuple<MobileViewModel, int>(null, -1);
-            }
-        }
-
-        /// <summary>
-        /// Get all list categories
-        /// </summary>
-        /// <returns></returns>
-        public Tuple<IEnumerable<MobileViewModel>, int, int> LoadMobile(DTParameters dtParameters)
-        {
-            var searchBy = dtParameters.Search?.Value;
-            string orderCriteria;
-            bool orderAscendingDirection;
-
-            if (dtParameters.Order != null)
-            {
-                // in this example we just default sort on the 1st column
-                orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
-                orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == ParamConstants.Asc;
-            }
-            else
-            {
-                // if we have an empty search then just order the results by Id ascending
-                orderCriteria = ParamConstants.Id;
-                orderAscendingDirection = true;
-            }
-
-            var listMobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
-                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
-                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
-                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join mobi in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobi.ProductId
-                              where pro.CategoryId == (int)EnumCategory.Mobile
-                              select new MobileViewModel
-                              {
-                                  Id = pro.Id,
-                                  Name = pro.Name,
-                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
-                                  Brand = bra.Name,
-                                  InitialPrice = pro.InitialPrice,
-                                  CurrentPrice = pro.CurrentPrice,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  Status = pro.Status,
-                                  Screen = mobi.Screen,
-                                  OperatingSystem = mobi.OperatingSystem,
-                                  RearCamera = mobi.RearCamera,
-                                  FrontCamera = mobi.FrontCamera,
-                                  CPU = mobi.CPU,
-                                  RAM = mobi.RAM,
-                                  ROM = mobi.ROM,
-                                  SIM = mobi.SIM,
-                                  Pin = mobi.Pin,
-                                  Color = mobi.Color
-                              });
-
-            if (!string.IsNullOrEmpty(searchBy))
-            {
-                listMobile = listMobile.Where(r =>
-                    r.Id.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                    r.Name.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                    r.Brand.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
-                    r.Status.ToString().ToUpper().Equals(searchBy.ToUpper()));
-            }
-
-            listMobile = orderAscendingDirection
-                ? listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Asc)
-                : listMobile.AsQueryable().OrderByDynamic(orderCriteria, LinqExtensions.Order.Desc);
-
-            var viewModels = listMobile.OrderBy(x => x.Id).ToArray();
-            var filteredResultsCount = viewModels.ToArray().Length;
-            var totalResultsCount = viewModels.Count();
-
-            var tuple = new Tuple<IEnumerable<MobileViewModel>, int, int>(viewModels, filteredResultsCount,
-                totalResultsCount);
-
-            return tuple;
-        }
 
         public int CreateMobile(CreateMoblieViewModel mobileModel)
         {

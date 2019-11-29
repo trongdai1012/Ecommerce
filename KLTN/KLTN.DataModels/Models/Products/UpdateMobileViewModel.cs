@@ -13,6 +13,7 @@ namespace KLTN.DataModels.Models.Products
         public decimal InitialPrice { get; set; }
         public decimal CurrentPrice { get; set; }
         public decimal PromotionPrice { get; set; }
+        public int Quantity { get; set; }
         public int DurationWarranty { get; set; }
         public string MetaTitle { get; set; }
         public string Description { get; set; }
