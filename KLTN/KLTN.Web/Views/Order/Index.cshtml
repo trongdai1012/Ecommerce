@@ -2,7 +2,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link href="~/css/align-table.css" rel="stylesheet" />
 <!--================Home Banner Area =================-->
 <section class="banner_area" style="margin-top:30px">
     <div class="banner_inner d-flex align-items-center">
@@ -36,8 +36,6 @@
             <table id="order-index" class="table table-bordered columns-align-center table-hover" style="width: 100%">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Email người mua</th>
                         <th>Thời gian tạo</th>
                         <th>Số điện thoại</th>
                         <th>Tổng tiền</th>
@@ -86,8 +84,6 @@
             },
             // Columns Setups
             columns: [
-                { data: "id" },
-                { data: "recipientEmail" },
                 {
                     data: "createAt",
                     render: function (data, type) {
@@ -109,7 +105,28 @@
                         return data.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                     }
                 },
-                { data: "statusOrder" },
+                {
+                    "mData": "statusOrder",
+                    "mRender": function (data, type, row) {
+                        var url;
+                        if (data == 0) {
+                            url = "<p>Chờ xác thực</p>"
+                        } else if (data == 1) {
+                            url = "<p>Chờ chuẩn bị hàng</p>"
+                        } else if (data == 2) {
+                            url = "<p>Đang chuẩn bị hàng</p>"
+                        } else if (data == 3) {
+                            url = "<p>Chờ giao hàng</p>"
+                        } else if (data == 4) {
+                            url = "<p>Đang giao hàng</p>"
+                        } else if (data == 5) {
+                            url = "<p>Đã hoàn thành</p>"
+                        } else {
+                            url = "<p>Đã huỷ bỏ</p>"
+                        }
+                        return url;
+                    }
+                },
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {

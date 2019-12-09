@@ -73,6 +73,29 @@
     </script>
 
     <script>
+        function GetAllLap() {
+            var save = document.getElementById("saveBrandId").innerHTML = '0';
+            $.ajax({
+                url: '/Product/ListLapTop',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: {
+                }
+            })
+                .done(function (result) {
+                    $('#laptop').html(result);
+                    if (save.innerText > 0) {
+                        document.getElementById(checkStyleId).style.color = "red";
+                    }
+                }).fail(function (xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+                });
+        }
+    </script>
+
+    <script>
         function GetListLap(brandId) {
             var save = document.getElementById("saveBrandId");
             var checkStyleId = "select-checkbox-" + brandId;

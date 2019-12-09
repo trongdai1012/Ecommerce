@@ -1,0 +1,146 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<LaptopViewModel>
+
+@{
+    ViewData["Title"] = "Tìm kiếm sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<!--================Home Banner Area =================-->
+<section class="banner_area" style="margin-top:30px">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+            <div class="banner_content d-md-flex justify-content-between align-items-center">
+                <div class="mb-3 mb-md-0">
+                    <h2>Big Const Ecommerce</h2>
+                    <p>Luôn sẵn sàng phục vụ</p>
+                </div>
+                <div class="page_link">
+                    <a href="/">Trang chủ</a>
+                    <a>Tìm kiếm sản phẩm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Home Banner Area =================-->
+<!--================Category Product Area =================-->
+<section class="cat_product_area section_gap">
+    <div class="container">
+        <div class="row flex-row-reverse" id="laptop">
+        </div>
+    </div>
+    <a id="searchSave" style="display:none">@ViewBag.SearchKey</a>
+    <a id="saveBrandId" style="display:none"></a>
+    <a id="saveOrderId" style="display:none"></a>
+</section>
+<!--================End Category Product Area =================-->
+@section scripts
+    {
+    <script>
+        function LikeProduct(id) {
+            $.ajax({
+                url: '/Product/LikeProduct',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: { productId: id }
+            });
+        }
+    </script>
+
+    <script>
+        $(function () {
+            GetListLap();
+        });
+
+        function GetListProduct(dateModel) {
+            $.ajax({
+                url: '/Product/ListLapTop',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: dateModel
+            })
+                .done(function (result) {
+                    $('#laptop').html(result);
+                }).fail(function (xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+                });
+        }
+    </script>
+
+    <script>
+        function GetAllLap() {
+            var save = document.getElementById("saveBrandId").innerHTML = '0';
+            $.ajax({
+                url: '/Product/ListLapTop',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: {
+                }
+            })
+                .done(function (result) {
+                    $('#laptop').html(result);
+                    if (save.innerText > 0) {
+                        document.getElementById(checkStyleId).style.color = "red";
+                    }
+                }).fail(function (xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+                });
+        }
+    </script>
+
+    <script>
+        function GetListLap() {
+            var save = document.getElementById("searchSave").innerHTML;
+            $.ajax({
+                url: '/Product/ListAll',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: {
+                    searchString: save
+                }
+            })
+                .done(function (result) {
+                    $('#laptop').html(result);
+                }).fail(function (xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+                });
+        }
+
+        function GetListLapOrder() {
+            var save = document.getElementById("saveBrandId").innerText;
+            var order = document.getElementById("orderId");
+            var orderId = order.options[order.selectedIndex].value;
+            var checkStyleId = "select-checkbox-" + save;
+            $.ajax({
+                url: '/Product/ListLapTop',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: {
+                    orderBy: orderId,
+                    brandId: save
+                }
+            })
+                .done(function (result) {
+                    $('#laptop').html(result);
+                    $("#orderId").val(orderId);
+                    if (save > 0) {
+                        document.getElementById(checkStyleId).style.color = "red";
+                    }
+                }).fail(function (xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+                });
+        }
+    </script>
+}

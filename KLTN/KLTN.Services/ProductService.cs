@@ -68,6 +68,56 @@ namespace KLTN.Services
             }
         }
 
+        public async Task<IEnumerable<LaptopViewModel>> GetAll(string key)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                var listAllLap = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                                  join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                                  join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                                  join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                                  where pro.Status && bra.Status && pro.Name.Contains(key) || pro.Status && bra.Status 
+                                  && pro.Id.ToString().Contains(key)
+                                  select new LaptopViewModel
+                                  {
+                                      Id = pro.Id,
+                                      Name = pro.Name,
+                                      Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                      CategoryId = pro.CategoryId,
+                                      Brand = bra.Name,
+                                      InitialPrice = pro.InitialPrice,
+                                      CurrentPrice = pro.CurrentPrice,
+                                      ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                      where img.ProductId == pro.Id && img.IsDefault
+                                                      select img.Url
+                                          ).FirstOrDefault()
+                                  }).ToList();
+                return listAllLap;
+            }
+
+            var listLaptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
+                              join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                              join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                              join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
+                              where pro.Status && bra.Status && pro.Name.Contains(key) || pro.Status && bra.Status
+                              && pro.Id.ToString().Contains(key)
+                              select new LaptopViewModel
+                              {
+                                  Id = pro.Id,
+                                  Name = pro.Name,
+                                  Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  Brand = bra.Name,
+                                  InitialPrice = pro.InitialPrice,
+                                  CurrentPrice = pro.CurrentPrice,
+                                  ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                  where img.ProductId == pro.Id && img.IsDefault
+                                                  select img.Url
+                                      ).FirstOrDefault()
+                              }).ToList();
+
+            return listLaptop;
+        }
+
         public async Task<IEnumerable<LaptopViewModel>> GetAllLaptop(string key, int brandId)
         {
             if (brandId != 0)

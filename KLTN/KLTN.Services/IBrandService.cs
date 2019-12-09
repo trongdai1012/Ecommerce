@@ -9,6 +9,8 @@ namespace KLTN.Services
 {
     public interface IBrandService
     {
+        Task<IEnumerable<BrandViewModel>> GetAllBrand();
+
         Tuple<IEnumerable<BrandViewModel>, int, int> LoadBrand(DTParameters dtParameters);
 
         Tuple<BrandViewModel, int> GetBrandById(int? id);

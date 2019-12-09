@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using KLTN.DataModels.Models.Products;
 using KLTN.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using X.PagedList;
@@ -109,8 +107,32 @@ namespace KLTN.Web.Controllers
             }
 
             return PartialView("_ListLapTop", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+        }
 
+    
+        public async Task<IActionResult> Product(string searchKey)
+        {
+            ViewBag.SearchKey = searchKey;
+            return View();
+        }
 
+        
+        public async Task<IActionResult> ListAll(string searchString, int orderBy, int pageIndex = 1, int pageSize = 12)
+        {
+            ViewBag.ListBrand = await _brandService.GetAllBrand();
+
+            var listLap = await _productService.GetAll(searchString);
+
+            if (orderBy == 1)
+            {
+                return PartialView("_ListAllProduct", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+            }
+            if (orderBy == 2)
+            {
+                return PartialView("_ListAllProduct", listLap.OrderByDescending(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+            }
+
+            return PartialView("_ListAllProduct", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
         }
 
         public IActionResult Mobile(string searchKey, int pageIndex = 1, int pageSize = 12)

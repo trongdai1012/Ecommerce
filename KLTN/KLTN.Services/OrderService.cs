@@ -395,7 +395,7 @@ namespace KLTN.Services
 
                 var delivery = _unitOfWork.DeliveryRepository.Get(x => x.OrderId == id);
 
-                if (delivery.UserPreparingOrderId != GetUserId()) return 4;
+                if (delivery.ShipperId != GetUserId()) return 4;
 
                 order.StatusOrder = 5;
                 delivery.FinishDeliveryAt = DateTime.UtcNow;

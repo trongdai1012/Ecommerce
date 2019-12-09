@@ -88,7 +88,7 @@ namespace KLTN.Web
                     options.LoginPath = new PathString(RedirectConfig.AccountAuthentication);
                     options.ReturnUrlParameter = Constants.RequestPath;
                     options.SlidingExpiration = true;
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                    options.ExpireTimeSpan = TimeSpan.FromDays(1);
                 });
 
             //Add authorization with Policy

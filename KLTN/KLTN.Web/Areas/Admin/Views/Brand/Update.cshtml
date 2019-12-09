@@ -4,10 +4,30 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item active" style="align-content:center">
+                        <a asp-area="Admin" asp-controller="Brand" asp-action="Index">Quản lý thương hiệu</a>
+                    </li>
+                    <li class="breadcrumb-item active" style="align-content:center">Cập nhật thương hiệu</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
 <!-- general form elements -->
-<div class="card card-primary">
-    <div class="card-header">
-        <h3 class="card-title">Cập nhật thương hiệu</h3>
+<div class="card card-primary" style="">
+    <div class="card-header" style="background-color:white">
+        <h3 class="card-title" style="color:black; text-align:center">Cập nhật thương hiệu</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->

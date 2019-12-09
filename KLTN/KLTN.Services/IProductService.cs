@@ -11,6 +11,8 @@ namespace KLTN.Services
 {
     public interface IProductService
     {
+        Task<IEnumerable<LaptopViewModel>> GetAll(string key);
+
         Task<IEnumerable<LaptopViewModel>> GetAllLaptop(string key, int brandId);
 
         IEnumerable<MobileViewModel> GetAllMobile(string key);

@@ -107,7 +107,28 @@
                 },
                 { data: "recipientPhone" },
                 { data: "totalPrice" },
-                { data: "statusOrder" },
+                {
+                    "mData": "statusOrder",
+                    "mRender": function (data, type, row) {
+                        var url;
+                        if (data == 0) {
+                            url = "<p>Chờ xác thực</p>"
+                        } else if (data == 1) {
+                            url = "<p>Chờ chuẩn bị hàng</p>"
+                        } else if (data == 2) {
+                            url = "<p>Đang chuẩn bị hàng</p>"
+                        } else if (data == 3) {
+                            url = "<p>Chờ giao hàng</p>"
+                        } else if (data == 4) {
+                            url = "<p>Đang giao hàng</p>"
+                        } else if (data == 5) {
+                            url = "<p>Đã hoàn thành</p>"
+                        } else {
+                            url = "<p>Đã huỷ bỏ</p>"
+                        }
+                        return url;
+                    }
+                },
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {

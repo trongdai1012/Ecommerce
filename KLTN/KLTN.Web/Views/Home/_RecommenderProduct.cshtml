@@ -1,5 +1,7 @@
 ﻿@model Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, int>
-
+@{
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
 <div class="container" style="border-bottom:1px;border-bottom-style:outset;margin-top:25px;">
     <div class="row justify-content-center">
         <div class="col-lg-12">
@@ -11,7 +13,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         @foreach (var item in Model.Item1)
         {
@@ -48,10 +49,10 @@
                         </a>
                         <div class="mt-3">
                             <div>
-                                <span class="mr-4">@item.CurrentPrice</span>
+                                <span class="mr-4">@string.Format(info, "{0:C0}", @item.CurrentPrice)</span>
                             </div>
                             <div>
-                                <del>@item.InitialPrice</del>
+                                <del>@string.Format(info, "{0:C0}", @item.InitialPrice)</del>
                             </div>
                         </div>
                     </div>
@@ -108,10 +109,10 @@
                         </a>
                         <div class="mt-3">
                             <div>
-                                <span class="mr-4">@item.CurrentPrice</span>
+                                <span class="mr-4">@string.Format(info, "{0:C0}", @item.CurrentPrice)</span>
                             </div>
                             <div>
-                                <del>@item.InitialPrice</del>
+                                <del>@string.Format(info, "{0:C0}", @item.InitialPrice)</del>
                             </div>
                         </div>
                     </div>
@@ -168,10 +169,10 @@
                         </a>
                         <div class="mt-3">
                             <div>
-                                <span class="mr-4">@item.CurrentPrice</span>
+                                <span class="mr-4">@string.Format(info, "{0:C0}", @item.CurrentPrice)</span>
                             </div>
                             <div>
-                                <del>@item.InitialPrice</del>
+                                <del>@string.Format(info, "{0:C0}", @item.InitialPrice)</del>
                             </div>
                         </div>
                     </div>
