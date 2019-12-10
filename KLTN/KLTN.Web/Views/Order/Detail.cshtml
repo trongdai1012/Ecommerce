@@ -343,15 +343,35 @@
                         {
                             <tr>
                                 <td>
-                                    <div class="media">
-                                        <div class="d-flex">
-                                            <img src="~/DataImage/@item.Image"
-                                                 alt="" height="100" width="147" />
-                                        </div>
-                                        <div class="media-body">
-                                            <h5>@item.ProductName</h5>
-                                        </div>
-                                    </div>
+                                    @if (item.CategoryId == 1)
+                                    {
+                                        <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.ProductId">
+                                            <div class="media">
+                                                <div class="d-flex">
+                                                    <img src="~/DataImage/@item.Image"
+                                                         alt="" height="100" width="147" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5>@item.ProductName</h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Product" asp-action="MobileDetail" asp-route-id="@item.ProductId">
+                                            <div class="media">
+                                                <div class="d-flex">
+                                                    <img src="~/DataImage/@item.Image"
+                                                         alt="" height="100" width="147" />
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5>@item.ProductName</h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+
                                 </td>
                                 <td>
                                     <h5>@item.Price</h5>

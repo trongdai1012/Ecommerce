@@ -270,6 +270,20 @@ namespace KLTN.Services
             return listBrand;
         }
 
+        public async Task<IEnumerable<BrandViewModel>> GetBrandHasMobile()
+        {
+            var listBrand = (from brandCate in _unitOfWork.BrandHasCateRepository.ObjectContext
+                             join bra in _unitOfWork.BrandRepository.ObjectContext on brandCate.BrandId equals bra.Id
+                             where brandCate.CategoryId == 2 && bra.Status
+                             select new BrandViewModel
+                             {
+                                 Id = bra.Id,
+                                 Name = bra.Name
+                             }).ToList();
+
+            return listBrand;
+        }
+
         public async Task<IEnumerable<BrandViewModel>> GetAllBrand()
         {
             var listBrand = (from brandCate in _unitOfWork.BrandHasCateRepository.ObjectContext

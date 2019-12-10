@@ -24,5 +24,7 @@ namespace KLTN.Services
         bool ChangeStatus(int id);
 
         Task<IEnumerable<BrandViewModel>> GetBrandHasLaptop();
+
+        Task<IEnumerable<BrandViewModel>> GetBrandHasMobile();
     }
 }

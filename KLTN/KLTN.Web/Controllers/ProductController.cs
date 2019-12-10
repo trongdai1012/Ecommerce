@@ -108,7 +108,6 @@ namespace KLTN.Web.Controllers
 
             return PartialView("_ListLapTop", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
         }
-
     
         public async Task<IActionResult> Product(string searchKey)
         {
@@ -116,7 +115,6 @@ namespace KLTN.Web.Controllers
             return View();
         }
 
-        
         public async Task<IActionResult> ListAll(string searchString, int orderBy, int pageIndex = 1, int pageSize = 12)
         {
             ViewBag.ListBrand = await _brandService.GetAllBrand();
@@ -135,12 +133,27 @@ namespace KLTN.Web.Controllers
             return PartialView("_ListAllProduct", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
         }
 
-        public IActionResult Mobile(string searchKey, int pageIndex = 1, int pageSize = 12)
+        public async Task<IActionResult> Mobile(string searchKey, int pageIndex = 1, int pageSize = 12)
         {
-            ViewBag.ListBrand = _brandService.GetBrandHasLaptop();
-            var listMobile = _productService.GetAllMobile(searchKey);
+            return View();
+        }
 
-            return View(listMobile.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+        public async Task<IActionResult> ListMobile(string searchKey, int brandId, int orderBy, int pageIndex = 1, int pageSize = 12)
+        {
+            ViewBag.ListBrand = await _brandService.GetBrandHasMobile();
+
+            var listLap = await _productService.GetAllMobile(searchKey, brandId);
+
+            if (orderBy == 1)
+            {
+                return PartialView("_ListMobile", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+            }
+            if (orderBy == 2)
+            {
+                return PartialView("_ListMobile", listLap.OrderByDescending(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
+            }
+
+            return PartialView("_ListMobile", listLap.OrderBy(x => x.InitialPrice).ToPagedList(pageIndex, pageSize));
         }
     }
 }

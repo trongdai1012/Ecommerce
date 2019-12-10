@@ -15,7 +15,7 @@ namespace KLTN.Services
 
         Task<IEnumerable<LaptopViewModel>> GetAllLaptop(string key, int brandId);
 
-        IEnumerable<MobileViewModel> GetAllMobile(string key);
+        Task<IEnumerable<MobileViewModel>> GetAllMobile(string key, int brandId);
 
         Tuple<ProductViewModel, int> GetProductById(int? id);
 

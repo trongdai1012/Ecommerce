@@ -3,7 +3,7 @@
     var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
     var dLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.Date).ToList());
     var toValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrder).ToList());
-    var trValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalRevenue * Convert.ToDecimal(0.1)).ToList());
+    var trValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalRevenue).ToList());
     var tocValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrderCancel).ToList());
     var tofValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(x => x.TotalOrderFinish).ToList());
 }
@@ -44,8 +44,8 @@
                 <div class="row">
                     <div class="col-12">
                         <h4>
-                            <i class="fas fa-globe"></i> Auction
-                            <small class="float-right">Ngày: @DateTime.UtcNow.ToString("dd-MM-yyyy")</small>
+                            <i class="fas fa-globe"></i> BigConst Ecommerce
+                            <small class="float-right">Ngày: @DateTime.Now.ToString("dd-MM-yyyy")</small>
                         </h4>
                     </div>
                     <!-- /.col -->
@@ -97,14 +97,13 @@
                                         <td> @item.TotalOrder </td>
                                         <td> @item.TotalOrderFinish </td>
                                         <td> @item.TotalOrderCancel </td>
-                                        <td> @string.Format(info, "{0:C}", item.TotalRevenue * Convert.ToDecimal(0.1))</td>
+                                        <td> @string.Format(info, "{0:C0}", item.TotalRevenue)</td>
                                     </tr>
                                 }
                                 <tr>
                                     <td colspan="3"></td>
                                     <td> <b>Tổng cộng:</b> </td>
-                                    <td> <b> <i>@*@string.Format(info, "{0:C}", Model.Sum(i => i.Money))*@ </i></b> </td>
-                                    <td> <b> <i>@string.Format(info, "{0:C}", Model.Sum(i => i.TotalRevenue * Convert.ToDecimal(0.1)))</i></b> </td>
+                                    <td> <b> <i>@string.Format(info, "{0:C0}", Model.Sum(i => i.TotalRevenue))</i></b> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -190,7 +189,7 @@ var options = {
                             min: 0,
                             beginAtZero: true,
                             callback: function(value) {
-                              return  value.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                                return value;
                             }
                         },
                         gridLines: {
@@ -213,7 +212,7 @@ var options = {
                   callbacks: {
                     label: function(tooltipItem, chart){
                       var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                      return datasetLabel + ': ' + tooltipItem.yLabel.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                        return datasetLabel;
                     }
                   }
                 }

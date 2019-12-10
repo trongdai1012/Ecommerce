@@ -126,7 +126,6 @@ namespace KLTN.Services
                                   join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
                                   join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                                   join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                                  join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
                                   where pro.CategoryId == (int)EnumCategory.Laptop && pro.Status && pro.BrandId == brandId
                                   select new LaptopViewModel
                                   {
@@ -136,27 +135,27 @@ namespace KLTN.Services
                                       Brand = bra.Name,
                                       InitialPrice = pro.InitialPrice,
                                       CurrentPrice = pro.CurrentPrice,
-                                      Description = pro.Description,
-                                      Screen = lap.Screen,
-                                      OperatingSystem = lap.OperatingSystem,
-                                      Camera = lap.Camera,
-                                      CPU = lap.CPU,
-                                      RAM = lap.RAM,
-                                      ROM = lap.ROM,
-                                      Card = lap.Card,
-                                      Design = lap.Design,
-                                      Size = lap.Size,
-                                      PortSupport = lap.PortSupport,
-                                      Pin = lap.Pin,
-                                      Color = lap.Color,
-                                      Weight = lap.Weight,
-                                      CreateAt = pro.CreateAt,
-                                      CreateBy = usc.Email,
-                                      UpdateAt = pro.UpdateAt,
-                                      UpdateBy = usu.Email,
-                                      ViewCount = pro.ViewCount,
-                                      LikeCount = pro.LikeCount,
-                                      TotalSold = pro.TotalSold,
+                                      //Description = pro.Description,
+                                      //Screen = lap.Screen,
+                                      //OperatingSystem = lap.OperatingSystem,
+                                      //Camera = lap.Camera,
+                                      //CPU = lap.CPU,
+                                      //RAM = lap.RAM,
+                                      //ROM = lap.ROM,
+                                      //Card = lap.Card,
+                                      //Design = lap.Design,
+                                      //Size = lap.Size,
+                                      //PortSupport = lap.PortSupport,
+                                      //Pin = lap.Pin,
+                                      //Color = lap.Color,
+                                      //Weight = lap.Weight,
+                                      //CreateAt = pro.CreateAt,
+                                      //CreateBy = usc.Email,
+                                      //UpdateAt = pro.UpdateAt,
+                                      //UpdateBy = usu.Email,
+                                      //ViewCount = pro.ViewCount,
+                                      //LikeCount = pro.LikeCount,
+                                      //TotalSold = pro.TotalSold,
                                       Status = pro.Status,
                                       Images = (from img in _unitOfWork.ImageRepository.ObjectContext
                                                 where img.ProductId == pro.Id
@@ -176,7 +175,6 @@ namespace KLTN.Services
                                   join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
                                   join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                                   join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                                  join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
                                   where pro.CategoryId == (int)EnumCategory.Laptop && pro.Status
                                   select new LaptopViewModel
                                   {
@@ -186,27 +184,27 @@ namespace KLTN.Services
                                       Brand = bra.Name,
                                       InitialPrice = pro.InitialPrice,
                                       CurrentPrice = pro.CurrentPrice,
-                                      Description = pro.Description,
-                                      Screen = lap.Screen,
-                                      OperatingSystem = lap.OperatingSystem,
-                                      Camera = lap.Camera,
-                                      CPU = lap.CPU,
-                                      RAM = lap.RAM,
-                                      ROM = lap.ROM,
-                                      Card = lap.Card,
-                                      Design = lap.Design,
-                                      Size = lap.Size,
-                                      PortSupport = lap.PortSupport,
-                                      Pin = lap.Pin,
-                                      Color = lap.Color,
-                                      Weight = lap.Weight,
-                                      CreateAt = pro.CreateAt,
-                                      CreateBy = usc.Email,
-                                      UpdateAt = pro.UpdateAt,
-                                      UpdateBy = usu.Email,
-                                      ViewCount = pro.ViewCount,
-                                      LikeCount = pro.LikeCount,
-                                      TotalSold = pro.TotalSold,
+                                      //Description = pro.Description,
+                                      //Screen = lap.Screen,
+                                      //OperatingSystem = lap.OperatingSystem,
+                                      //Camera = lap.Camera,
+                                      //CPU = lap.CPU,
+                                      //RAM = lap.RAM,
+                                      //ROM = lap.ROM,
+                                      //Card = lap.Card,
+                                      //Design = lap.Design,
+                                      //Size = lap.Size,
+                                      //PortSupport = lap.PortSupport,
+                                      //Pin = lap.Pin,
+                                      //Color = lap.Color,
+                                      //Weight = lap.Weight,
+                                      //CreateAt = pro.CreateAt,
+                                      //CreateBy = usc.Email,
+                                      //UpdateAt = pro.UpdateAt,
+                                      //UpdateBy = usu.Email,
+                                      //ViewCount = pro.ViewCount,
+                                      //LikeCount = pro.LikeCount,
+                                      //TotalSold = pro.TotalSold,
                                       Status = pro.Status,
                                       Images = (from img in _unitOfWork.ImageRepository.ObjectContext
                                                 where img.ProductId == pro.Id
@@ -224,7 +222,6 @@ namespace KLTN.Services
                               join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
                               join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                               join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
                               where pro.CategoryId == (int)EnumCategory.Laptop && pro.Name == key
                               select new LaptopViewModel
                               {
@@ -234,27 +231,27 @@ namespace KLTN.Services
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
                                   CurrentPrice = pro.CurrentPrice,
-                                  Description = pro.Description,
-                                  Screen = lap.Screen,
-                                  OperatingSystem = lap.OperatingSystem,
-                                  Camera = lap.Camera,
-                                  CPU = lap.CPU,
-                                  RAM = lap.RAM,
-                                  ROM = lap.ROM,
-                                  Card = lap.Card,
-                                  Design = lap.Design,
-                                  Size = lap.Size,
-                                  PortSupport = lap.PortSupport,
-                                  Pin = lap.Pin,
-                                  Color = lap.Color,
-                                  Weight = lap.Weight,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
+                                  //Description = pro.Description,
+                                  //Screen = lap.Screen,
+                                  //OperatingSystem = lap.OperatingSystem,
+                                  //Camera = lap.Camera,
+                                  //CPU = lap.CPU,
+                                  //RAM = lap.RAM,
+                                  //ROM = lap.ROM,
+                                  //Card = lap.Card,
+                                  //Design = lap.Design,
+                                  //Size = lap.Size,
+                                  //PortSupport = lap.PortSupport,
+                                  //Pin = lap.Pin,
+                                  //Color = lap.Color,
+                                  //Weight = lap.Weight,
+                                  //CreateAt = pro.CreateAt,
+                                  //CreateBy = usc.Email,
+                                  //UpdateAt = pro.UpdateAt,
+                                  //UpdateBy = usu.Email,
+                                  //ViewCount = pro.ViewCount,
+                                  //LikeCount = pro.LikeCount,
+                                  //TotalSold = pro.TotalSold,
                                   Status = pro.Status,
                                   Images = (from img in _unitOfWork.ImageRepository.ObjectContext
                                             where img.ProductId == pro.Id
@@ -268,15 +265,63 @@ namespace KLTN.Services
             return listLaptop;
         }
 
-        public IEnumerable<MobileViewModel> GetAllMobile(string key)
+        public async Task<IEnumerable<MobileViewModel>> GetAllMobile(string key, int brandId)
         {
-            if (string.IsNullOrEmpty(key))
+            if (brandId != 0)
             {
                 var listAllMobile = (from pro in _unitOfWork.ProductRepository.ObjectContext
                                   join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
                                   join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                                   join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                                  join mobile in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobile.ProductId
+                                  where pro.CategoryId == (int)EnumCategory.Mobile && pro.Status && pro.BrandId == brandId
+                                  select new MobileViewModel
+                                  {
+                                      Id = pro.Id,
+                                      Name = pro.Name,
+                                      Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                      Brand = bra.Name,
+                                      InitialPrice = pro.InitialPrice,
+                                      CurrentPrice = pro.CurrentPrice,
+                                      //Description = pro.Description,
+                                      //Screen = lap.Screen,
+                                      //OperatingSystem = lap.OperatingSystem,
+                                      //Camera = lap.Camera,
+                                      //CPU = lap.CPU,
+                                      //RAM = lap.RAM,
+                                      //ROM = lap.ROM,
+                                      //Card = lap.Card,
+                                      //Design = lap.Design,
+                                      //Size = lap.Size,
+                                      //PortSupport = lap.PortSupport,
+                                      //Pin = lap.Pin,
+                                      //Color = lap.Color,
+                                      //Weight = lap.Weight,
+                                      //CreateAt = pro.CreateAt,
+                                      //CreateBy = usc.Email,
+                                      //UpdateAt = pro.UpdateAt,
+                                      //UpdateBy = usu.Email,
+                                      //ViewCount = pro.ViewCount,
+                                      //LikeCount = pro.LikeCount,
+                                      //TotalSold = pro.TotalSold,
+                                      Status = pro.Status,
+                                      Images = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                where img.ProductId == pro.Id
+                                                select img).ToList(),
+                                      ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
+                                                      where img.ProductId == pro.Id
+                                                      select img.Url
+                                          ).FirstOrDefault()
+                                  }).ToList();
+
+                return listAllMobile;
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                var listAllMobile= (from pro in _unitOfWork.ProductRepository.ObjectContext
+                                  join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
+                                  join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
+                                  join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
                                   where pro.CategoryId == (int)EnumCategory.Mobile && pro.Status
                                   select new MobileViewModel
                                   {
@@ -286,26 +331,28 @@ namespace KLTN.Services
                                       Brand = bra.Name,
                                       InitialPrice = pro.InitialPrice,
                                       CurrentPrice = pro.CurrentPrice,
-                                      Description = pro.Description,
-                                      Screen = mobile.Screen,
-                                      OperatingSystem = mobile.OperatingSystem,
-                                      FrontCamera = mobile.FrontCamera,
-                                      RearCamera = mobile.RearCamera,
-                                      CPU = mobile.CPU,
-                                      RAM = mobile.RAM,
-                                      ROM = mobile.ROM,
-                                      Pin = mobile.Pin,
-                                      Color = mobile.Color,
-                                      CreateAt = pro.CreateAt,
-                                      CreateBy = usc.Email,
-                                      UpdateAt = pro.UpdateAt,
-                                      UpdateBy = usu.Email,
-                                      ViewCount = pro.ViewCount,
-                                      LikeCount = pro.LikeCount,
-                                      TotalSold = pro.TotalSold,
+                                      //Description = pro.Description,
+                                      //Screen = lap.Screen,
+                                      //OperatingSystem = lap.OperatingSystem,
+                                      //Camera = lap.Camera,
+                                      //CPU = lap.CPU,
+                                      //RAM = lap.RAM,
+                                      //ROM = lap.ROM,
+                                      //Card = lap.Card,
+                                      //Design = lap.Design,
+                                      //Size = lap.Size,
+                                      //PortSupport = lap.PortSupport,
+                                      //Pin = lap.Pin,
+                                      //Color = lap.Color,
+                                      //Weight = lap.Weight,
+                                      //CreateAt = pro.CreateAt,
+                                      //CreateBy = usc.Email,
+                                      //UpdateAt = pro.UpdateAt,
+                                      //UpdateBy = usu.Email,
+                                      //ViewCount = pro.ViewCount,
+                                      //LikeCount = pro.LikeCount,
+                                      //TotalSold = pro.TotalSold,
                                       Status = pro.Status,
-                                      Quantity = pro.Quantity,
-                                      DurationWarranty = pro.DurationWarranty,
                                       Images = (from img in _unitOfWork.ImageRepository.ObjectContext
                                                 where img.ProductId == pro.Id
                                                 select img).ToList(),
@@ -322,7 +369,6 @@ namespace KLTN.Services
                               join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
                               join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                               join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join mobile in _unitOfWork.MobileRepository.ObjectContext on pro.Id equals mobile.ProductId
                               where pro.CategoryId == (int)EnumCategory.Mobile && pro.Name == key
                               select new MobileViewModel
                               {
@@ -332,33 +378,35 @@ namespace KLTN.Services
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
                                   CurrentPrice = pro.CurrentPrice,
-                                  Description = pro.Description,
-                                  Screen = mobile.Screen,
-                                  OperatingSystem = mobile.OperatingSystem,
-                                  FrontCamera = mobile.FrontCamera,
-                                  RearCamera = mobile.RearCamera,
-                                  CPU = mobile.CPU,
-                                  RAM = mobile.RAM,
-                                  ROM = mobile.ROM,
-                                  Pin = mobile.Pin,
-                                  Color = mobile.Color,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
+                                  //Description = pro.Description,
+                                  //Screen = lap.Screen,
+                                  //OperatingSystem = lap.OperatingSystem,
+                                  //Camera = lap.Camera,
+                                  //CPU = lap.CPU,
+                                  //RAM = lap.RAM,
+                                  //ROM = lap.ROM,
+                                  //Card = lap.Card,
+                                  //Design = lap.Design,
+                                  //Size = lap.Size,
+                                  //PortSupport = lap.PortSupport,
+                                  //Pin = lap.Pin,
+                                  //Color = lap.Color,
+                                  //Weight = lap.Weight,
+                                  //CreateAt = pro.CreateAt,
+                                  //CreateBy = usc.Email,
+                                  //UpdateAt = pro.UpdateAt,
+                                  //UpdateBy = usu.Email,
+                                  //ViewCount = pro.ViewCount,
+                                  //LikeCount = pro.LikeCount,
+                                  //TotalSold = pro.TotalSold,
                                   Status = pro.Status,
-                                  Quantity = pro.Quantity,
-                                  DurationWarranty = pro.DurationWarranty,
                                   Images = (from img in _unitOfWork.ImageRepository.ObjectContext
                                             where img.ProductId == pro.Id
                                             select img).ToList(),
                                   ImageDefault = (from img in _unitOfWork.ImageRepository.ObjectContext
                                                   where img.ProductId == pro.Id
                                                   select img.Url
-                                          ).FirstOrDefault()
+                                      ).FirstOrDefault()
                               }).ToList();
 
             return listMobile;
