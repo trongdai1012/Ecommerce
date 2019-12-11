@@ -50,5 +50,12 @@ namespace KLTN.Web.Areas.Admin.Controllers
             var listRevenue = _orderService.GetRevenue(dataModel);
             return PartialView("_RevenueChart", listRevenue);
         }
+
+        [HttpPost]
+        public IActionResult ReportOverView(FilterModel dataModel)
+        {
+            var orverView = _orderService.GetReportOverView(dataModel);
+            return PartialView("_ReportOverView", orverView);
+        }
     }
 }

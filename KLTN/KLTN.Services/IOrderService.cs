@@ -64,5 +64,7 @@ namespace KLTN.Services
         IEnumerable<RevenueModel> GetRevenue(FilterModel isMonth);
 
         IEnumerable<ReportRevenueModel> GetReportRevenue(FilterDateModel model);
+
+        Tuple<int, int, int, int> GetReportOverView(FilterModel isMonth);
     }
 }

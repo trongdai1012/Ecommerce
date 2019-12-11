@@ -1,11 +1,14 @@
 ﻿using FluentValidation;
 using KLTN.DataModels.Models.Products;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace KLTN.DataModels.Validations.Product
 {
-    public class CreateLaptopValidator : AbstractValidator<CreateLaptopViewModel>
+    public class UpdateLaptopValidator : AbstractValidator<UpdateLaptopViewModel>
     {
-        public CreateLaptopValidator()
+        public UpdateLaptopValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Tên laptop không được bỏ trống.");
             RuleFor(x => x.Name).MinimumLength(6).WithMessage("Độ dài tối thiểu 6 ký tự.");

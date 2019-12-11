@@ -545,6 +545,7 @@ namespace KLTN.Services
 
             var listOrder = from order in _unitOfWork.OrderRepository.ObjectContext
                             join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
+                            where order.CreateBy == GetUserId()
                             select new OrderViewModel
                             {
                                 Id = order.Id,
@@ -1112,7 +1113,7 @@ namespace KLTN.Services
                             join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
                             join deli in _unitOfWork.DeliveryRepository.ObjectContext on order.Id equals deli.OrderId
                             where deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 2 ||
-                            deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 4
+                            deli.ShipperId == GetUserId() && order.StatusOrder == 4
                             select new OrderViewModel
                             {
                                 Id = order.Id,
@@ -1162,7 +1163,7 @@ namespace KLTN.Services
                             join usc in _unitOfWork.UserRepository.ObjectContext on order.CreateBy equals usc.Id
                             join deli in _unitOfWork.DeliveryRepository.ObjectContext on order.Id equals deli.OrderId
                             where deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 2 ||
-                            deli.UserPreparingOrderId == GetUserId() && order.StatusOrder == 4
+                            deli.ShipperId == GetUserId() && order.StatusOrder == 4
                             select new OrderViewModel
                             {
                                 Id = order.Id,
@@ -1224,20 +1225,20 @@ namespace KLTN.Services
 
             if (!string.IsNullOrEmpty(isMonth.Filter))
             {
-                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
-                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year);
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                    && x.CreateAt.ToLocalTime().Year == DateTime.Now.Year);
 
                 var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-                var dateStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+                var dateStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 for (var i = 0; i < daysInMonth; i++)
                 {
                     var orderInDay = new OrderChartModel
                     {
                         Date = dateStart.ToString("dd-MMM", new CultureInfo("vi-VN")),
-                        TotalOrder = listOrder.Where(x => x.CreateAt.Date.Day == dateStart.Date.Day
-                                                    && x.CreateAt.Month == dateStart.Month).Count(),
-                        TotalOrderFinish = listOrder.Where(x => x.CreateAt.Date.Day == dateStart.Date.Day
-                                                    && x.CreateAt.Month == dateStart.Month && x.StatusOrder == 5).Count()
+                        TotalOrder = listOrder.Where(x => x.CreateAt.ToLocalTime().Date.Day == dateStart.Date.Day
+                                                    && x.CreateAt.ToLocalTime().Month == dateStart.Month).Count(),
+                        TotalOrderFinish = listOrder.Where(x => x.CreateAt.ToLocalTime().Date.Day == dateStart.Date.Day
+                                                    && x.CreateAt.ToLocalTime().Month == dateStart.Month && x.StatusOrder == 5).Count()
                     };
                     soldOrder.Add(orderInDay);
                     dateStart = dateStart.AddDays(1);
@@ -1246,21 +1247,21 @@ namespace KLTN.Services
             else
             {
 
-                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
-                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year);
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                    && x.CreateAt.ToLocalTime().Year == DateTime.Now.Year);
 
 
-                var dateStartOfWeek = DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday);
+                var dateStartOfWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
 
                 for (var i = 0; i < 7; i++)
                 {
                     var orderInDay = new OrderChartModel
                     {
                         Date = dateStartOfWeek.ToString("dd-MMM", new CultureInfo("vi-VN")),
-                        TotalOrder = listOrder.Where(x => x.CreateAt.Date.Day == dateStartOfWeek.Date.Day
-                                                    && x.CreateAt.Month == dateStartOfWeek.Month).Count(),
-                        TotalOrderFinish = listOrder.Where(x => x.CreateAt.Date.Day == dateStartOfWeek.Date.Day
-                                                    && x.CreateAt.Month == dateStartOfWeek.Month && x.StatusOrder == 5).Count()
+                        TotalOrder = listOrder.Where(x => x.CreateAt.ToLocalTime().Date.Day == dateStartOfWeek.Date.Day
+                                                    && x.CreateAt.ToLocalTime().Month == dateStartOfWeek.Month).Count(),
+                        TotalOrderFinish = listOrder.Where(x => x.CreateAt.ToLocalTime().Date.Day == dateStartOfWeek.Date.Day
+                                                    && x.CreateAt.ToLocalTime().Month == dateStartOfWeek.Month && x.StatusOrder == 5).Count()
                     };
                     soldOrder.Add(orderInDay);
                     dateStartOfWeek = dateStartOfWeek.AddDays(1);
@@ -1278,8 +1279,8 @@ namespace KLTN.Services
             {
                 var listOrdDTSold = from ordDT in _unitOfWork.OrderDetailRepository.ObjectContext
                                     join ord in _unitOfWork.OrderRepository.ObjectContext on ordDT.OrderId equals ord.Id
-                                    where ord.CreateAt.Month == DateTime.UtcNow.Month
-                                                                    && ord.CreateAt.Year == DateTime.UtcNow.Year
+                                    where ord.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                    && ord.CreateAt.ToLocalTime().Year == DateTime.Now.Year
                                                                     && ord.StatusOrder == 5
                                     select new
                                     {
@@ -1303,18 +1304,17 @@ namespace KLTN.Services
             else
             {
 
-                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
-                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year & x.StatusOrder == 5);
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                    && x.CreateAt.ToLocalTime().Year == DateTime.Now.Year & x.StatusOrder == 5);
 
 
-                var dateStartOfWeek = DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday);
+                var dateStartOfWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
 
                 var listOrdDTSold = from ordDT in _unitOfWork.OrderDetailRepository.ObjectContext
                                     join ord in _unitOfWork.OrderRepository.ObjectContext on ordDT.OrderId equals ord.Id
-                                    where ord.CreateAt.Month == DateTime.UtcNow.Month
-                                                                    && ord.CreateAt.Year == DateTime.UtcNow.Year
-                                                                    && DateTime.Compare(ord.CreateAt, dateStartOfWeek) >= 0
-                                                                    && DateTime.Compare(dateStartOfWeek.AddDays(7), ord.CreateAt) < 0
+                                    where ord.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                    && ord.CreateAt.ToLocalTime().Year == DateTime.Now.Year
+                                                                    && DateTime.Compare(ord.CreateAt.ToLocalTime().Date, dateStartOfWeek.Date) >= 0
                                                                     && ord.StatusOrder == 5
                                     select new
                                     {
@@ -1339,25 +1339,62 @@ namespace KLTN.Services
             return listGetTopProduct;
         }
 
+        public Tuple<int, int, int, int> GetReportOverView(FilterModel isMonth)
+        {
+            if (!string.IsNullOrEmpty(isMonth.Filter))
+            {
+                var listOrdeInMonth = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                    && x.CreateAt.ToLocalTime().Year == DateTime.Now.Year);
+
+                var totalOrder = listOrdeInMonth.Count();
+
+                var totalOrderFinish = listOrdeInMonth.Where(x=> x.StatusOrder == 5).Count();
+
+                var totalOrderCancel= listOrdeInMonth.Where(x => x.StatusOrder == 6).Count();
+
+                var totalContact = _unitOfWork.ContactRepository.GetMany(x => x.ContactAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                        && x.ContactAt.ToLocalTime().Year == DateTime.Now.Year).Count();
+
+                return new Tuple<int, int, int, int>(totalOrder,totalOrderFinish,totalOrderCancel,totalContact);
+            }
+            else
+            {
+                var dateStartOfWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
+
+                var listOrdeInMonth = _unitOfWork.OrderRepository.GetMany(x => DateTime.Compare(x.CreateAt.ToLocalTime().Date, dateStartOfWeek) >=0);
+
+                var totalOrder = listOrdeInMonth.Count();
+
+                var totalOrderFinish = listOrdeInMonth.Where(x => x.StatusOrder == 5).Count();
+
+                var totalOrderCancel = listOrdeInMonth.Where(x => x.StatusOrder == 6).Count();
+
+                var totalContact = _unitOfWork.ContactRepository.GetMany(x => DateTime.Compare(x.ContactAt.ToLocalTime().Date, dateStartOfWeek) >= 0).Count();
+
+                return new Tuple<int, int, int, int>(totalOrder, totalOrderFinish, totalOrderCancel, totalContact);
+            }
+
+        }
+
         public IEnumerable<RevenueModel> GetRevenue(FilterModel isMonth)
         {
             var revenueModel = new List<RevenueModel>();
 
             if (!string.IsNullOrEmpty(isMonth.Filter))
             {
-                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
-                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                    && x.CreateAt.ToLocalTime().Year == DateTime.Now.Year
                                                                     && x.StatusOrder == 5);
 
                 var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-                var dateStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+                var dateStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 for (var i = 0; i < daysInMonth; i++)
                 {
                     var revenueInday = new RevenueModel
                     {
                         Date = dateStart.ToString("dd-MMM", new CultureInfo("vi-VN")),
-                        Revenue = listOrder.Where(x => x.CreateAt.Date.Day == dateStart.Date.Day
-                                                    && x.CreateAt.Month == dateStart.Month).Sum(x => x.TotalPrice),
+                        Revenue = listOrder.Where(x => x.CreateAt.ToLocalTime().Date.Day == dateStart.Date.Day
+                                                    && x.CreateAt.ToLocalTime().Month == dateStart.Month).Sum(x => x.TotalPrice),
                     };
                     revenueModel.Add(revenueInday);
                     dateStart = dateStart.AddDays(1);
@@ -1366,8 +1403,8 @@ namespace KLTN.Services
             else
             {
 
-                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.Month == DateTime.UtcNow.Month
-                                                                    && x.CreateAt.Year == DateTime.UtcNow.Year
+                var listOrder = _unitOfWork.OrderRepository.GetMany(x => x.CreateAt.ToLocalTime().Month == DateTime.Now.Month
+                                                                    && x.CreateAt.ToLocalTime().Year == DateTime.Now.Year
                                                                     && x.StatusOrder == 5);
 
                 var dateStartOfWeek = DateTime.UtcNow.StartOfWeek(DayOfWeek.Monday);
@@ -1377,8 +1414,8 @@ namespace KLTN.Services
                     var revenueInDay = new RevenueModel
                     {
                         Date = dateStartOfWeek.ToString("dd-MMM", new CultureInfo("vi-VN")),
-                        Revenue = listOrder.Where(x => x.CreateAt.Date.Day == dateStartOfWeek.Date.Day
-                                                    && x.CreateAt.Month == dateStartOfWeek.Month).Sum(x => x.TotalPrice),
+                        Revenue = listOrder.Where(x => x.CreateAt.ToLocalTime().Date.Day == dateStartOfWeek.Date.Day
+                                                    && x.CreateAt.ToLocalTime().Month == dateStartOfWeek.Month).Sum(x => x.TotalPrice),
                     };
                     revenueModel.Add(revenueInDay);
                     dateStartOfWeek = dateStartOfWeek.AddDays(1);
@@ -1458,28 +1495,29 @@ namespace KLTN.Services
                 var startDate = new DateTime(year, month, 1);
                 var totalDayInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
 
-                var listOrderInDay = _unitOfWork.OrderRepository.GetMany(x => DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) >= 0
-                                                                         && DateTime.Compare(startDate.AddDays(totalDayInMonth - 1)
-                                                                         , x.CreateAt.ToLocalTime().Date) <= 0);
-
-                var totalDay = (model.EndDate - model.StartDate).TotalDays;
+                var listOrderInDay = _unitOfWork.OrderRepository.GetMany
+                                                  (x => DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) >= 0
+                                                  && DateTime.Compare(startDate.AddDays(totalDayInMonth - 1)
+                                                  , x.CreateAt.ToLocalTime().Date) >= 0);
 
                 for (int i = 0; i < totalDayInMonth; i++)
                 {
+
                     var revenue = new ReportRevenueModel
                     {
                         Date = startDate.ToString("dd-MMM", new CultureInfo("vi-VN")),
-                        TotalOrder = listOrderInDay.Where(x => DateTime.Compare(model.StartDate, x.CreateAt) == 0).Count(),
+                        TotalOrder = listOrderInDay.Where(x => DateTime.Compare(startDate.Date,
+                                     x.CreateAt.ToLocalTime().Date) == 0).Count(),
                         TotalOrderCancel = listOrderInDay.Where(x => x.StatusOrder == 6
-                                            && DateTime.Compare(model.StartDate, x.CreateAt.ToLocalTime().Date) == 0).Count(),
+                                           && DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) == 0).Count(),
                         TotalOrderFinish = listOrderInDay.Where(x => x.StatusOrder == 5
-                                            && DateTime.Compare(model.StartDate, x.CreateAt.ToLocalTime().Date) == 0).Count(),
+                                            && DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) == 0).Count(),
                         TotalRevenue = listOrderInDay.Where(x => x.StatusOrder == 5
-                                            && DateTime.Compare(model.StartDate, x.CreateAt.ToLocalTime().Date) == 0).Sum(x => x.TotalPrice)
+                                            && DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) == 0).Sum(x => x.TotalPrice)
                     };
 
                     listRevenue.Add(revenue);
-                    startDate.AddDays(1);
+                    startDate = startDate.AddDays(1);
                 }
             }
             else if (!string.IsNullOrEmpty(model.MonthDate) && string.IsNullOrEmpty(model.YearDate))
@@ -1489,18 +1527,18 @@ namespace KLTN.Services
                 var startDate = new DateTime(DateTime.UtcNow.Year, month, 1);
                 var totalDayInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, startDate.Month);
 
-
+                var listOrderInDay = _unitOfWork.OrderRepository.GetMany
+                                                  (x => DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) >= 0
+                                                  && DateTime.Compare(startDate.AddDays(totalDayInMonth - 1)
+                                                  , x.CreateAt.ToLocalTime().Date) >= 0);
 
                 for (int i = 0; i < totalDayInMonth; i++)
                 {
-                    var listOrderInDay = _unitOfWork.OrderRepository.GetMany
-                                                                        (x => DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) >= 0
-                                                                         && DateTime.Compare(startDate.AddDays(totalDayInMonth - i - 1)
-                                                                         , x.CreateAt.ToLocalTime().Date) >= 0);
+
                     var revenue = new ReportRevenueModel
                     {
                         Date = startDate.ToString("dd-MMM", new CultureInfo("vi-VN")),
-                        TotalOrder = listOrderInDay.Where(x => DateTime.Compare(model.StartDate,
+                        TotalOrder = listOrderInDay.Where(x => DateTime.Compare(startDate.Date,
                                      x.CreateAt.ToLocalTime().Date) == 0).Count(),
                         TotalOrderCancel = listOrderInDay.Where(x => x.StatusOrder == 6
                                            && DateTime.Compare(startDate, x.CreateAt.ToLocalTime().Date) == 0).Count(),

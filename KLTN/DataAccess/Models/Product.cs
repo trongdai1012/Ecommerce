@@ -15,6 +15,8 @@ namespace KLTN.DataAccess.Models
         public int ViewCount { get; set; }
         public int LikeCount { set; get; }
         public int TotalSold { get; set; }
+        public int TotalRate { get; set; }
+        public int TotalMark { get; set; }
         public int Quantity { get; set; }
 
 
@@ -26,3 +28,4 @@ namespace KLTN.DataAccess.Models
         public virtual List<Feedback> Feedbacks { get; set; }
     }
 }
+

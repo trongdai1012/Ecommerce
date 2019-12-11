@@ -1,193 +1,215 @@
 ﻿<nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
-    with font-awesome or any other icon font library -->
+        with font-awesome or any other icon font library -->
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                        Quản lý người dùng
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/Admin/User/ListAdmin" class="nav-link">
+                            <i class="fa fa-user-circle-o nav-icon"></i>
+                            <p>Quản lý Admin</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/User/ListEmployee" class="nav-link">
+                            <i class="far fa-user-circle nav-icon"></i>
+                            <p>Quản lý nhân viên</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/User/ListCustomer" class="nav-link">
+                            <i class="far fa-user nav-icon"></i>
+                            <p>Quản lý khách hàng</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-trademark"></i>
+                    <p>
+                        Quản lý thương hiệu
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/Admin/Brand/Index" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách thương hiệu</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Quản lý người dùng
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/Admin/User/ListAdmin" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Quản lý Admin</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/User/ListEmployee" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Quản lý nhân viên</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/User/ListCustomer" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Quản lý khách hàng</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Quản lý thương hiệu
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/Admin/Brand/Index" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Quản lý thương hiệu</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-gift"></i>
                 <p>
                     Quản lý đơn hàng
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/Admin/Order/Index" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách đơn hàng</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Order/OrderWaitConfirm" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách chờ xác thực</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Order/OrderWaitPrepare" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách chờ chuẩn bị</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Order/OrderPreparing" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách đang chuẩn bị</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Order/OrderWaitDelivery" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách chờ giao hàng</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Order/OrderDelivering" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách đang giao hàng</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Order/OrderFinish" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách đã hoàn thành</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Order/OrderCancel" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách đã huỷ bỏ</p>
-                    </a>
-                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    <li class="nav-item">
+                        <a href="/Admin/Order/Index" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách đơn hàng</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Order/OrderWaitConfirm" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách chờ xác thực</p>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("WareHouseStaff"))
+                {
+                    <li class="nav-item">
+                        <a href="/Admin/Order/OrderWaitPrepare" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách chờ chuẩn bị</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Order/OrderPreparing" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách đang chuẩn bị</p>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Shipper"))
+                {
+                    <li class="nav-item">
+                        <a href="/Admin/Order/OrderWaitDelivery" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách chờ giao hàng</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Order/OrderDelivering" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách đang giao hàng</p>
+                        </a>
+                    </li>
+                }
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    <li class="nav-item">
+                        <a href="/Admin/Order/OrderFinish" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách đã hoàn thành</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Order/OrderCancel" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách đã huỷ bỏ</p>
+                        </a>
+                    </li>
+                }
             </ul>
         </li>
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Quản lý sản phẩm
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/Admin/Product/Laptop" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Quản lý laptop</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Admin/Product/Mobile" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Quản lý điện thoại</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Quản lý liên hệ
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="~/Admin/Contact/Index" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách đã xử lý</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Quản lý tin tức
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/Admin/News/Index" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách bài viết</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Quản lý phản hồi
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="~/Admin/Feedback/Index" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách bài đánh giá</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a href="~/Admin/Report/Index" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Thống kê báo cáo
-                </p>
-            </a>
-        </li>
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-apple-alt"></i>
+                    <p>
+                        Quản lý sản phẩm
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/Admin/Product/Laptop" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách laptop</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Product/Mobile" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách điện thoại</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-address-book"></i>
+                    <p>
+                        Quản lý liên hệ
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="~/Admin/Contact/Index" class="nav-link">
+                            <i class="far fa-list-alt nav-icon"></i>
+                            <p>Danh sách liên hệ</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-newspaper"></i>
+                    <p>
+                        Quản lý tin tức
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/Admin/News/Index" class="nav-link">
+                            <i class="far fa-newspaper-o nav-icon"></i>
+                            <p>Danh sách bài viết</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-comment"></i>
+                    <p>
+                        Quản lý phản hồi
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="~/Admin/Feedback/Index" class="nav-link">
+                            <i class="far fa-comments nav-icon"></i>
+                            <p>Danh sách bài đánh giá</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="~/Admin/Report/Index" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        Thống kê báo cáo
+                    </p>
+                </a>
+            </li>
+        }
     </ul>
 </nav>

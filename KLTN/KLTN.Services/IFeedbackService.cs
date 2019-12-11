@@ -10,7 +10,7 @@ namespace KLTN.Services
     {
         int Rating(int productId, string comment, byte rate);
 
-        Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback, float> GetFeedbackByProducId(int id);
+        Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback, float, Laptop, Mobile, int> GetFeedbackByProducId(int id);
 
         bool LikeProduct(int productId);
 

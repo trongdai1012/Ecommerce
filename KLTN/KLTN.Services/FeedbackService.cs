@@ -28,13 +28,13 @@ namespace KLTN.Services
             _mapper = mapper;
         }
 
-        public Tuple<IEnumerable<FeedbackViewModel>,RateCountFeedback, float> GetFeedbackByProducId(int id)
+        public Tuple<IEnumerable<FeedbackViewModel>,RateCountFeedback, float, Laptop, Mobile, int> GetFeedbackByProducId(int id)
         {
             try
             {
                 var listFeedback = from fb in _unitOfWork.FeedbackRepository.ObjectContext
                                    join user in _unitOfWork.UserRepository.ObjectContext on fb.UserId equals user.Id
-                                   where fb.ProductId == id
+                                   where fb.ProductId == id && fb.IsRated && fb.Status
                                    orderby fb.RatedAt descending
                                    select new FeedbackViewModel
                                    {
@@ -49,20 +49,51 @@ namespace KLTN.Services
                                        RatedAt = fb.RatedAt,
                                        CreateAt = fb.CreateAt
                                     };
+
+                var listFeedbackCount = from fb in _unitOfWork.FeedbackRepository.ObjectContext
+                                   join user in _unitOfWork.UserRepository.ObjectContext on fb.UserId equals user.Id
+                                   where fb.ProductId == id && fb.IsRated
+                                   orderby fb.RatedAt descending
+                                   select new FeedbackViewModel
+                                   {
+                                       Id = fb.Id,
+                                       Comment = fb.Comment,
+                                       CustomerId = fb.Id,
+                                       CustomerName = user.FirstName + " " + user.LastName,
+                                       IsBought = fb.IsBought,
+                                       IsLike = fb.IsLike,
+                                       ProductId = fb.ProductId,
+                                       Rate = fb.Rate,
+                                       RatedAt = fb.RatedAt,
+                                       CreateAt = fb.CreateAt
+                                   };
+
                 var rateCount = new RateCountFeedback
                 {
-                    OneStar = listFeedback.Count(x => x.Rate == 1),
-                    TwoStar = listFeedback.Count(x => x.Rate == 2),
-                    ThreeStar = listFeedback.Count(x => x.Rate == 3),
-                    FourStar = listFeedback.Count(x => x.Rate == 4),
-                    FiveStar = listFeedback.Count(x => x.Rate == 5),
+                    OneStar = listFeedbackCount.Count(x => x.Rate == 1),
+                    TwoStar = listFeedbackCount.Count(x => x.Rate == 2),
+                    ThreeStar = listFeedbackCount.Count(x => x.Rate == 3),
+                    FourStar = listFeedbackCount.Count(x => x.Rate == 4),
+                    FiveStar = listFeedbackCount.Count(x => x.Rate == 5),
                     Id = id
                 };
 
                 var rateProduct = _unitOfWork.ProductRepository.GetById(id);
 
+                var isLap = _unitOfWork.ProductRepository.GetById(id).CategoryId;
 
-                return new Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback, float>(listFeedback,rateCount, rateProduct.Rate);
+                var totalRate = _unitOfWork.FeedbackRepository.GetMany(x => x.ProductId == id && x.IsRated).Count();
+
+                if(isLap == 1)
+                {
+                    var laptopDetail = _unitOfWork.LaptopRepository.Get(x => x.ProductId == id);
+                    return new Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback, float, Laptop, Mobile, int>(listFeedback, rateCount, rateProduct.Rate, laptopDetail, null, totalRate);
+                }
+                else
+                {
+                    var mobileDetail = _unitOfWork.MobileRepository.Get(x => x.ProductId == id);
+                    return new Tuple<IEnumerable<FeedbackViewModel>, RateCountFeedback, float, Laptop, Mobile, int>(listFeedback, rateCount, rateProduct.Rate, null, mobileDetail, totalRate);
+                }
             }
             catch (Exception e)
             {
@@ -76,10 +107,21 @@ namespace KLTN.Services
             try
             {
                 var feedback = _unitOfWork.FeedbackRepository.Get(x => x.ProductId == productId && x.UserId == GetUserId());
+                var product = _unitOfWork.ProductRepository.GetById(productId);
                 if (feedback == null) return 0;
                 if (!feedback.IsBought) return 0;
                 if (feedback.Status)
                 {
+                    if (feedback.IsRated)
+                    {
+                        product.TotalMark += (rate - feedback.Rate);
+                    }
+                    else
+                    {
+                        product.TotalMark += rate;
+                        product.TotalRate++;
+                    }
+                    product.Rate = (float)((product.TotalMark*1.0) / (product.TotalRate * 1.0));
                     feedback.Comment = comment;
                     feedback.Rate = rate;
                     feedback.RatedAt = DateTime.UtcNow;
@@ -244,7 +286,7 @@ namespace KLTN.Services
         /// <returns></returns>
         public bool ChangeStatus(int id)
         {
-            var feedback = _unitOfWork.NewsRepository.GetById(id);
+            var feedback = _unitOfWork.FeedbackRepository.GetById(id);
             feedback.Status = !feedback.Status;
             _unitOfWork.Save();
             return feedback.Status;

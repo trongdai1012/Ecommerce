@@ -43,18 +43,21 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Trang chủ</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">
+                        <i class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link">Trang chủ</a>
                 </li>
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown" id="mission">
+                <li class="nav-item dropdown" id="mission" title="Nhiệm vụ">
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fas fa-user"></i>
-                    </a>
+                <li class="nav-item active">
+                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Authentication" title="Đăng xuất"><i class="fa fa-sign-out"></i></a>
                 </li>
             </ul>
         </nav>

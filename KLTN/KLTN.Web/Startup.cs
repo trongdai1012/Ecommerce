@@ -5,9 +5,15 @@ using KLTN.Common;
 using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.AutoMapper;
+using KLTN.DataModels.Models.Brands;
+using KLTN.DataModels.Models.Contact;
+using KLTN.DataModels.Models.News;
 using KLTN.DataModels.Models.Orders;
 using KLTN.DataModels.Models.Products;
 using KLTN.DataModels.Models.Users;
+using KLTN.DataModels.Validations.Brands;
+using KLTN.DataModels.Validations.Contact;
+using KLTN.DataModels.Validations.News;
 using KLTN.DataModels.Validations.Orders;
 using KLTN.DataModels.Validations.Product;
 using KLTN.DataModels.Validations.Users;
@@ -105,6 +111,13 @@ namespace KLTN.Web
             services.AddTransient<IValidator<CreateAdminViewModel>, CreateAdminValidator>();
             services.AddTransient<IValidator<CreateLaptopViewModel>, CreateLaptopValidator>();
             services.AddTransient<IValidator<OrderViewModel>, PaymentValidator>();
+            services.AddTransient<IValidator<CreateBrandModel>, CreateBrandValidator>();
+            services.AddTransient<IValidator<BrandViewModel>, UpdateBrandValidator>();
+            services.AddTransient<IValidator<ContactViewModel>, SendContactValidator>();
+            services.AddTransient<IValidator<NewsViewModel>, CreateNewsValidator>();
+            services.AddTransient<IValidator<CreateMoblieViewModel>, CreateMobileValidator>();
+            services.AddTransient<IValidator<UpdateLaptopViewModel>, UpdateLaptopValidator>();
+            services.AddTransient<IValidator<UpdateMoblieViewModel>, UpdateMobileValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

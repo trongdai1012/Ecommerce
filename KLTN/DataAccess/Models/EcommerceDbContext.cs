@@ -543,7 +543,6 @@ namespace KLTN.DataAccess.Models
                 entity.Property(x => x.InitialPrice).HasColumnType(TypeOfSql.Decimal);
                 entity.Property(x => x.CurrentPrice).HasColumnType(TypeOfSql.Decimal);
                 entity.Property(x => x.Description).HasColumnType(TypeOfSql.NText);
-                entity.Property(x => x.Rate).HasColumnType(TypeOfSql.TinyInt);
                 entity
                 .HasOne(x => x.Brand)
                 .WithMany(x => x.Products)
@@ -562,10 +561,12 @@ namespace KLTN.DataAccess.Models
                         Description = "Macbook Air 13 128 GB MQD32SA/A (2017) với thiết kế không thay đổi," +
                         " vỏ nhôm sang trọng, siêu mỏng và siêu nhẹ, hiệu năng được nâng cấp, thời lượng pin cực lâu," +
                         " phù hợp cho nhu cầu làm việc văn phòng nhẹ nhàng, không cần quá chú trọng vào hiển thị của màn hình.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -585,10 +586,12 @@ namespace KLTN.DataAccess.Models
                         DurationWarranty = 12,
                         Description = "Macbook Air 13 128GB 2018 là sự đột phá về công nghệ và thiết kế. Chiếc MacBook giờ " +
                         "đây còn mỏng nhẹ hơn, cao cấp đáng kinh ngạc với màn hình Retina tràn viền tuyệt đỉnh.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -608,10 +611,12 @@ namespace KLTN.DataAccess.Models
                         DurationWarranty = 12,
                         Description = "MacBook Air 13 256GB 2018 đánh dấu sự thay đổi toàn diện của huyền thoại" +
                         " MacBook siêu mỏng nhẹ luôn được rất nhiều người dùng yêu thích từ trước đến nay.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -632,10 +637,12 @@ namespace KLTN.DataAccess.Models
                         Description = "MacBook Air 128GB 2019 có thiết kế tuyệt đẹp, màn hình Retina Truetone" +
                         " đẳng cấp và trải nghiệm bàn phím tuyệt vời nhất từ trước đến nay. Đây sẽ là chiếc laptop" +
                         " nhỏ gọn hoàn hảo nhất dành cho bạn.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -656,10 +663,12 @@ namespace KLTN.DataAccess.Models
                         Description = "MacBook Air 256GB 2019 không chỉ là phương tiện làm việc cơ động lý tưởng" +
                         " mà còn là một tuyệt tác về thiết kế, với màn hình Retina tuyệt mỹ cùng kiểu dáng sang trọng," +
                         " mỏng nhẹ đến không ngờ.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -681,10 +690,12 @@ namespace KLTN.DataAccess.Models
                         Description = "MacBook 12 2017 với đường nét thiết kế không có thay đổi so với" +
                         " phiên bản 2016 nhưng Apple đã nâng cấp thêm bộ nhớ và giới thiệu bộ vi xử lý" +
                         " Intel thế hệ thứ 7 (Kaby Lake).",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -706,10 +717,12 @@ namespace KLTN.DataAccess.Models
                         Description = "Thế hệ MacBook Pro 13 inch 2017 ngoài việc cập nhật bộ vi xử lý Intel" +
                         " thế hệ thứ 7 (Kaby Lake) thì còn được nâng cấp gấp đôi dung lượng bộ nhớ. Ngoài ra" +
                         " thiết kế cũng như một số tính năng nổi bật vẫn không có thay đổi so với dòng MacBook 2016.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -730,10 +743,12 @@ namespace KLTN.DataAccess.Models
                         Description = "MacBook Pro 13 Touch Bar (2019) có thiết kế siêu nhỏ gọn" +
                         " nhưng bên trong lại là cấu hình hết sức mạnh mẽ, màn hình Retina tuyệt mỹ" +
                         " cùng bàn phím cánh bướm thế hệ mới.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -756,10 +771,12 @@ namespace KLTN.DataAccess.Models
                         " khả năng chụp ảnh ở camera chính lẫn camera selfie với công nghệ AI," +
                         " hứa hẹn sẽ nhận được sự đón nhận tới từ người dùng là những bạn trẻ năng" +
                         " động và cá tính.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -780,10 +797,12 @@ namespace KLTN.DataAccess.Models
                         Description = "Nằm trong sứ mệnh nâng cao khả năng cạnh tranh với các smartphone đến từ nhiều nhà sản xuất Trung" +
                         " Quốc, mới đây Samsung tiếp tục giới thiệu phiên bản Samsung Galaxy A50s với nhiều tính năng mà trước đây chỉ xuất " +
                         "hiện trên dòng cao cấp.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -806,10 +825,12 @@ namespace KLTN.DataAccess.Models
                                         " chính thức giới thiệu bộ 3 siêu phẩm iPhone 11 mạnh mẽ nhất của mình vào tháng 9/2019. " +
                                         "Có mức giá rẻ nhất nhưng vẫn được nâng cấp mạnh mẽ như chiếc iPhone Xr năm ngoái, đó chính là" +
                                         " phiên bản iPhone 11 64GB.",
-                        Rate = 5,
+                        Rate = 0,
                         ViewCount = 0,
                         LikeCount = 0,
                         TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
                         Quantity = 100,
                         Status = true,
                         CreateAt = DateTime.UtcNow,
@@ -831,10 +852,12 @@ namespace KLTN.DataAccess.Models
                          Description = "Samsung Galaxy A20s 64GB là phiên bản cải tiến của chiếc " +
                                         "Samsung Galaxy A20 64GB  đã ra mắt trước đó với những nâng cấp về mặt camera" +
                                         " và kích thước màn hình.",
-                         Rate = 5,
+                         Rate = 0,
                          ViewCount = 0,
                          LikeCount = 0,
                          TotalSold = 0,
+                         TotalRate = 0,
+                         TotalMark = 0,
                          Quantity = 100,
                          Status = true,
                          CreateAt = DateTime.UtcNow,
@@ -856,10 +879,12 @@ namespace KLTN.DataAccess.Models
                          Description = "Với nhiều ưu điểm vượt trội so với các đối thủ, Xiaomi Redmi" +
                                         " 8 4GB/64GB hứa hẹn là một con bài chiến lược của Xiaomi trong phân khúc smartphone giá rẻ," +
                                         " hiện đang rất sôi động hiện nay.",
-                         Rate = 5,
+                         Rate = 0,
                          ViewCount = 0,
                          LikeCount = 0,
                          TotalSold = 0,
+                         TotalRate = 0,
+                         TotalMark = 0,
                          Quantity = 100,
                          Status = true,
                          CreateAt = DateTime.UtcNow,
@@ -881,10 +906,12 @@ namespace KLTN.DataAccess.Models
                          Description = "OPPO A5 (2020) 64GB là mẫu smartphone tầm trung với giá thành" +
                                         " phải chăng nhưng được trang bị nhiều công nghệ hấp dẫn hứa hẹn sẽ " +
                                         "lấy được lòng các bạn trẻ năng động, thời trang.",
-                         Rate = 5,
+                         Rate = 0,
                          ViewCount = 0,
                          LikeCount = 0,
                          TotalSold = 0,
+                         TotalRate = 0,
+                         TotalMark = 0,
                          Quantity = 100,
                          Status = true,
                          CreateAt = DateTime.UtcNow,
@@ -906,10 +933,12 @@ namespace KLTN.DataAccess.Models
                          Description = "Để tìm kiếm một chiếc smartphone có hiệu năng mạnh mẽ " +
                                         "và có thể sử dụng mượt mà trong 2-3 năm tới thì không có chiếc máy nào " +
                                         "xứng đang hơn chiếc iPhone 11 Pro Max 512GB mới ra mắt trong năm 2019 của Apple.",
-                         Rate = 5,
+                         Rate = 0,
                          ViewCount = 0,
                          LikeCount = 0,
                          TotalSold = 0,
+                         TotalRate = 0,
+                         TotalMark = 0,
                          Quantity = 100,
                          Status = true,
                          CreateAt = DateTime.UtcNow,
@@ -931,10 +960,12 @@ namespace KLTN.DataAccess.Models
                          Description = "iPhone 11 Pro Max 256GB là chiếc iPhone cao " +
                                         "cấp nhất trong bộ 3 iPhone Apple giới thiệu trong năm 2019 và quả " +
                                         "thực chiếc smartphone này mang trong mình nhiều trang bị xứng đáng với tên gọi Pro.",
-                         Rate = 5,
+                         Rate = 0,
                          ViewCount = 0,
                          LikeCount = 0,
                          TotalSold = 0,
+                         TotalRate = 0,
+                         TotalMark = 0,
                          Quantity = 100,
                          Status = true,
                          CreateAt = DateTime.UtcNow,

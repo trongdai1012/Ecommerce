@@ -15,63 +15,7 @@
     <!-- /.container-fluid -->
 </section>
 
-<div class="row">
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>1</h3>
-
-                <p>đơn hàng</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-bag"></i>
-            </div>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>0<sup style="font-size: 20px">%</sup></h3>
-
-                <p>tỷ lệ hoàn thành đơn hàng</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-            </div>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>0</h3>
-
-                <p>liên hệ mới</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-ios-people"></i>
-            </div>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3>0</h3>
-
-                <p>đơn hàng huỷ bỏ</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-email-unread"></i>
-            </div>
-        </div>
-    </div>
-    <!-- ./col -->
+<div id="overView">
 </div>
 
 
@@ -104,6 +48,7 @@
             GetAuctionChart();
             GetProductChart();
             GetRevenueChart();
+            GetOverView();
         });
 
         function AuctionChartByWeek() {
@@ -134,6 +79,16 @@
                 Filter: "month"
             };
             GetRevenueChart(dateModel);
+        }
+
+        function OverViewByWeek() {
+            GetOverView();
+        }
+        function OverViewByMonth() {
+            var dateModel = {
+                Filter: "month"
+            };
+            GetOverView(dateModel);
         }
 
         function GetAuctionChart(dateModel) {
@@ -182,6 +137,22 @@
                 }).fail(function(xhr) {
                     console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
             });
+        }
+
+        function GetOverView(dateModel) {
+            $.ajax({
+                url: '/Admin/Home/ReportOverView',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "html",
+                data: dateModel
+            })
+                .done(function (result) {
+                    $('#overView').html(result);
+                }).fail(function (xhr) {
+                    console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+                });
         }
 
     </script>

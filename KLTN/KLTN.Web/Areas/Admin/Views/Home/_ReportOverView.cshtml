@@ -1,0 +1,73 @@
+﻿@model Tuple<int, int, int, int>
+
+<div class="card-header d-flex p-0 ui-sortable-handle" style="cursor: move;">
+    <h3 class="card-title p-3">
+        <i class="fas fa-chart-pie mr-1"></i>
+    </h3>
+    <ul class="nav nav-pills ml-auto p-2">
+        <li class="nav-item">
+            <a onclick="OverViewByWeek()" class="nav-link" href="#" data-toggle="tab">Tuần</a>
+        </li>
+        <li class="nav-item">
+            <a onclick="OverViewByMonth()" class="nav-link" href="#" data-toggle="tab">Tháng</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@Model.Item1</h3>
+
+                <p>Đơn hàng</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>@Model.Item2</h3>
+
+                <p>Đơn hàng hoàn thành</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>@Model.Item3</h3>
+
+                <p>Đơn hàng huỷ bỏ</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-email-unread"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>@Model.Item4</h3>
+
+                <p>Liên hệ</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-ios-people"></i>
+            </div>
+        </div>
+    </div>
+</div>
