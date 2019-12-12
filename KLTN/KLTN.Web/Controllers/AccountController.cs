@@ -22,11 +22,11 @@ namespace KLTN.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
-        
+
         private readonly IHostingEnvironment _hostingEnvironment;
 
 
-        
+
         public AccountController(IUserService userService, IHostingEnvironment hostingEnvironment)
         {
             _userService = userService;
@@ -139,13 +139,13 @@ namespace KLTN.Web.Controllers
                 return View(authentication);
             }
         }
-        
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult Register(RegisterUserViewModel registerUser)
         {
@@ -153,13 +153,13 @@ namespace KLTN.Web.Controllers
             _userService.Register(registerUser);
             return RedirectToAction("Index", "Home");
         }
-        
+
         [HttpGet]
         public IActionResult ConfirmUser(string confirmString)
         {
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult ConfirmUser()
         {
@@ -179,18 +179,18 @@ namespace KLTN.Web.Controllers
         {
             if (!ModelState.IsValid) return View(emailModel);
             var result = _userService.ForgotPassword(emailModel.Email);
-            if(result == 0)
+            if (result == 0)
             {
                 ModelState.AddModelError("", "Email không tồn tại");
                 return View(emailModel);
             }
-            if(result==-1)
+            if (result == -1)
             {
                 ModelState.AddModelError("", "Có lỗi xảy ra trong quá trình lấy lại mật khẩu. Vui lòng quay lại sau!");
                 return View(emailModel);
             }
 
-            return RedirectToAction("ForgotOk","Notification");
+            return RedirectToAction("ForgotOk", "Notification");
         }
 
 
@@ -209,7 +209,7 @@ namespace KLTN.Web.Controllers
         {
             if (!ModelState.IsValid) return View(retypePassword);
             var result = _userService.ConfirmForgotPassword(retypePassword);
-            if (result) return RedirectToAction("RetypeSuccess","Notification");
+            if (result) return RedirectToAction("RetypeSuccess", "Notification");
             return View();
         }
 
@@ -281,6 +281,52 @@ namespace KLTN.Web.Controllers
                 data = list,
                 status = true
             });
+        }
+
+        public IActionResult Detail()
+        {
+            try
+            {
+                var admin = _userService.GetUserDetail();
+                return View(admin);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Have an error when get detail admin in controller", e);
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Update()
+        {
+            try
+            {
+                var user = _userService.GetUserUpdate();
+                if (user == null) return BadRequest();
+                return View(user);
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error when update user in AccountController", e);
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Update(UpdateUserViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+            try
+            {
+                _userService.UpdateInfoUser(model);
+                return RedirectToAction("Detail", "Account");
+            }
+            catch(Exception e)
+            {
+                Log.Error("Have an error when update user in AccountController", e);
+                return BadRequest();
+            }
         }
     }
 }

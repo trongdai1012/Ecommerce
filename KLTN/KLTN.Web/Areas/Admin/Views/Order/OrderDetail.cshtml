@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "OrderDetail";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
 }
 
 <section class="content-header">
@@ -36,7 +37,8 @@
                     <p><strong>Mã đơn hàng: @Model.Item1.Id</strong></p>
                     <p><strong>ID người mua: @Model.Item1.CreateBy</strong></p>
                     <p><strong>Thời gian mua: @Model.Item1.CreateAt</strong></p>
-                    <p><strong>Tổng tiền: @Model.Item1.TotalPrice</strong></p>
+                    <p><strong>Địa chỉ giao hàng: @Model.Item1.RecipientAddress , @Model.Item1.RecipientPrecinctName , @Model.Item1.RecipientDistrictName , @Model.Item1.RecipientProvinceName</strong></p>
+                    <p><strong>Tổng tiền: @string.Format(info, "{0:C0}", @Model.Item1.TotalPrice)</strong></p>
                 </div>
             </div>
         </div>
@@ -64,9 +66,9 @@
                             <td>@item.OrderId</td>
                             <td>@item.ProductName</td>
                             <td><img src="/DataImage/@item.Image " style="width:100px; height:70px" /></td>
-                            <td>@item.Price</td>
+                            <td>@string.Format(info, "{0:C0}", @item.Price)</td>
                             <td>@item.Quantity</td>
-                            <td>@item.TotalPrice</td>
+                            <td>@string.Format(info, "{0:C0}", @item.TotalPrice)</td>
                         </tr>
                     }
 

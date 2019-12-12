@@ -1,0 +1,258 @@
+﻿@model KLTN.DataModels.Models.Users.UpdateUserViewModel
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--================Home Banner Area =================-->
+<section class="banner_area" style="margin-top:30px">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+            <div class="banner_content d-md-flex justify-content-between align-items-center">
+                <div class="mb-3 mb-md-0">
+                    <h2>Big Const Ecommerce</h2>
+                    <p>Luôn sẵn sàng phục vụ</p>
+                </div>
+                <div class="page_link">
+                    <a href="/">Trang chủ</a>
+                    <a>Cập nhật thông tin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Home Banner Area =================-->
+
+<div class="register-box">
+    <div class="card">
+        <div class="col-md-11 row">
+            <div class="col-md-5"></div>
+            <div class="col-md-3">
+                <div class="card-body register-card-body">
+                    <h3 class="login-box-msg" style="text-align:center;"><b style="color:black">Cập nhật thông tin</b></h3>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <form asp-action="Update" method="post">
+                        <div class="input-group" style="margin-top:10px">
+                            <input readonly type="text" class="form-control" asp-for="Email" placeholder="Email">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input type="text" class="form-control" asp-for="FirstName" placeholder="Nhập tên">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input type="text" class="form-control" asp-for="LastName" placeholder="Nhập họ đệm">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input class="form-control" asp-for="BirthDay" placeholder="Chọn ngày sinh">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="BirthDay" class="text-danger"></span>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input type="text" class="form-control" asp-for="Phone" placeholder="Nhập số điện thoại">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input asp-for="ProvinceName" id="province" type="hidden" />
+                            <select asp-for="ProvinceId" id="ddlProvince" class="form-control"></select>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="ProvinceId" class="text-danger"></span>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input asp-for="DistrictName" id="district" type="hidden" />
+                            <select asp-for="DistrictId" id="ddlDistrict" class="form-control"></select>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="DistrictId" class="text-danger"></span>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input asp-for="PrecinctName" id="precinct" type="hidden" />
+                            <select asp-for="PrecinctId" id="ddlPrecinct" class="form-control"></select>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="PrecinctId" class="text-danger"></span>
+                        </div>
+                        <div class="input-group" style="margin-top:10px">
+                            <input type="text" class="form-control" asp-for="Address" placeholder="Nhập địa chỉ cụ thể">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <!-- /.col -->
+                            <div class="col-4" style="margin:auto">
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">Cập nhật</button>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.form-box -->
+        </div>
+    </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+<!-- Bootstrap 4 -->
+<script src="~/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+@section scripts{
+    <!-- jQuery -->
+    <script>
+        $(function () {
+            loadProvince();
+            registerEvent();
+        });
+
+        function registerEvent() {
+            $('#ddlProvince').off('change').on('change',
+                function () {
+                    var id = $(this).val();
+                    if (id != '') {
+                        document.getElementById('province').value = $("#ddlProvince option:selected").text();
+                        loadDistrict(parseInt(id));
+                        $('#ddlPrecinct').html('');
+                    } else {
+                        $('#ddlDistrict').html('');
+                    }
+                });
+            $('#ddlDistrict').off('change').on('change',
+                function () {
+                    var id = $(this).val();
+                    if (id != '') {
+                        document.getElementById('district').value = $("#ddlDistrict option:selected").text();
+                        loadPrecinct(parseInt(id));
+                    } else {
+                        $('#ddlPrecinct').html('');
+                    }
+                });
+            $('#ddlPrecinct').off('change').on('change',
+                function () {
+                    var id = $(this).val();
+                    if (id != '') {
+                        document.getElementById('precinct').value = $("#ddlPrecinct option:selected").text();
+                        loadPrecinct(parseInt(id));
+                    } else {
+                        $('#ddlPrecinct').html('');
+                    }
+                });
+        }
+
+        function loadProvince() {
+            $.ajax({
+                url: '/Account/LoadProvince',
+                type: "POST",
+                dataType: "json",
+                success: function (response) {
+                    if (response.status == true) {
+                        console.log(response.data);
+                        var html = '<option value="">--Chọn tỉnh thành--</option>';
+                        var data = response.data;
+                        $.each(data,
+                            function (i, item) {
+                                html += '<option value="' + item.id + '">' + item.name + '</option>'
+                            });
+                        $('#ddlProvince').html(html);
+                    }
+                }
+            })
+        }
+
+        function loadDistrict(id) {
+            $.ajax({
+                url: '/Account/LoadDistrict',
+                type: "POST",
+                data: { provinceID: id },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.data);
+                    if (response.status == true) {
+                        var html = '<option value="">--Chọn quận huyện--</option>';
+                        var data = response.data;
+                        $.each(data,
+                            function (i, item) {
+                                html += '<option value="' + item.id + '">' + item.name + '</option>'
+                            });
+                        $('#ddlDistrict').html(html);
+                    }
+                }
+            })
+        }
+
+        function loadPrecinct(id) {
+            $.ajax({
+                url: '/Account/LoadPrecinct',
+                type: "POST",
+                data: { districtID: id },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.data);
+                    if (response.status == true) {
+                        var html = '<option value="">--Chọn xã phường--</option>';
+                        var data = response.data;
+                        $.each(data,
+                            function (i, item) {
+                                html += '<option value="' + item.id + '">' + item.name + '</option>'
+                            });
+                        $('#ddlPrecinct').html(html);
+                    }
+                }
+            })
+        }
+    </script>
+}
+

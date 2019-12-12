@@ -7,6 +7,6 @@ namespace KLTN.Services
 {
     public interface IRecommenderService
     {
-        IEnumerable<LaptopViewModel> GetAllLaptop();
+        IEnumerable<LaptopViewModel> RecommenderProduct();
     }
 }

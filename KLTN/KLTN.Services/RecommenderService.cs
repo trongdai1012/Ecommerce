@@ -27,9 +27,12 @@ namespace KLTN.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<LaptopViewModel> GetAllLaptop()
+        public IEnumerable<LaptopViewModel> RecommenderProduct()
         {
             var isAuthen = (_httpContext.User != null) && _httpContext.User.Identity.IsAuthenticated;
+
+            var listRecommender = new List<PredictModel>();
+
             if (isAuthen)
             {
                 // Create MLContext to be shared across the model creation workflow objects 
@@ -52,54 +55,49 @@ namespace KLTN.Services
                 EvaluateModel(mlContext, testDataView, model);
                 // </SnippetEvaluateModelMain>
 
-                var listRate = _unitOfWork.FeedbackRepository.GetMany(x => x.UserId == GetClaimUserId() && x.Rate>0).ToList();
+                var listRate = _unitOfWork.FeedbackRepository.GetMany(x => x.UserId == GetClaimUserId() && x.Rate > 0).ToList();
 
-                var listProduct = _unitOfWork.ProductRepository.GetMany(x => x.CategoryId == (int)EnumCategory.Laptop).ToList();
+                var listProduct = _unitOfWork.ProductRepository.GetMany(x => x.Status).ToList();
 
-                var movies = listProduct.SkipWhile(x=>listRate.Contains(GetFeedback(x.Id))).ToList();
+                var movies = listProduct.SkipWhile(x => listRate.Contains(GetFeedback(x.Id))).ToList();
+
+                var listPredict = new List<PredictModel>();
+
+                var userId = GetClaimUserId();
 
                 // Use model to try a single prediction (one row of data)
-                // <SnippetUseModelMain>
-                UseModelForSinglePrediction(mlContext, model, 1, 99);
-                // </SnippetUseModelMain>
-            }
+                foreach (var item in movies)
+                {
+                    // <SnippetUseModelMain>
+                    var result = UseModelForSinglePrediction(mlContext, model, userId, item.Id);
+                    // </SnippetUseModelMain>
 
+                    var predict = new PredictModel
+                    {
+                        ProductId = item.Id,
+                        Rating = result
+                    };
+                    listPredict.Add(predict);
+                }
+
+                listRecommender = listPredict.OrderByDescending(x => x.Rating).Take(8).ToList();
+            }
 
             var listLaptop = (from pro in _unitOfWork.ProductRepository.ObjectContext
                               join usc in _unitOfWork.UserRepository.ObjectContext on pro.CreateBy equals usc.Id
                               join usu in _unitOfWork.UserRepository.ObjectContext on pro.UpdateBy equals usu.Id
                               join bra in _unitOfWork.BrandRepository.ObjectContext on pro.BrandId equals bra.Id
-                              join lap in _unitOfWork.LaptopRepository.ObjectContext on pro.Id equals lap.ProductId
-                              where pro.Status
+                              join listRecommen in listRecommender on pro.Id equals listRecommen.ProductId
                               select new LaptopViewModel
                               {
                                   Id = pro.Id,
                                   Name = pro.Name,
                                   Category = Enum.GetName(typeof(EnumCategory), pro.CategoryId),
+                                  CategoryId = pro.CategoryId,
                                   Brand = bra.Name,
                                   InitialPrice = pro.InitialPrice,
                                   CurrentPrice = pro.CurrentPrice,
                                   Description = pro.Description,
-                                  Screen = lap.Screen,
-                                  OperatingSystem = lap.OperatingSystem,
-                                  Camera = lap.Camera,
-                                  CPU = lap.CPU,
-                                  RAM = lap.RAM,
-                                  ROM = lap.ROM,
-                                  Card = lap.Card,
-                                  Design = lap.Design,
-                                  Size = lap.Size,
-                                  PortSupport = lap.PortSupport,
-                                  Pin = lap.Pin,
-                                  Color = lap.Color,
-                                  Weight = lap.Weight,
-                                  CreateAt = pro.CreateAt,
-                                  CreateBy = usc.Email,
-                                  UpdateAt = pro.UpdateAt,
-                                  UpdateBy = usu.Email,
-                                  ViewCount = pro.ViewCount,
-                                  LikeCount = pro.LikeCount,
-                                  TotalSold = pro.TotalSold,
                                   Status = pro.Status,
                                   Images = (from img in _unitOfWork.ImageRepository.ObjectContext
                                             where img.ProductId == pro.Id
@@ -214,7 +212,7 @@ namespace KLTN.Services
 
         public int GetClaimUserId()
         {
-            var claimId = Convert.ToInt32(_httpContext.User.FindFirst(x=>x.Type=="Id").Value);
+            var claimId = Convert.ToInt32(_httpContext.User.FindFirst(x => x.Type == "Id").Value);
             return claimId;
         }
 

@@ -107,7 +107,12 @@
                     }
                 },
                 { data: "recipientPhone" },
-                { data: "totalPrice" },
+                {
+                    "mData": "totalPrice",
+                    "mRender": function (data) {
+                        return data.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                    }
+                },
                 {
                     "mData": "statusOrder",
                     "mRender": function (data, type, row) {

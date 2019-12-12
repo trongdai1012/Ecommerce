@@ -28,7 +28,7 @@
             <h3 class="alert alert-success lisproduct-alert">@TempData[Constants.UpdateSuccess]</h3>
         }*@
         <div class="card-header">
-            <h3 class="card-title">@UserResource.UserManager</h3>
+            <h3 class="card-title">Danh sách quản lý</h3>
         </div>
         <!-- /.box-header -->
         <div class="card-body box-body table-responsive">
@@ -122,7 +122,7 @@
                     "mRender": function(data, type, row) {
                         var url;
                         if (row["status"].toString() === "true") {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +
@@ -134,7 +134,7 @@
                                 row["id"] +
                                 "\"></a>";
                         } else {
-                            url = "<a title=\"Chi tiết\" href=\"AdminDetail\\" +
+                            url = "<a title=\"Chi tiết\" href=\"Detail\\" +
                                 data +
                                 "\"" +
                                 "class = \"btn btn-info fa fa-info-circle\"></a> " +

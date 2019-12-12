@@ -286,8 +286,7 @@ namespace KLTN.Services
 
         public async Task<IEnumerable<BrandViewModel>> GetAllBrand()
         {
-            var listBrand = (from brandCate in _unitOfWork.BrandHasCateRepository.ObjectContext
-                             join bra in _unitOfWork.BrandRepository.ObjectContext on brandCate.BrandId equals bra.Id
+            var listBrand = (from bra in _unitOfWork.BrandRepository.ObjectContext
                              where bra.Status
                              select new BrandViewModel
                              {

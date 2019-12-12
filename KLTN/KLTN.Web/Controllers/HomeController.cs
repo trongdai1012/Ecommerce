@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using KLTN.Web.Models;
 using KLTN.Services;
+using System;
+using KLTN.DataModels.Models.Products;
+using System.Collections.Generic;
 
 namespace KLTN.Web.Controllers
 {
@@ -23,16 +26,23 @@ namespace KLTN.Web.Controllers
         [Route("~/")]
         public IActionResult Index()
         {
-            var model = _productService.GetBanner(); 
+            _recommenderService.RecommenderProduct();
+            var model = _productService.GetBanner();
             return View(model);
         }
 
         [Route("ListProduct")]
         [HttpPost]
         public IActionResult ListProduct()
-         {
+        {
             var model = _productService.GetProductRecommender();
-            return PartialView("_RecommenderProduct", model);
+
+            var matrixFacto = _recommenderService.RecommenderProduct();
+
+            var allModel = new Tuple<IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>, IEnumerable<LaptopViewModel>,
+                IEnumerable<LaptopViewModel>>(model.Item1, model.Item2, model.Item3, matrixFacto);
+
+            return PartialView("_RecommenderProduct", allModel);
         }
 
         public IActionResult Privacy()

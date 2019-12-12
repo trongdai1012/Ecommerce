@@ -127,7 +127,7 @@ namespace KLTN.Web.Areas.Admin.Controllers
             });
         }
 
-        public IActionResult AdminDetail(int id)
+        public IActionResult Detail(int id)
         {
             try
             {
@@ -145,44 +145,6 @@ namespace KLTN.Web.Areas.Admin.Controllers
             catch (Exception e)
             {
                 Log.Error("Have an error when get detail admin in controller", e);
-                return BadRequest();
-            }
-        }
-
-        //        public IActionResult EmployeeDetail(int id)
-        //        {
-        //            return View();
-        //        }
-        //
-        //        public IActionResult CustomerDetail(int id)
-        //        {
-        //            return View();
-        //        }
-
-        public IActionResult AdminUpdate(int id)
-        {
-            var admin = _userService.GetAdminUpdate(id);
-            return View(admin.Item1);
-        }
-
-        public IActionResult AdminUpdate(UpdateAdminViewModel adminView)
-        {
-            if (!ModelState.IsValid) return View(adminView);
-            try
-            {
-                var userResult = _userService.UpdateAdmin(adminView);
-                switch (userResult)
-                {
-                    case 1:
-                        return RedirectToAction("ListAdmin", "User");
-                    default:
-                        return BadRequest();
-                }
-
-            }
-            catch (Exception e)
-            {
-                Log.Error("Have an error when update admin in UserController", e);
                 return BadRequest();
             }
         }

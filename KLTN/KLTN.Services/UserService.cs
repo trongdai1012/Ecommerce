@@ -52,7 +52,7 @@ namespace KLTN.Services
                 var user = new User
                 {
                     Email = register.Email,
-                    Password = register.Password,
+                    Password = Encryptor.Md5Hash(register.Password),
                     Role = (byte)EnumRole.Customer,
                     FirstName = register.FirstName,
                     LastName = register.LastName,
@@ -173,7 +173,7 @@ namespace KLTN.Services
 
                 if (user == null) return new Tuple<AuthenticationViewModel, int>(null, -1);
 
-                if (user.Password != authenticationViewModel.Password)
+                if (user.Password != Encryptor.Md5Hash(authenticationViewModel.Password))
                     return new Tuple<AuthenticationViewModel, int>(null, -2);
 
                 if (user.IsConfirm == false) return new Tuple<AuthenticationViewModel, int>(null, 0);
@@ -374,7 +374,7 @@ namespace KLTN.Services
                 var user = _unitOfWork.UserRepository.GetById(id);
                 var userConfirm = _unitOfWork.ForgotRepository.Get(x => x.UserId == id);
                 if (userConfirm.ConfirmString != confirmStringTrue) return false;
-                user.Password = retypePassword.Password;
+                user.Password = Encryptor.Md5Hash(retypePassword.Password);
                 _unitOfWork.ForgotRepository.Delete(userConfirm.Id);
                 _unitOfWork.Save();
                 return true;
@@ -390,7 +390,7 @@ namespace KLTN.Services
         {
             try
             {
-                var user = _unitOfWork.UserRepository.Get(x => x.Id == id && x.Role == (int)EnumRole.Admin);
+                var user = _unitOfWork.UserRepository.Get(x => x.Id == id);
                 if (user == null) return new Tuple<AdminViewModel, int>(null, 3);
 
                 var adminModel = _mapper.Map<AdminViewModel>(user);
@@ -454,47 +454,6 @@ namespace KLTN.Services
             {
                 Log.Error("Have an error when GetEmployee in UserService", e);
                 return new Tuple<CustomerViewModel, int>(null, 0);
-            }
-        }
-
-        public int UpdateAdmin(UpdateAdminViewModel adminModel)
-        {
-            try
-            {
-                var user = _unitOfWork.UserRepository.GetById(adminModel.Id);
-                if (user == null) return 2;
-                user.Password = adminModel.Password;
-                user.UpdateAt = DateTime.Now;
-                user.UpdateBy = Convert.ToInt32(_httpContext.User.Identities);
-
-                _unitOfWork.Save();
-                return 1;
-            }
-            catch (Exception)
-            {
-                Log.Error("Have an error when update admin in UserService");
-                return 0;
-            }
-        }
-
-        public int UpdateEmployee(UpdateEmployeeViewModel employeeModel)
-        {
-            try
-            {
-                var user = _unitOfWork.UserRepository.GetById(employeeModel.Id);
-                if (user == null) return 2;
-                user.Role = employeeModel.Role;
-                user.Password = employeeModel.Password;
-                user.UpdateAt = DateTime.Now;
-                user.UpdateBy = Convert.ToInt32(_httpContext.User.Identities);
-
-                _unitOfWork.Save();
-                return 1;
-            }
-            catch (Exception)
-            {
-                Log.Error("Have an error when update employee in UserService");
-                return 0;
             }
         }
 
@@ -658,18 +617,34 @@ namespace KLTN.Services
             return tuple;
         }
 
+        public UpdateUserViewModel GetUserUpdate()
+        {
+            var user = _unitOfWork.UserRepository.GetById(GetClaimUserId());
+            var userModel = _mapper.Map<UpdateUserViewModel>(user);
+
+            return userModel;
+        }
+
         public int UpdateInfoUser(UpdateUserViewModel updateUser)
         {
             try
             {
                 var user = _unitOfWork.UserRepository.GetById(GetClaimUserId());
                 if (user == null) return 0;
+                user.PrecinctId = updateUser.PrecinctId;
+                user.PrecinctName = updateUser.PrecinctName;
+                user.DistrictId = updateUser.DistrictId;
+                user.DistrictName = updateUser.DistrictName;
+                user.ProvinceId = updateUser.ProvinceId;
+                user.ProvinceName = updateUser.ProvinceName;
                 user.FirstName = updateUser.FirstName;
                 user.LastName = updateUser.LastName;
                 user.Phone = updateUser.Phone;
                 user.Address = updateUser.Address;
                 user.BirthDay = updateUser.BirthDay;
                 user.Gender = updateUser.Gender;
+                user.UpdateAt = DateTime.UtcNow;
+                user.UpdateBy = GetClaimUserId();
 
                 _unitOfWork.Save();
                 return 1;
@@ -679,6 +654,13 @@ namespace KLTN.Services
                 Log.Error("Have an error when update info user", e);
                 return -1;
             }
+        }
+
+        public UserViewModel GetUserDetail()
+        {
+            var user = _unitOfWork.UserRepository.GetById(GetClaimUserId());
+            var userModel = _mapper.Map<UserViewModel>(user);
+            return userModel;
         }
 
         public string GetClaimUserMail()

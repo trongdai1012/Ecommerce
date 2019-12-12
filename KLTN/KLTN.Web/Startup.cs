@@ -118,6 +118,7 @@ namespace KLTN.Web
             services.AddTransient<IValidator<CreateMoblieViewModel>, CreateMobileValidator>();
             services.AddTransient<IValidator<UpdateLaptopViewModel>, UpdateLaptopValidator>();
             services.AddTransient<IValidator<UpdateMoblieViewModel>, UpdateMobileValidator>();
+            services.AddTransient<IValidator<UpdateUserViewModel>, UpdateInforValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

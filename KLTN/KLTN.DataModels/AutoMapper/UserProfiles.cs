@@ -13,10 +13,12 @@ namespace KLTN.DataModels.AutoMapper
             CreateMap<User, AdminViewModel>()
                 .ForMember(vm => vm.Role, m => m.MapFrom(u => (EnumRole)u.Role));
             CreateMap<User, EmployeeViewModel>()
-                .ForMember(vm => vm.Role, m => m.MapFrom(u => (EnumRole)u.Role)); ;
+                .ForMember(vm => vm.Role, m => m.MapFrom(u => (EnumRole)u.Role));
             CreateMap<User, CustomerViewModel>()
-                .ForMember(vm => vm.Role, m => m.MapFrom(u => (EnumRole)u.Role)); ;
-            CreateMap<User, UserViewModel>();
+                .ForMember(vm => vm.Role, m => m.MapFrom(u => (EnumRole)u.Role));
+            CreateMap<User, UserViewModel>()
+                .ForMember(vm => vm.Role, m => m.MapFrom(u => (EnumRole)u.Role));
+            CreateMap<User, UpdateUserViewModel>();
         }
     }
 }

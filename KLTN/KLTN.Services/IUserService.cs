@@ -34,10 +34,6 @@ namespace KLTN.Services
 
         Tuple<CustomerViewModel, int> GetCustomer(int id);
 
-        int UpdateAdmin(UpdateAdminViewModel adminModel);
-
-        int UpdateEmployee(UpdateEmployeeViewModel employeeModel);
-
         /// <summary>
         /// Method LoadData return tuple UserViewModel int int
         /// </summary>
@@ -66,5 +62,9 @@ namespace KLTN.Services
         bool ConfirmForgotPassword(RetypePassword retypePassword);
 
         User UpdateRole(int id, byte role);
+
+        UserViewModel GetUserDetail();
+
+        UpdateUserViewModel GetUserUpdate();
     }
 }

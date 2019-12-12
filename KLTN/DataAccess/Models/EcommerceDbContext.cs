@@ -49,7 +49,7 @@ namespace KLTN.DataAccess.Models
                     {
                         Id = 1,
                         Email = "admin@gmail.com",
-                        Password = "123456",
+                        Password = Encryptor.Md5Hash("123456"),
                         Role = (byte)EnumRole.Admin,
                         FirstName = "Dai",
                         LastName = "Than Trong",
@@ -68,7 +68,7 @@ namespace KLTN.DataAccess.Models
                     {
                         Id = 2,
                         Email = "manager@gmail.com",
-                        Password = "123456",
+                        Password = Encryptor.Md5Hash("123456"),
                         Role = (byte)EnumRole.Manager,
                         FirstName = "Admin",
                         LastName = "Manager",
@@ -87,7 +87,7 @@ namespace KLTN.DataAccess.Models
                     {
                         Id = 3,
                         Email = "warehouse@gmail.com",
-                        Password = "123456",
+                        Password = Encryptor.Md5Hash("123456"),
                         Role = (byte)EnumRole.WareHouseStaff,
                         FirstName = "Admin",
                         LastName = "Manager",
@@ -106,7 +106,7 @@ namespace KLTN.DataAccess.Models
                     {
                         Id = 4,
                         Email = "shipper@gmail.com",
-                        Password = "123456",
+                        Password = Encryptor.Md5Hash("123456"),
                         Role = (byte)EnumRole.Shipper,
                         FirstName = "Admin",
                         LastName = "Manager",
@@ -446,33 +446,33 @@ namespace KLTN.DataAccess.Models
             modelBuilder.Entity<DataTest>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                //for (int i = 0; i < 20000; i++)
-                //{
-                //    entity.HasData(
-                //        new DataTest
-                //        {
-                //            Id = i + 1,
-                //            UserId = new Random().Next(1, 100),
-                //            ProductId = new Random().Next(1, 101),
-                //            Rating = (byte)new Random().Next(1, 6)
-                //        });
-                //}
+                for (int i = 0; i < 2000; i++)
+                {
+                    entity.HasData(
+                        new DataTest
+                        {
+                            Id = i + 1,
+                            UserId = new Random().Next(1, 100),
+                            ProductId = new Random().Next(1, 101),
+                            Rating = (byte)new Random().Next(1, 6)
+                        });
+                }
             });
 
             modelBuilder.Entity<DataTrain>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                //for (int i = 0; i < 80000; i++)
-                //{
-                //    entity.HasData(
-                //        new DataTrain
-                //        {
-                //            Id = i + 1,
-                //            UserId = new Random().Next(1, 100),
-                //            ProductId = new Random().Next(1,101),
-                //            Rating = (byte)new Random().Next(1, 6)
-                //        });
-                //}
+                for (int i = 0; i < 8000; i++)
+                {
+                    entity.HasData(
+                        new DataTrain
+                        {
+                            Id = i + 1,
+                            UserId = new Random().Next(1, 100),
+                            ProductId = new Random().Next(1, 101),
+                            Rating = (byte)new Random().Next(1, 6)
+                        });
+                }
             });
 
             modelBuilder.Entity<Delivery>(entity =>
