@@ -89,10 +89,11 @@ namespace KLTN.Web.Controllers
 
         public async Task<IActionResult> LapTop(string searchKey, int pageIndex = 1, int pageSize = 12)
         {
+            ViewBag.PageIndex = pageIndex;
             return View();
         }
 
-        public async Task<IActionResult> ListLapTop(string searchKey, int brandId, int orderBy, int pageIndex = 1, int pageSize = 12)
+        public async Task<IActionResult> ListLapTop(string searchKey, int brandId, int orderBy, int pageIndex, int pageSize = 12)
         {
             ViewBag.ListBrand = await _brandService.GetBrandHasLaptop();
 
@@ -135,10 +136,12 @@ namespace KLTN.Web.Controllers
 
         public async Task<IActionResult> Mobile(string searchKey, int pageIndex = 1, int pageSize = 12)
         {
+            ViewBag.PageIndex = pageIndex;
+
             return View();
         }
 
-        public async Task<IActionResult> ListMobile(string searchKey, int brandId, int orderBy, int pageIndex = 1, int pageSize = 12)
+        public async Task<IActionResult> ListMobile(string searchKey, int brandId, int orderBy, int pageIndex, int pageSize = 12)
         {
             ViewBag.ListBrand = await _brandService.GetBrandHasMobile();
 

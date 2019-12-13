@@ -62,7 +62,7 @@
             }
         </div>
         <div style="float: right">
-            @Html.PagedListPager(Model, pageIndex => Url.Action("ListLapTop", new { pageIndex }))
+            @Html.PagedListPager(Model, pageIndex => Url.Action("Laptop", new { pageIndex }))
         </div>
     </div>
 </div>
@@ -77,11 +77,11 @@
                     @foreach (var item in ViewBag.ListBrand)
                     {
                         <li style="margin-left:15px">
-                            <a style="font-size:20px" id="select-checkbox-@item.Id" onclick="GetListLap(@item.Id)">@item.Name</a>
+                            <a style="font-size:20px" id="select-checkbox-@item.Id" onclick="GetListLap(@item.Id,1)">@item.Name</a>
                         </li>
                     }
                     <li style="margin-left:15px">
-                        <a  style="font-size:20px"onclick="GetAllLap()">Tất cả</a>
+                        <a  style="font-size:20px"onclick="GetAllLap(1)">Tất cả</a>
                     </li>
                 </ul>
             </div>

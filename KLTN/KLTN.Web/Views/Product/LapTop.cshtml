@@ -1,7 +1,4 @@
-﻿@using X.PagedList.Mvc.Core
-@model X.PagedList.IPagedList<LaptopViewModel>
-
-@{
+﻿@{
     ViewData["Title"] = "LapTop";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -33,6 +30,7 @@
     </div>
     <a id="saveBrandId" style="display:none"></a>
     <a id="saveOrderId" style="display:none"></a>
+    <a id="pageIndexe" style="display:none">@ViewBag.PageIndex</a>
 </section>
 <!--================End Category Product Area =================-->
 @section scripts
@@ -73,7 +71,7 @@
     </script>
 
     <script>
-        function GetAllLap() {
+        function GetAllLap(pageIndexer) {
             var save = document.getElementById("saveBrandId").innerHTML = '0';
             $.ajax({
                 url: '/Product/ListLapTop',
@@ -82,6 +80,7 @@
                 async: true,
                 dataType: "html",
                 data: {
+                    pageIndex: pageIndexer
                 }
             })
                 .done(function (result) {
@@ -99,6 +98,7 @@
         function GetListLap(brandId) {
             var save = document.getElementById("saveBrandId");
             var checkStyleId = "select-checkbox-" + brandId;
+            var pageIndexer = document.getElementById("pageIndexe").innerText;
             save.innerHTML = brandId;
             $.ajax({
                 url: '/Product/ListLapTop',
@@ -107,7 +107,8 @@
                 async: true,
                 dataType: "html",
                 data: {
-                    brandId: brandId
+                    brandId: brandId,
+                    pageIndex: pageIndexer
                 }
             })
                 .done(function (result) {
@@ -124,6 +125,7 @@
             var save = document.getElementById("saveBrandId").innerText;
             var order = document.getElementById("orderId");
             var orderId = order.options[order.selectedIndex].value;
+            var pageIndexer = document.getElementById("pageIndexe").innerText;
             var checkStyleId = "select-checkbox-" + save;
             $.ajax({
                 url: '/Product/ListLapTop',
@@ -133,7 +135,8 @@
                 dataType: "html",
                 data: {
                     orderBy: orderId,
-                    brandId: save
+                    brandId: save,
+                    pageIndex: pageIndexer
                 }
             })
                 .done(function (result) {

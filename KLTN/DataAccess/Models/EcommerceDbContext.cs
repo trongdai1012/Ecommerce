@@ -973,6 +973,476 @@ namespace KLTN.DataAccess.Models
                          UpdateAt = DateTime.UtcNow,
                          UpdateBy = 1
                      });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 17,
+                        Name = "Điện thoại Samsung Galaxy S10+ (512GB)",
+                        BrandId = 2,
+                        CategoryId = (int)EnumCategory.Mobile,
+                        InitialPrice = 23990000,
+                        CurrentPrice = 22990000,
+                        DurationWarranty = 12,
+                        Description = "Samsung Galaxy S10+ 512GB - phiên bản kỷ niệm 10 năm chiếc Galaxy S đầu tiên ra mắt, là một chiếc smartphone hội tủ đủ các yếu tố mà bạn cần ở một chiếc máy cao cấp trong năm 2019",
+                        Rate = 5,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+
+                entity.HasData(
+                     new Product
+                     {
+                         Id = 18,
+                         Name = "Điện thoại Samsung Galaxy Note 10+",
+                         BrandId = 2,
+                         CategoryId = (int)EnumCategory.Mobile,
+                         InitialPrice = 27990000,
+                         CurrentPrice = 26900000,
+                         DurationWarranty = 12,
+                         Description = "Trông ngoại hình khá giống nhau, tuy nhiên Samsung Galaxy Note 10+ sở hữu khá nhiều điểm khác biệt so với Galaxy Note 10 và đây được xem là một trong những chiếc máy đáng mua nhất trong năm 2019, đặc biệt dành cho những người thích một chiếc máy màn hình lớn, camera chất lượng hàng đầus",
+                         Rate = 5,
+                         ViewCount = 0,
+                         LikeCount = 0,
+                         TotalSold = 0,
+                         Quantity = 100,
+                         Status = true,
+                         CreateAt = DateTime.UtcNow,
+                         CreateBy = 1,
+                         UpdateAt = DateTime.UtcNow,
+                         UpdateBy = 1
+                     });
+
+                entity.HasData(
+                     new Product
+                     {
+                         Id = 19,
+                         Name = "Điện thoại Samsung Galaxy Note 10",
+                         BrandId = 2,
+                         CategoryId = (int)EnumCategory.Mobile,
+                         InitialPrice = 23990000,
+                         CurrentPrice = 22990000,
+                         DurationWarranty = 12,
+                         Description = "Nếu như từ trước tới nay dòng Galaxy Note của Samsung thường ít được các bạn nữ sử dụng bởi kích thước màn hình khá lớn khiến việc cầm nắm trở nên khó khăn thì Samsung Galaxy Note 10 sẽ là chiếc smartphone nhỏ gọn, phù hợp với cả những bạn có bàn tay nhỏ",
+                         Rate = 5,
+                         ViewCount = 0,
+                         LikeCount = 0,
+                         TotalSold = 0,
+                         Quantity = 100,
+                         Status = true,
+                         CreateAt = DateTime.UtcNow,
+                         CreateBy = 1,
+                         UpdateAt = DateTime.UtcNow,
+                         UpdateBy = 1
+                     });
+                entity.HasData(
+                     new Product
+                     {
+                         Id = 20,
+                         Name = "Điện thoại Samsung Galaxy Note 9",
+                         BrandId = 2,
+                         CategoryId = (int)EnumCategory.Mobile,
+                         InitialPrice = 23990000,
+                         CurrentPrice = 22990000,
+                         DurationWarranty = 12,
+                         Description = "Mang lại sự cải tiến đặc biệt trong cây bút S Pen, siêu phẩm Samsung Galaxy Note 9 còn sở hữu dung lượng pin khủng lên tới 4.000 mAh cùng hiệu năng mạnh mẽ vượt bậc, xứng đáng là một trong những chiếc điện thoại cao cấp nhất của Samsung.",
+                         Rate = 0,
+                         ViewCount = 0,
+                         LikeCount = 0,
+                         TotalSold = 0,
+                         Quantity = 100,
+                         Status = true,
+                         CreateAt = DateTime.UtcNow,
+                         CreateBy = 1,
+                         UpdateAt = DateTime.UtcNow,
+                         UpdateBy = 1
+                     });
+                entity.HasData(
+                     new Product
+                     {
+                         Id = 21,
+                         Name = "Điện thoại Samsung Galaxy A80",
+                         BrandId = 2,
+                         CategoryId = (int)EnumCategory.Mobile,
+                         InitialPrice = 12990000,
+                         CurrentPrice = 12490000,
+                         DurationWarranty = 12,
+                         Description = "Samsung Galaxy A80 là chiếc smartphone mang trong" +
+                                        " mình rất nhiều đột phá của Samsung và hứa hẹn sẽ là \"ngọn cờ đầu\"" +
+                                        " cho những chiếc smartphone sở hữu một màn hình tràn viền thật sự",
+                         Rate = 0,
+                         ViewCount = 0,
+                         LikeCount = 0,
+                         TotalSold = 0,
+                         Quantity = 100,
+                         Status = true,
+                         CreateAt = DateTime.UtcNow,
+                         CreateBy = 1,
+                         UpdateAt = DateTime.UtcNow,
+                         UpdateBy = 1
+                     });
+
+                entity.HasData(
+                     new Product
+                     {
+                         Id = 22,
+                         Name = "Điện thoại Xiaomi Mi 9 SE",
+                         BrandId = 5,
+                         CategoryId = (int)EnumCategory.Mobile,
+                         InitialPrice = 7990000,
+                         CurrentPrice = 7490000,
+                         DurationWarranty = 12,
+                         Description = "Vẫn như thường lệ thì bên cạnh chiếc flagship Xiaomi Mi 9" +
+                                        " cao cấp của mình thì Xiaomi cũng giới thiệu thêm phiên bản rút gọn là chiếc" +
+                                        " Xiaomi Mi 9 SE. Máy vẫn sở hữu cho mình nhiều trang bị cao cấp tương tự đàn anh.",
+                         Rate = 0,
+                         ViewCount = 0,
+                         LikeCount = 0,
+                         TotalSold = 0,
+                         Quantity = 100,
+                         Status = true,
+                         CreateAt = DateTime.UtcNow,
+                         CreateBy = 1,
+                         UpdateAt = DateTime.UtcNow,
+                         UpdateBy = 1
+                     });
+
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 23,
+                        Name = "Điện thoại Xiaomi Mi 9T",
+                        BrandId = 5,
+                        CategoryId = (int)EnumCategory.Mobile,
+                        InitialPrice = 8490000,
+                        CurrentPrice = 7990000,
+                        DurationWarranty = 12,
+                        Description = "Xiaomi Mi 9T (tên khác là Redmi K20) là chiếc smartphone" +
+                                        " vừa được giới thiệu gây rất nhiều chú ý với người dùng bởi nó hội tụ đủ" +
+                                        " 3 yếu tố ngon-bổ-rẻ.",
+                        Rate = 0,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 24,
+                        Name = "Điện thoại Xiaomi Redmi Note 8 Pro (6GB/128GB)",
+                        BrandId = 5,
+                        CategoryId = (int)EnumCategory.Mobile,
+                        InitialPrice = 6990000,
+                        CurrentPrice = 6490000,
+                        DurationWarranty = 12,
+                        Description = "Là phiên bản nâng cấp của chiếc Xiaomi Redmi Note 7 Pro đã " +
+                                        "\"làm mưa làm gió\" trên thị trường trước đó, chiếc Xiaomi Redmi Note 8 Pro" +
+                                        " (6GB/128GB) sẽ là sự lựa chọn hàng đầu dành cho người dùng quan tâm nhiều về" +
+                                        " hiệu năng và camera của một chiếc máy tầm trung.",
+                        Rate = 0,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 25,
+                        Name = "Điện thoại OPPO Reno 10x Zoom Edition",
+                        BrandId = 12,
+                        CategoryId = (int)EnumCategory.Mobile,
+                        InitialPrice = 17599000,
+                        CurrentPrice = 16990000,
+                        DurationWarranty = 12,
+                        Description = "Những chiếc flagship trong năm 2019 không chỉ có một " +
+                                        "camera chụp ảnh đẹp, chụp xóa phông ảo diệu mà còn phải chụp thật xa và" +
+                                        " với chiếc OPPO Reno 10x Zoom Edition chính thức gia nhập thị trường smartphone" +
+                                        " có camera siêu zoom.",
+                        Rate = 0,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 26,
+                        Name = "Điện thoại OPPO Reno2",
+
+                        BrandId = 12,
+                        CategoryId = (int)EnumCategory.Mobile,
+                        InitialPrice = 15490000,
+                        CurrentPrice = 14990000,
+                        DurationWarranty = 12,
+                        Description = "Sau sự thành công của chiếc OPPO Reno với thiết kế mới lạ, camera chất lượng thì mới đây OPPO tiếp tục giới thiệu phiên bản nâng cấp của chiếc smartphone này là chiếc OPPO Reno2.",
+                        Rate = 0,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 27,
+                        Name = "Laptop HP 15 da0359TU N4417/4GB/500GB/Win10",
+                        BrandId = 9,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 7490000,
+                        CurrentPrice = 7290000,
+                        DurationWarranty = 12,
+                        Description = "Laptop HP 15 da0359TU N4417 (6KD00PA) là chiếc laptop " +
+                                        "văn phòng giá rẻ được trang bị cấu hình vừa đủ sử dụng tính năng cơ bản " +
+                                        "và cài sẵn hệ điều hành Windows 10 bản quyền giúp sử dụng ổn định, tiện lợi hơn." +
+                                        " Đây sẽ là laptop phù hợp cho học, sinh viên, hay dân văn phòng có điều kiện kinh tế thấp.",
+                        Rate = 0,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+                entity.HasData(
+                    new Product
+                    {
+                        Id = 28,
+                        Name = "Laptop HP 14 ck0068TU i3 7020U/4GB/500GB/Win10",
+                        BrandId = 9,
+                        CategoryId = (int)EnumCategory.Laptop,
+                        InitialPrice = 10590000,
+                        CurrentPrice = 10390000,
+                        DurationWarranty = 12,
+                        Description = "Laptop HP 14 ck0068TU là thuộc dòng laptop văn phòng với" +
+                                        " thiết kế nhỏ gọn, dễ dàng di chuyển. Chiếc máy có cấu hình vừa phải đáp ứng" +
+                                        " nhu cầu học tập và giải trí của người dùng.",
+                        Rate = 0,
+                        ViewCount = 0,
+                        LikeCount = 0,
+                        TotalSold = 0,
+                        TotalRate = 0,
+                        TotalMark = 0,
+                        Quantity = 100,
+                        Status = true,
+                        CreateAt = DateTime.UtcNow,
+                        CreateBy = 1,
+                        UpdateAt = DateTime.UtcNow,
+                        UpdateBy = 1
+                    });
+
+                entity.HasData(
+                        new Product
+                        {
+                            Id = 29,
+                            Name = "Laptop HP 348 G5 i3 7020U/4GB/256GB/Win10 (7XJ62PA)",
+                            BrandId = 9,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 10690000,
+                            CurrentPrice = 9990000,
+                            DurationWarranty = 12,
+                            Description = "Với hiệu năng ổn định khi xử lí tác các tác vụ cơ bản như" +
+                                        " lướt web, xem phim, làm việc văn phòng Word, Excel, Powerpoint,... laptop" +
+                                        " HP 348 G5 7XJ62PA là lựa chọn phù hợp cho công việc văn phòng, học tập.",
+                            Rate = 0,
+                            ViewCount = 0,
+                            LikeCount = 0,
+                            TotalSold = 0,
+                            TotalRate = 0,
+                            TotalMark = 0,
+                            Quantity = 100,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
+
+                entity.HasData(
+                        new Product
+                        {
+                            Id = 30,
+                            Name = "Laptop Dell Vostro 3468 i3 7020U/4GB/1TB/Win10",
+                            BrandId = 8,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 11690000,
+                            CurrentPrice = 11190000,
+                            DurationWarranty = 12,
+                            Description = "Dell Vostro 3468 i3 7020U là chiếc laptop được trang" +
+                                        " bị chip Intel Core i3 cùng hệ điều hành Windows 10 cho hiệu năng ổn định." +
+                                        " Máy phù hợp với học sinh, sinh viên, các nhân viên văn phòng với nhu cầu cơ" +
+                                        " bản như học tập hay làm việc.",
+                            Rate = 0,
+                            ViewCount = 0,
+                            LikeCount = 0,
+                            TotalSold = 0,
+                            TotalRate = 0,
+                            TotalMark = 0,
+                            Quantity = 100,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
+
+                entity.HasData(
+                        new Product
+                        {
+                            Id = 31,
+                            Name = "Laptop Asus VivoBook X507MA N4000/4GB/256GB/Win10",
+                            BrandId = 6,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 6990000,
+                            CurrentPrice = 6490000,
+                            DurationWarranty = 12,
+                            Description = "Laptop Asus X507MA (BR318T) là chiếc laptop văn phòng" +
+                                        " - học tập sở hữu thiết kế mỏng nhẹ, hoạt động nhanh mượt với ổ cứng SSD." +
+                                        " Máy tính xách tay này còn được trang bị tính năng bảo mật bằng vân tay," +
+                                        " giúp mở máy nhanh chóng và an toàn.",
+                            Rate = 0,
+                            ViewCount = 0,
+                            LikeCount = 0,
+                            TotalSold = 0,
+                            TotalRate = 0,
+                            TotalMark = 0,
+                            Quantity = 100,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
+                entity.HasData(
+                        new Product
+                        {
+                            Id = 32,
+                            Name = "Laptop Asus VivoBook X509U i3 7020U 4GB/1TB/Chuột/Win10",
+                            BrandId = 6,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 10990000,
+                            CurrentPrice = 10690000,
+                            DurationWarranty = 12,
+                            Description = "Laptop ASUS VivoBook X509U i3 (EJ063T) là mẫu laptop học tập - văn phòng tầm trung. Nếu bạn đang tìm kiếm một chiếc laptop có cấu hình ổn định và mức giá rẻ thì hãy tham khảo những tính năng của chiếc ASUS VivoBook X590U.",
+                            Rate = 0,
+                            ViewCount = 0,
+                            LikeCount = 0,
+                            TotalSold = 0,
+                            TotalRate = 0,
+                            TotalMark = 0,
+                            Quantity = 100,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
+                entity.HasData(
+                        new Product
+                        {
+                            Id = 33,
+                            Name = "Laptop Asus Gaming TUF FX505D R7 3750H/8GB/512GB/4GB",
+                            BrandId = 6,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 23490000,
+                            CurrentPrice = 22490000,
+                            DurationWarranty = 12,
+                            Description = "Cỗ máy chiến game ASUS Gaming TUF FX505D R7 (AL003T) với cấu hình mạnh cùng thiết kế gaming độc đáo, cá tính. Đây là chiếc máy gaming có nhiều cải tiến, phù hợp với các game thủ hiện đại.",
+                            Rate = 0,
+                            ViewCount = 0,
+                            LikeCount = 0,
+                            TotalSold = 0,
+                            TotalRate = 0,
+                            TotalMark = 0,
+                            Quantity = 100,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
+                entity.HasData(
+                        new Product
+                        {
+                            Id = 34,
+                            Name = "Laptop Acer Aspire A514 52 33AB i3 10110U/4GB/256GB/Win10",
+                            BrandId = 10,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 12490000,
+                            CurrentPrice = 11990000,
+                            DurationWarranty = 12,
+                            Description = "Laptop Acer Aspire A514 i3 (NX.HMHSV.001) được thiết kế mỏng nhẹ phù hợp với giới trẻ, đặc biệt là các bạn học sinh sinh viên cần di chuyển nhiều. Máy sử dụng con chip Intel thế hệ thứ 10 hiện đại, ổ cứng SSD khởi động cực nhanh, màn hình Full HD góc nhìn siêu rộng đem đến những trải nghiệm tuyệt vời.",
+                            Rate = 0,
+                            ViewCount = 0,
+                            LikeCount = 0,
+                            TotalSold = 0,
+                            TotalRate = 0,
+                            TotalMark = 0,
+                            Quantity = 100,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
+                entity.HasData(
+                        new Product
+                        {
+                            Id = 35,
+                            Name = "Laptop Lenovo ideapad S145 15IWL i5 8265U/8GB/256GB/2GB MX110/Win10",
+                            BrandId = 7,
+                            CategoryId = (int)EnumCategory.Laptop,
+                            InitialPrice = 15290000,
+                            CurrentPrice = 14790000,
+                            DurationWarranty = 12,
+                            Description = "Laptop Lenovo IdeaPad S145 15IWL (81MV00T9VN) vừa được ra mắt đem đến cho giới văn phòng, sinh viên có thêm sự lựa chọn tốt. Đây là chiếc laptop văn phòng có hiệu năng cao cùng các tính năng hiện đại giúp bạn hoàn thành tốt công việc mỗi ngày.",
+                            Rate = 0,
+                            ViewCount = 0,
+                            LikeCount = 0,
+                            TotalSold = 0,
+                            TotalRate = 0,
+                            TotalMark = 0,
+                            Quantity = 100,
+                            Status = true,
+                            CreateAt = DateTime.UtcNow,
+                            CreateBy = 1,
+                            UpdateAt = DateTime.UtcNow,
+                            UpdateBy = 1
+                        });
             });
 
             modelBuilder.Entity<Laptop>(entity =>
@@ -1134,6 +1604,177 @@ namespace KLTN.DataAccess.Models
                         Color = "Xám",
                         Pin = "58.2 W h Li-Poly",
                     });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 27,
+                        ProductId = 27,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 28,
+                        ProductId = 28,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 29,
+                        ProductId = 29,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 30,
+                        ProductId = 30,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 31,
+                        ProductId = 31,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 32,
+                        ProductId = 32,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 33,
+                        ProductId = 33,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 34,
+                        ProductId = 34,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
+                entity.HasData(
+                    new Laptop
+                    {
+                        Id = 35,
+                        ProductId = 35,
+                        CPU = "Intel Core i5 Quad-Core 3.9GHz 6MB L3 Cache",
+                        RAM = "LPDDR3 8GB 2133MHz",
+                        ROM = "SSD 128GB",
+                        Card = "Intel Iris Plus Graphics 645",
+                        Screen = "LED-backlit Retina display with IPS and True Tone",
+                        PortSupport = "USB type C, 3.5 mm",
+                        OperatingSystem = "MacOS",
+                        Design = "Vỏ nhôm nguyên khối",
+                        Weight = "1.37 kg",
+                        Size = "Cao 1.49 cm x Rộng 30.41 cm x Sâu 21.24 cm",
+                        Camera = "720p FaceTime HD camera",
+                        Color = "Xám",
+                        Pin = "58.2 W h Li-Poly",
+                    });
             });
 
             modelBuilder.Entity<Mobile>(entity =>
@@ -1272,8 +1913,166 @@ namespace KLTN.DataAccess.Models
                         Color = "Grey",
                         Pin = "Pin chuẩn Li-Ion 3969 mAh",
                     });
-
-
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 17,
+                        ProductId = 17,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 18,
+                        ProductId = 18,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 19,
+                        ProductId = 19,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 20,
+                        ProductId = 20,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 21,
+                        ProductId = 21,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 22,
+                        ProductId = 22,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 23,
+                        ProductId = 23,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 24,
+                        ProductId = 24,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 25,
+                        ProductId = 25,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
+                entity.HasData(
+                    new Mobile
+                    {
+                        Id = 26,
+                        ProductId = 26,
+                        Screen = "Dynamic AMOLED 6.4inch 2K+ (1440 x 3040 Pixels)",
+                        FrontCamera = "Chính 10 MP & Phụ 8 MP",
+                        RearCamera = "Chính 12 MP & Phụ 12 MP, 16 MP",
+                        OperatingSystem = "Android 9.0 (Pie)",
+                        CPU = "Exynos 9820 8 nhân 2 nhân 2.7 GHz, 2 nhân 2.3 GHz & 4 nhân 1.9 GHz",
+                        RAM = "8 GB",
+                        ROM = "512 GB",
+                        SIM = "2 SIM Nano (SIM 2 chung khe thẻ nhớ)",
+                        Color = "Grey",
+                        Pin = "Pin chuẩn Li-Ion 4100 mAh",
+                    });
             });
 
             modelBuilder.Entity<Image>(entity =>
@@ -1503,8 +2302,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 30,
                            ProductId = 9,
-                           Url = "1net4.png",
-                           IsDefault = true
+                           Url = "1net4.png"
                        });
                 entity.HasData(
                         new Image
@@ -1533,8 +2331,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 34,
                            ProductId = 10,
-                           Url = "2net4.png",
-                           IsDefault = true
+                           Url = "2net4.png"
                        });
                 entity.HasData(
                          new Image
@@ -1563,8 +2360,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 38,
                            ProductId = 11,
-                           Url = "3net4.png",
-                           IsDefault = true
+                           Url = "3net4.png"
                        }); entity.HasData(
                          new Image
                          {
@@ -1592,8 +2388,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 42,
                            ProductId = 12,
-                           Url = "4net4.png",
-                           IsDefault = true
+                           Url = "4net4.png"
                        });
                 entity.HasData(
                          new Image
@@ -1622,8 +2417,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 46,
                            ProductId = 13,
-                           Url = "5net4.png",
-                           IsDefault = true
+                           Url = "5net4.png"
                        });
                 entity.HasData(
                          new Image
@@ -1652,8 +2446,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 50,
                            ProductId = 14,
-                           Url = "6net4.png",
-                           IsDefault = true
+                           Url = "6net4.png"
                        });
                 entity.HasData(
                          new Image
@@ -1682,8 +2475,7 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 54,
                            ProductId = 15,
-                           Url = "7net4.png",
-                           IsDefault = true
+                           Url = "7net4.png"
                        });
                 entity.HasData(
                          new Image
@@ -1712,8 +2504,558 @@ namespace KLTN.DataAccess.Models
                        {
                            Id = 58,
                            ProductId = 16,
-                           Url = "8net4.png",
-                           IsDefault = true
+                           Url = "8net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 59,
+                             ProductId = 17,
+                             Url = "9net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 60,
+                            ProductId = 17,
+                            Url = "9net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 61,
+                            ProductId = 17,
+                            Url = "9net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 62,
+                           ProductId = 17,
+                           Url = "9net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 63,
+                             ProductId = 18,
+                             Url = "10net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 64,
+                            ProductId = 18,
+                            Url = "10net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 65,
+                            ProductId = 18,
+                            Url = "10net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 66,
+                           ProductId = 18,
+                           Url = "10net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 67,
+                             ProductId = 19,
+                             Url = "11net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 68,
+                            ProductId = 19,
+                            Url = "11net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 69,
+                            ProductId = 19,
+                            Url = "11net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 70,
+                           ProductId = 19,
+                           Url = "11net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 71,
+                             ProductId = 20,
+                             Url = "12net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 72,
+                            ProductId = 20,
+                            Url = "12net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 73,
+                            ProductId = 20,
+                            Url = "12net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 74,
+                           ProductId = 20,
+                           Url = "12net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 75,
+                             ProductId = 21,
+                             Url = "13net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 76,
+                            ProductId = 21,
+                            Url = "13net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 77,
+                            ProductId = 21,
+                            Url = "13net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 78,
+                           ProductId = 21,
+                           Url = "13net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 79,
+                             ProductId = 22,
+                             Url = "14net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 80,
+                            ProductId = 22,
+                            Url = "14net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 81,
+                            ProductId = 22,
+                            Url = "14net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 82,
+                           ProductId = 22,
+                           Url = "14net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 83,
+                             ProductId = 23,
+                             Url = "15net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 84,
+                            ProductId = 23,
+                            Url = "15net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 85,
+                            ProductId = 23,
+                            Url = "15net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 86,
+                           ProductId = 23,
+                           Url = "15net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 87,
+                             ProductId = 24,
+                             Url = "16net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 88,
+                            ProductId = 24,
+                            Url = "16net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 89,
+                            ProductId = 24,
+                            Url = "16net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 90,
+                           ProductId = 24,
+                           Url = "16net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 91,
+                             ProductId = 25,
+                             Url = "17net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 92,
+                            ProductId = 25,
+                            Url = "17net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 93,
+                            ProductId = 25,
+                            Url = "17net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 94,
+                           ProductId = 25,
+                           Url = "17net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 95,
+                             ProductId = 26,
+                             Url = "18net1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 96,
+                            ProductId = 26,
+                            Url = "18net2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 97,
+                            ProductId = 26,
+                            Url = "18net3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 98,
+                           ProductId = 26,
+                           Url = "18net4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 99,
+                             ProductId = 27,
+                             Url = "9dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 100,
+                            ProductId = 27,
+                            Url = "9dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 101,
+                            ProductId = 27,
+                            Url = "9dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 102,
+                           ProductId = 27,
+                           Url = "9dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 103,
+                             ProductId = 28,
+                             Url = "10dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 104,
+                            ProductId = 28,
+                            Url = "10dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 105,
+                            ProductId = 28,
+                            Url = "10dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 106,
+                           ProductId = 28,
+                           Url = "10dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 107,
+                             ProductId = 29,
+                             Url = "11dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 108,
+                            ProductId = 29,
+                            Url = "11dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 109,
+                            ProductId = 29,
+                            Url = "11dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 110,
+                           ProductId = 29,
+                           Url = "11dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 111,
+                             ProductId = 30,
+                             Url = "12dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 112,
+                            ProductId = 30,
+                            Url = "12dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 113,
+                            ProductId = 30,
+                            Url = "12dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 114,
+                           ProductId = 30,
+                           Url = "12dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 115,
+                             ProductId = 31,
+                             Url = "13dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 116,
+                            ProductId = 31,
+                            Url = "13dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 117,
+                            ProductId = 31,
+                            Url = "13dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 118,
+                           ProductId = 31,
+                           Url = "13dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 119,
+                             ProductId = 32,
+                             Url = "14dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 120,
+                            ProductId = 32,
+                            Url = "14dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 121,
+                            ProductId = 32,
+                            Url = "14dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 122,
+                           ProductId = 32,
+                           Url = "14dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 123,
+                             ProductId = 33,
+                             Url = "15dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 124,
+                            ProductId = 33,
+                            Url = "15dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 125,
+                            ProductId = 33,
+                            Url = "15dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 126,
+                           ProductId = 33,
+                           Url = "15dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 127,
+                             ProductId = 34,
+                             Url = "16dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 128,
+                            ProductId = 34,
+                            Url = "16dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 129,
+                            ProductId = 34,
+                            Url = "16dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 130,
+                           ProductId = 34,
+                           Url = "16dot4.png"
+                       });
+                entity.HasData(
+                         new Image
+                         {
+                             Id = 131,
+                             ProductId = 35,
+                             Url = "17dot1.png",
+                             IsDefault = true
+                         });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 132,
+                            ProductId = 35,
+                            Url = "17dot2.png"
+                        });
+                entity.HasData(
+                        new Image
+                        {
+                            Id = 133,
+                            ProductId = 35,
+                            Url = "17dot3.png"
+                        });
+                entity.HasData(
+                       new Image
+                       {
+                           Id = 134,
+                           ProductId = 35,
+                           Url = "17dot4.png"
                        });
             });
 

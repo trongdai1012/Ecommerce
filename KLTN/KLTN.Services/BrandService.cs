@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KLTN.Common;
 using KLTN.Common.Datatables;
+using KLTN.Common.Infrastructure;
 using KLTN.DataAccess.Models;
 using KLTN.DataModels.Models.Brands;
 using KLTN.Services.Repositories;
@@ -260,7 +261,7 @@ namespace KLTN.Services
         {
             var listBrand = (from brandCate in _unitOfWork.BrandHasCateRepository.ObjectContext
                             join bra in _unitOfWork.BrandRepository.ObjectContext on brandCate.BrandId equals bra.Id
-                            where brandCate.CategoryId == 1 && bra.Status
+                            where brandCate.CategoryId == (int)EnumCategory.Laptop && bra.Status
                             select new BrandViewModel
                             {
                                 Id = bra.Id,
