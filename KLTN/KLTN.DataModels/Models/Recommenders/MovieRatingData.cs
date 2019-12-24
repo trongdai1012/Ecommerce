@@ -6,7 +6,7 @@ using System.Text;
 namespace KLTN.DataModels.Models.Recommenders
 {
     // <SnippetMovieRatingClass>
-    public class MovieRating
+    public class ProductRating
     {
         //[LoadColumn(1)]
         public float UserId;
@@ -18,7 +18,7 @@ namespace KLTN.DataModels.Models.Recommenders
     // </SnippetMovieRatingClass>
 
     // <SnippetPredictionClass>
-    public class MovieRatingPrediction
+    public class ProductRatingPrediction
     {
         public float Label;
         public float Score;

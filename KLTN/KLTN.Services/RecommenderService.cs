@@ -114,11 +114,8 @@ namespace KLTN.Services
         // Load data
         public (IDataView training, IDataView test) LoadData(MLContext mlContext)
         {
-            //var trainingData = _unitOfWork.DataTrainRepository.ObjectContext.AsEnumerable();
-            //var testData = _unitOfWork.DataTestRepository.GetAll();
-
             var trainData = from dt in _unitOfWork.DataTrainRepository.GetAll()
-                            select new MovieRating
+                            select new ProductRating
                             {
                                 UserId = dt.UserId,
                                 ProductId = dt.ProductId,
@@ -126,17 +123,15 @@ namespace KLTN.Services
                             };
 
             var testData = from dt in _unitOfWork.DataTestRepository.GetAll()
-                           select new MovieRating
+                           select new ProductRating
                            {
                                UserId = dt.UserId,
                                ProductId = dt.ProductId,
                                Label = dt.Rating
                            };
 
-            //IDataView trainingDataView = mlContext.Data.LoadFromTextFile<MovieRating>(trainingDataPath, hasHeader: true, separatorChar: ',');
-            //IDataView testDataView = mlContext.Data.LoadFromTextFile<MovieRating>(testDataPath, hasHeader: true, separatorChar: ',');
-            IDataView trainingDataView = mlContext.Data.LoadFromEnumerable<MovieRating>(trainData);
-            IDataView testDataView = mlContext.Data.LoadFromEnumerable<MovieRating>(testData);
+            IDataView trainingDataView = mlContext.Data.LoadFromEnumerable<ProductRating>(trainData);
+            IDataView testDataView = mlContext.Data.LoadFromEnumerable<ProductRating>(testData);
 
             return (trainingDataView, testDataView);
             // </SnippetLoadData>
@@ -196,13 +191,12 @@ namespace KLTN.Services
         public double UseModelForSinglePrediction(MLContext mlContext, ITransformer model, int userId, int productId)
         {
             // <SnippetPredictionEngine>
-            Console.WriteLine("=============== Making a prediction ===============");
-            var predictionEngine = mlContext.Model.CreatePredictionEngine<MovieRating, MovieRatingPrediction>(model);
+            var predictionEngine = mlContext.Model.CreatePredictionEngine<ProductRating, ProductRatingPrediction>(model);
             // </SnippetPredictionEngine>
 
             // Create test input & make single prediction
             // <SnippetMakeSinglePrediction>
-            var testInput = new MovieRating { UserId = userId, ProductId = productId };
+            var testInput = new ProductRating { UserId = userId, ProductId = productId };
 
             var movieRatingPrediction = predictionEngine.Predict(testInput);
             // </SnippetMakeSinglePrediction>

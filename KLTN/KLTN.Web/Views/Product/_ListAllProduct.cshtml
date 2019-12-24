@@ -20,31 +20,57 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="single-product">
                         <div class="product-img">
-                            <img class="card-img"
-                                 src="/DataImage/@item.ImageDefault"
-                                 width="255"
-                                 height="255"
-                                 alt="" />
-                            <div class="p_icon">
+                            @if (item.CategoryId == 1)
+                            {
                                 <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
-                                    <i class="ti-eye"></i>
+                                    <img class="card-img"
+                                         src="/DataImage/@item.ImageDefault"
+                                         width="255"
+                                         height="255"
+                                         alt="" />
                                 </a>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <a onclick="LikeProduct(@item.Id)">
-                                        <i class="ti-heart"></i>
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a asp-action="Authentication" asp-controller="Account">
-                                        <i class="ti-heart"></i>
-                                    </a>
-                                }
-                                <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id">
-                                    <i class="ti-shopping-cart"></i>
+                            }
+                            else
+                            {
+                                <a asp-controller="Product" asp-action="MobileDetail" asp-route-id="@item.Id">
+                                    <img class="card-img"
+                                         src="/DataImage/@item.ImageDefault"
+                                         width="255"
+                                         height="255"
+                                         alt="" />
                                 </a>
-                            </div>
+                            }
+
+                                <div class="p_icon">
+                                    @if (item.CategoryId == 1)
+                                    {
+                                        <a asp-controller="Product" asp-action="LaptopDetail" asp-route-id="@item.Id">
+                                            <i class="ti-eye"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Product" asp-action="MobileDetail" asp-route-id="@item.Id">
+                                            <i class="ti-eye"></i>
+                                        </a>
+                                    }
+
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a onclick="LikeProduct(@item.Id)">
+                                            <i class="ti-heart"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Authentication" asp-controller="Account">
+                                            <i class="ti-heart"></i>
+                                        </a>
+                                    }
+                                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id">
+                                        <i class="ti-shopping-cart"></i>
+                                    </a>
+                                </div>
                         </div>
                         <div class="product-btm">
                             <a href="#" class="d-block">
